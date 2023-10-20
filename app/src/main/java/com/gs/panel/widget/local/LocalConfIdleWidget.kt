@@ -20,6 +20,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.gs.panel.ui.theme.CustomColor
+import com.gs.panel.widget.ClickButtonWidget
 
 @Composable
 fun LocalConfIdleWidget(
@@ -33,7 +34,7 @@ fun LocalConfIdleWidget(
 //                            .background(CustomColor.blue)
                 .fillMaxWidth(),
             color = Color.White,
-            fontSize = 72.sp,
+            fontSize = 88.sp,
             textAlign = TextAlign.Center
         )
         Spacer(modifier = Modifier
@@ -41,26 +42,12 @@ fun LocalConfIdleWidget(
             .fillMaxWidth()
 //                        .background(CustomColor.powder)
         )
-        Box(modifier = Modifier
-            .width(300.dp)
-            .height(100.dp)
-            .align(Alignment.CenterHorizontally)
-            .clip(RoundedCornerShape(50))
-        ) {
-            Box(modifier = Modifier
-                .fillMaxSize()
-                .background(color = Color.White)
-                .clickable { onStart() }
-            ) {
-                Text(
-                    text = "立即开会",
-                    fontSize = 36.sp,
-                    modifier = Modifier
-//                                    .background(CustomColor.fizz)
-                        .align(Alignment.Center),
-                    color = CustomColor.tree
-                )
-            }
-        }
+        ClickButtonWidget(
+            modifier = Modifier.width(280.dp).height(88.dp).align(Alignment.CenterHorizontally),
+            name = "立即开会",
+            backgroundColor = Color.White,
+            textColor = Color(0xFF00a645),
+            onClick = { onStart() }
+        )
     }
 }

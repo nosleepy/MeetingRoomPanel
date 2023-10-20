@@ -72,7 +72,7 @@ fun LocalConfScreen(navController: NavController) {
     ) {
         Box(modifier = Modifier
             .fillMaxSize()
-            .padding(30.dp)
+//            .padding(30.dp)
 //            .background(CustomColor.blush)
         ) {
             Column(modifier = Modifier
@@ -92,10 +92,18 @@ fun LocalConfScreen(navController: NavController) {
             }
             when (viewModel.confState) {
                 LocalConfState.IDLE -> LocalConfIdleWidget(
-                    modifier = Modifier.fillMaxWidth().align(Alignment.Center),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .align(Alignment.Center)
+//                        .background(CustomColor.powder)
+                    ,
                     onStart = { viewModel.openStartConfDialog() })
                 is LocalConfState.RUN -> LocalConfRunWidget(
-                    modifier = Modifier.fillMaxWidth().align(Alignment.Center),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .align(Alignment.Center)
+//                        .background(CustomColor.tree)
+                    ,
                     confState = viewModel.confState as LocalConfState.RUN,
                     onDelay = { viewModel.openDelayConfDialog() },
                     onStop = { viewModel.openStopConfDialog() }
@@ -108,7 +116,7 @@ fun LocalConfScreen(navController: NavController) {
                 Row(modifier = Modifier
                     .fillMaxWidth()
 //                    .background(CustomColor.sand)
-//                    .padding(horizontal = 30.dp)
+                    .padding(40.dp)
                     ,
                     horizontalArrangement = Arrangement.End
                 ) {

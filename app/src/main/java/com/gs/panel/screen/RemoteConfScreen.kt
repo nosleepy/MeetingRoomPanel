@@ -41,6 +41,7 @@ import com.gs.panel.ui.theme.CustomColor
 import com.gs.panel.viewmodel.RemoteConfState
 //import com.gs.panel.viewmodel.ConfState
 import com.gs.panel.viewmodel.RemoteConfViewModel
+import com.gs.panel.widget.ClickButtonWidget
 import com.gs.panel.widget.DelayConfDialog
 import com.gs.panel.widget.DelayConfSuccessDialog
 import com.gs.panel.widget.ErrorDialog
@@ -120,34 +121,41 @@ fun RemoteConfScreen(navController: NavController) {
                             .background(CustomColor.blue)
                             .fillMaxWidth(),
                         color = Color.White,
-                        fontSize = 72.sp,
+                        fontSize = 88.sp,
                         textAlign = TextAlign.Center
                     )
                     Spacer(modifier = Modifier
                         .height(60.dp)
                         .fillMaxWidth()
                         .background(CustomColor.powder))
-                    Box(modifier = Modifier
-                        .width(300.dp)
-                        .height(100.dp)
-                        .align(Alignment.CenterHorizontally)
-                        .clip(RoundedCornerShape(50))
-                    ) {
-                        Box(modifier = Modifier
-                            .fillMaxSize()
-                            .background(color = Color.White)
-                            .clickable { viewModel.showStartConfDialog = true }
-                        ) {
-                            Text(
-                                text = "立即开会",
-                                fontSize = 36.sp,
-                                modifier = Modifier
-                                    .background(CustomColor.fizz)
-                                    .align(Alignment.Center),
-                                color = CustomColor.tree
-                            )
-                        }
-                    }
+//                    Box(modifier = Modifier
+//                        .width(300.dp)
+//                        .height(100.dp)
+//                        .align(Alignment.CenterHorizontally)
+//                        .clip(RoundedCornerShape(50))
+//                    ) {
+//                        Box(modifier = Modifier
+//                            .fillMaxSize()
+//                            .background(color = Color.White)
+//                            .clickable { viewModel.showStartConfDialog = true }
+//                        ) {
+//                            Text(
+//                                text = "立即开会",
+//                                fontSize = 36.sp,
+//                                modifier = Modifier
+//                                    .background(CustomColor.fizz)
+//                                    .align(Alignment.Center),
+//                                color = CustomColor.tree
+//                            )
+//                        }
+//                    }
+                    ClickButtonWidget(
+                        modifier = Modifier.width(280.dp).height(88.dp).align(Alignment.CenterHorizontally),
+                        name = "立即开会",
+                        backgroundColor = Color.White,
+                        textColor = Color(0xFF00a645),
+                        onClick = {  }
+                    )
                 }
                 RemoteConfState.READY_FLAG ->
                     Column(modifier = Modifier
@@ -160,11 +168,11 @@ fun RemoteConfScreen(navController: NavController) {
                                 .background(CustomColor.blue)
                                 .fillMaxWidth(),
                             color = Color.White,
-                            fontSize = 72.sp,
+                            fontSize = 88.sp,
                             textAlign = TextAlign.Center
                         )
                         Spacer(modifier = Modifier
-                            .height(60.dp)
+                            .height(30.dp)
                             .fillMaxWidth()
                             .background(CustomColor.powder))
                         Column(
@@ -185,14 +193,14 @@ fun RemoteConfScreen(navController: NavController) {
                                     tint = Color.White
                                 )
                                 Spacer(modifier = Modifier.width(20.dp))
-                                Text(text = "会议时间", fontSize = 24.sp, modifier = Modifier.background(CustomColor.cranesbill), color = Color.White)
+                                Text(text = "会议时间", fontSize = 26.sp, modifier = Modifier.background(CustomColor.cranesbill), color = Color.White)
                                 Spacer(modifier = Modifier.width(20.dp))
-                                Text(text = "10:30-11:30", fontSize = 24.sp, modifier = Modifier.background(CustomColor.sand), color = Color.White)
+                                Text(text = "10:30-11:30", fontSize = 26.sp, modifier = Modifier.background(CustomColor.sand), color = Color.White)
                             }
                             Spacer(modifier = Modifier.height(16.dp))
-                            Text(text = "会议主题会议主题会议会议主题会议主题会议主题", modifier = Modifier.background(CustomColor.fizz), fontSize = 25.sp, color = Color.White)
+                            Text(text = "会议主题会议主题会议会议主题会议主题会议主题", modifier = Modifier.background(CustomColor.fizz), fontSize = 26.sp, color = Color.White)
                             Spacer(modifier = Modifier.height(16.dp))
-                            Text(text = "Alice(3702)", modifier = Modifier.background(CustomColor.blue), fontSize = 25.sp, color = Color.White)
+                            Text(text = "Alice(3702)", modifier = Modifier.background(CustomColor.blue), fontSize = 26.sp, color = Color.White)
                         }
                     }
                 RemoteConfState.READY ->
@@ -222,9 +230,9 @@ fun RemoteConfScreen(navController: NavController) {
                             modifier = Modifier.fillMaxHeight().weight(2f).background(CustomColor.powder),
                             verticalArrangement = Arrangement.Center
                         ) {
-                            Text(text = "即将开始", modifier = Modifier.background(CustomColor.blue), fontSize = 62.sp, color = Color.White)
+                            Text(text = "即将开始", modifier = Modifier.background(CustomColor.blue), fontSize = 68.sp, color = Color.White)
                             Spacer(modifier = Modifier.height(16.dp))
-                            Text(text = "会议主题会议主题会议会议主题会议主题会议主题", modifier = Modifier.background(CustomColor.fizz), fontSize = 25.sp, color = Color.White)
+                            Text(text = "会议主题会议主题会议会议主题会议主题会议主题", modifier = Modifier.background(CustomColor.fizz), fontSize = 26.sp, color = Color.White)
                             Spacer(modifier = Modifier.height(16.dp))
                             Row(modifier = Modifier.background(CustomColor.addicted)) {
                                 Icon(
@@ -238,11 +246,11 @@ fun RemoteConfScreen(navController: NavController) {
                                     tint = Color.White
                                 )
                                 Spacer(modifier = Modifier.width(20.dp))
-                                Text(text = "10:30-11:30", fontSize = 24.sp, modifier = Modifier.background(CustomColor.cranesbill), color = Color.White)
+                                Text(text = "10:30-11:30", fontSize = 26.sp, modifier = Modifier.background(CustomColor.cranesbill), color = Color.White)
                                 Spacer(modifier = Modifier.width(20.dp))
-                                Text(text = "|", fontSize = 24.sp, modifier = Modifier.background(CustomColor.sand), color = Color.White)
+                                Text(text = "|", fontSize = 26.sp, modifier = Modifier.background(CustomColor.sand), color = Color.White)
                                 Spacer(modifier = Modifier.width(20.dp))
-                                Text(text = "Alice(3702)", fontSize = 24.sp, modifier = Modifier.background(CustomColor.sand), color = Color.White)
+                                Text(text = "Alice(3702)", fontSize = 26.sp, modifier = Modifier.background(CustomColor.sand), color = Color.White)
                             }
                         }
                     }
@@ -257,7 +265,7 @@ fun RemoteConfScreen(navController: NavController) {
                                 .background(CustomColor.blue)
                                 .fillMaxWidth(),
                             color = Color.White,
-                            fontSize = 72.sp,
+                            fontSize = 88.sp,
                             textAlign = TextAlign.Center
                         )
                         Spacer(modifier = Modifier
@@ -282,64 +290,80 @@ fun RemoteConfScreen(navController: NavController) {
                                     tint = Color.White
                                 )
                                 Spacer(modifier = Modifier.width(20.dp))
-                                Text(text = "会议时间", fontSize = 24.sp, modifier = Modifier.background(CustomColor.cranesbill), color = Color.White)
+                                Text(text = "会议时间", fontSize = 26.sp, modifier = Modifier.background(CustomColor.cranesbill), color = Color.White)
                                 Spacer(modifier = Modifier.width(20.dp))
-                                Text(text = "10:30-11:30", fontSize = 24.sp, modifier = Modifier.background(CustomColor.sand), color = Color.White)
+                                Text(text = "10:30-11:30", fontSize = 26.sp, modifier = Modifier.background(CustomColor.sand), color = Color.White)
                             }
                             Spacer(modifier = Modifier.height(16.dp))
-                            Text(text = "会议主题会议主题会议会议主题会议主题会议主题", modifier = Modifier.background(CustomColor.fizz), fontSize = 25.sp, color = Color.White)
+                            Text(text = "会议主题会议主题会议会议主题会议主题会议主题", modifier = Modifier.background(CustomColor.fizz), fontSize = 26.sp, color = Color.White)
                             Spacer(modifier = Modifier.height(16.dp))
-                            Text(text = "Alice(3702)", modifier = Modifier.background(CustomColor.blue), fontSize = 25.sp, color = Color.White)
+                            Text(text = "Alice(3702)", modifier = Modifier.background(CustomColor.blue), fontSize = 26.sp, color = Color.White)
                         }
                         Spacer(modifier = Modifier.height(20.dp).fillMaxWidth().background(CustomColor.sand))
                         Row(
                             modifier = Modifier.fillMaxWidth().background(CustomColor.cranesbill),
                             horizontalArrangement = Arrangement.Center
                         ) {
-                            Box(modifier = Modifier
-                                .width(300.dp)
-                                .height(100.dp)
-                                .clip(RoundedCornerShape(50))
-                            ) {
-                                Box(modifier = Modifier
-                                    .fillMaxSize()
-                                    .background(color = Color.White)
-                                    .clickable { viewModel.showDelayConfDialog = true }
-                                ) {
-                                    Text(
-                                        text = "延长会议",
-                                        fontSize = 36.sp,
-                                        modifier = Modifier
-                                            .background(CustomColor.fizz)
-                                            .align(Alignment.Center),
-                                        color = CustomColor.tree
-                                    )
-                                }
-                            }
+//                            Box(modifier = Modifier
+//                                .width(300.dp)
+//                                .height(100.dp)
+//                                .clip(RoundedCornerShape(50))
+//                            ) {
+//                                Box(modifier = Modifier
+//                                    .fillMaxSize()
+//                                    .background(color = Color.White)
+//                                    .clickable { viewModel.showDelayConfDialog = true }
+//                                ) {
+//                                    Text(
+//                                        text = "延长会议",
+//                                        fontSize = 36.sp,
+//                                        modifier = Modifier
+//                                            .background(CustomColor.fizz)
+//                                            .align(Alignment.Center),
+//                                        color = CustomColor.tree
+//                                    )
+//                                }
+//                            }
+//                            Spacer(modifier = Modifier.width(40.dp))
+//                            Box(modifier = Modifier
+//                                .width(300.dp)
+//                                .height(100.dp)
+//                                .clip(RoundedCornerShape(50))
+//                            ) {
+//                                Box(modifier = Modifier
+//                                    .fillMaxSize()
+//                                    .background(color = Color.White)
+//                                    .clickable {
+//                                        viewModel.showStartConfDialog = true
+////                                        viewModel.showStopConfDialog = true
+//                                    }
+//                                ) {
+//                                    Text(
+//                                        text = "结束会议",
+//                                        fontSize = 36.sp,
+//                                        modifier = Modifier
+//                                            .background(CustomColor.fizz)
+//                                            .align(Alignment.Center),
+//                                        color = CustomColor.tree
+//                                    )
+//                                }
+//                            }
+                            ClickButtonWidget(
+                                modifier = Modifier.width(280.dp).height(88.dp),
+                                name = "延长会议",
+                                backgroundColor = Color(0xFFab021b),
+                                textColor = Color.White,
+                                borderSize = 3,
+                                onClick = {  }
+                            )
                             Spacer(modifier = Modifier.width(40.dp))
-                            Box(modifier = Modifier
-                                .width(300.dp)
-                                .height(100.dp)
-                                .clip(RoundedCornerShape(50))
-                            ) {
-                                Box(modifier = Modifier
-                                    .fillMaxSize()
-                                    .background(color = Color.White)
-                                    .clickable {
-                                        viewModel.showStartConfDialog = true
-//                                        viewModel.showStopConfDialog = true
-                                    }
-                                ) {
-                                    Text(
-                                        text = "结束会议",
-                                        fontSize = 36.sp,
-                                        modifier = Modifier
-                                            .background(CustomColor.fizz)
-                                            .align(Alignment.Center),
-                                        color = CustomColor.tree
-                                    )
-                                }
-                            }
+                            ClickButtonWidget(
+                                modifier = Modifier.width(280.dp).height(88.dp),
+                                name = "结束会议",
+                                backgroundColor = Color.White,
+                                textColor = Color(0xFFab021b),
+                                onClick = {  }
+                            )
                         }
                     }
                 RemoteConfState.DISABLE ->
@@ -353,11 +377,11 @@ fun RemoteConfScreen(navController: NavController) {
                                 .background(CustomColor.blue)
                                 .fillMaxWidth(),
                             color = Color.White,
-                            fontSize = 72.sp,
+                            fontSize = 88.sp,
                             textAlign = TextAlign.Center
                         )
                         Spacer(modifier = Modifier
-                            .height(60.dp)
+                            .height(30.dp)
                             .fillMaxWidth()
                             .background(CustomColor.powder))
                         Column(
@@ -366,7 +390,7 @@ fun RemoteConfScreen(navController: NavController) {
                                 .background(CustomColor.tree),
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
-                            Text(text = "投影仪故障", modifier = Modifier.background(CustomColor.fizz), fontSize = 25.sp, color = Color.White)
+                            Text(text = "投影仪故障", modifier = Modifier.background(CustomColor.fizz), fontSize = 26.sp, color = Color.White)
                             Spacer(modifier = Modifier.height(16.dp))
                             Row(modifier = Modifier.background(CustomColor.addicted)) {
                                 Icon(
@@ -380,13 +404,12 @@ fun RemoteConfScreen(navController: NavController) {
                                     tint = Color.White
                                 )
                                 Spacer(modifier = Modifier.width(20.dp))
-                                Text(text = "解禁时间", fontSize = 24.sp, modifier = Modifier.background(CustomColor.cranesbill), color = Color.White)
+                                Text(text = "解禁时间", fontSize = 26.sp, modifier = Modifier.background(CustomColor.cranesbill), color = Color.White)
                                 Spacer(modifier = Modifier.width(20.dp))
-                                Text(text = "02/07 11:30", fontSize = 24.sp, modifier = Modifier.background(CustomColor.sand), color = Color.White)
+                                Text(text = "02/07 11:30", fontSize = 26.sp, modifier = Modifier.background(CustomColor.sand), color = Color.White)
                             }
                         }
                     }
-                else -> { Text(text = "Error") }
             }
             Column(modifier = Modifier
                 .fillMaxWidth()

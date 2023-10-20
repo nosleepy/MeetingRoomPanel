@@ -27,6 +27,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.gs.panel.R
 import com.gs.panel.state.LocalConfState
+import com.gs.panel.ui.theme.CustomColor
+import com.gs.panel.widget.ClickButtonWidget
 
 @Composable
 fun LocalConfRunWidget(
@@ -42,7 +44,7 @@ fun LocalConfRunWidget(
 //                                .background(CustomColor.blue)
                 .fillMaxWidth(),
             color = Color.White,
-            fontSize = 72.sp,
+            fontSize = 88.sp,
             textAlign = TextAlign.Center
         )
         Spacer(modifier = Modifier.height(50.dp).fillMaxWidth()
@@ -69,11 +71,11 @@ fun LocalConfRunWidget(
                     tint = Color.White
                 )
                 Spacer(modifier = Modifier.width(20.dp))
-                Text(text = "会议时间", fontSize = 24.sp, modifier = Modifier
+                Text(text = "会议时间", fontSize = 26.sp, modifier = Modifier
 //                                    .background(CustomColor.cranesbill)
                     , color = Color.White)
                 Spacer(modifier = Modifier.width(20.dp))
-                Text(text = "${confState.startHour}:${confState.startMinute}-${confState.stopHour}:${confState.stopMinute}", fontSize = 24.sp, modifier = Modifier
+                Text(text = "${confState.startHour}:${confState.startMinute}-${confState.stopHour}:${confState.stopMinute}", fontSize = 26.sp, modifier = Modifier
 //                                    .background(CustomColor.sand)
                     , color = Color.White)
             }
@@ -87,48 +89,22 @@ fun LocalConfRunWidget(
             ,
             horizontalArrangement = Arrangement.Center
         ) {
-            Box(modifier = Modifier
-                .width(300.dp)
-                .height(100.dp)
-                .clip(RoundedCornerShape(50))
-            ) {
-                Box(modifier = Modifier
-                    .fillMaxSize()
-                    .background(color = Color(0xFFab021b))
-                    .border(3.dp, Color.White, RoundedCornerShape(50))
-                    .clickable { onDelay() }
-                ) {
-                    Text(
-                        text = "延长会议",
-                        fontSize = 36.sp,
-                        modifier = Modifier
-//                                            .background(CustomColor.fizz)
-                            .align(Alignment.Center),
-                        color = Color.White
-                    )
-                }
-            }
+            ClickButtonWidget(
+                modifier = Modifier.width(280.dp).height(88.dp),
+                name = "延长会议",
+                backgroundColor = Color(0xFFab021b),
+                textColor = Color.White,
+                borderSize = 3,
+                onClick = { onDelay() }
+            )
             Spacer(modifier = Modifier.width(40.dp))
-            Box(modifier = Modifier
-                .width(300.dp)
-                .height(100.dp)
-                .clip(RoundedCornerShape(50))
-            ) {
-                Box(modifier = Modifier
-                    .fillMaxSize()
-                    .background(color = Color.White)
-                    .clickable { onStop() }
-                ) {
-                    Text(
-                        text = "结束会议",
-                        fontSize = 36.sp,
-                        modifier = Modifier
-//                                            .background(CustomColor.fizz)
-                            .align(Alignment.Center),
-                        color = Color(0xFFab021b)
-                    )
-                }
-            }
+            ClickButtonWidget(
+                modifier = Modifier.width(280.dp).height(88.dp),
+                name = "结束会议",
+                backgroundColor = Color.White,
+                textColor = Color(0xFFab021b),
+                onClick = { onStop() }
+            )
         }
     }
 }

@@ -14,7 +14,7 @@ enum class RemoteConfState {
 }
 
 class RemoteConfViewModel : ViewModel() {
-    var confState by mutableStateOf(RemoteConfState.IDLE)
+    var confState by mutableStateOf(RemoteConfState.RUN)
     var showErrorDialog by mutableStateOf(false)
     var showMoreDeviceDialog by mutableStateOf(false)
     var showDelayConfDialog by mutableStateOf(false)
