@@ -82,7 +82,7 @@ fun MoreDeviceDialog(viewModel: RemoteConfViewModel) {
                                 modifier = Modifier
 //                                            .border(1.dp, Color.Red)
                                     .padding(8.dp, 8.dp, 8.dp, 8.dp)
-                                    .border(1.dp, Color(0xFF666666))
+                                    .border(1.dp, Color(0xFFb3b3b3))
                                     .padding(6.dp, 4.dp, 6.dp, 4.dp),
                                 color = Color(0xFF333333)
                             )
