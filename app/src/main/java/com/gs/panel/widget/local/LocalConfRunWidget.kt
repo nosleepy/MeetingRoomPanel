@@ -94,7 +94,7 @@ fun LocalConfRunWidget(
                 name = "延长会议",
                 backgroundColor = Color(0xFFab021b),
                 textColor = Color.White,
-                borderSize = 3,
+                borderSize = 2,
                 onClick = { onDelay() }
             )
             Spacer(modifier = Modifier.width(40.dp))

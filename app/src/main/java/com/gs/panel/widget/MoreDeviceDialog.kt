@@ -97,19 +97,12 @@ fun MoreDeviceDialog(viewModel: RemoteConfViewModel) {
                         .padding(vertical = 24.dp),
                     horizontalArrangement = Arrangement.Center
                 ) {
-                    Box(modifier = Modifier
-                        .width(200.dp)
-                        .height(50.dp)
-                        .background(Color(0xFFcccccc))
-                        .border(1.dp, Color(0xFF818181))
-                        .clickable { viewModel.showMoreDeviceDialog = false }) {
-                        Text(
-                            text = "我知道了",
-                            fontSize = 22.sp,
-                            modifier = Modifier.align(Alignment.Center),
-                            color = Color(0xFF333333)
-                        )
-                    }
+                    SmallClickButtonWidget(
+                        modifier = Modifier.width(200.dp).height(50.dp),
+                        name = "我知道了",
+                        backgroundColor = Color(0xFFcccccc),
+                        onClick = { viewModel.showMoreDeviceDialog = false }
+                    )
                 }
             }
         }

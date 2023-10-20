@@ -28,6 +28,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.gs.panel.R
+import com.gs.panel.entity.startConfList
 import com.gs.panel.state.DialogState
 import com.gs.panel.ui.theme.CustomColor
 import com.gs.panel.viewmodel.RemoteConfViewModel
@@ -134,19 +135,12 @@ fun StartConfSuccessDialog(
                         .padding(vertical = 32.dp),
                     horizontalArrangement = Arrangement.Center
                 ) {
-                    Box(modifier = Modifier
-                        .width(200.dp)
-                        .height(50.dp)
-                        .background(Color(0xFFcccccc))
-                        .border(1.dp, Color(0xFF818181))
-                        .clickable { onConfirm() }) {
-                        Text(
-                            text = "我知道了",
-                            fontSize = 22.sp,
-                            modifier = Modifier.align(Alignment.Center),
-                            color = Color(0xFF333333)
-                        )
-                    }
+                    SmallClickButtonWidget(
+                        modifier = Modifier.width(200.dp).height(50.dp),
+                        name = "我知道了",
+                        backgroundColor = Color(0xFFcccccc),
+                        onClick = { onConfirm() }
+                    )
                 }
             }
         }

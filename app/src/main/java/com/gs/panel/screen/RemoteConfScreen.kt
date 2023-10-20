@@ -353,7 +353,7 @@ fun RemoteConfScreen(navController: NavController) {
                                 name = "延长会议",
                                 backgroundColor = Color(0xFFab021b),
                                 textColor = Color.White,
-                                borderSize = 3,
+                                borderSize = 2,
                                 onClick = {  }
                             )
                             Spacer(modifier = Modifier.width(40.dp))

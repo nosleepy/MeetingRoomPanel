@@ -34,7 +34,7 @@ fun ConfListScreen(navController: NavController) {
     Column(modifier = Modifier
         .fillMaxSize()
 //        .padding(30.dp)
-//        .background(CustomColor.blush)
+        .background(Color.White)
     ) {
         Box(modifier = Modifier
             .fillMaxWidth()
@@ -52,7 +52,7 @@ fun ConfListScreen(navController: NavController) {
                 painter = painterResource(id = R.drawable.btn_back),
                 contentDescription = null,
                 modifier = Modifier
-                    .size(38.dp)
+                    .size(34.dp)
                     .align(Alignment.CenterStart)
 //                    .background(CustomColor.fizz)
                     .clickable { navController.popBackStack() },
@@ -68,17 +68,16 @@ fun ConfListScreen(navController: NavController) {
         Divider(thickness = 1.4.dp, color = Color(0xFFadadad))
         LazyColumn(modifier = Modifier.fillMaxWidth()) {
             item {
-                Text(text = "今天 / 周三", fontSize = 26.sp, modifier = Modifier
-                    .fillMaxWidth()
-                    .background(Color(0xFFf2f2f2))
-                    .padding(20.dp, 6.dp, 20.dp, 6.dp),
-                    color = Color(0xFF969593),
-                    fontWeight = FontWeight(600)
-                )
+                Row(modifier = Modifier.fillMaxWidth().background(Color(0xFFf2f2f2)).padding(horizontal = 20.dp, vertical = 6.dp)) {
+                    Text(text = "今天 / 周三", fontSize = 26.sp,
+                        color = Color(0xFF969593),
+                        fontWeight = FontWeight(600)
+                    )
+                }
                 Column(modifier = Modifier
                     .fillMaxWidth()
                     .background(Color.White)
-                    .padding(14.dp, 20.dp, 14.dp, 20.dp)
+                    .padding(horizontal = 20.dp, vertical = 12.dp)
                 ) {
                     Row(modifier = Modifier
                         .fillMaxWidth()
@@ -94,9 +93,9 @@ fun ConfListScreen(navController: NavController) {
 //                    .background(CustomColor.tree)
                                 .weight(1f), textAlign = TextAlign.End)
                     }
-                    Spacer(modifier = Modifier.height(14.dp))
+                    Spacer(modifier = Modifier.height(10.dp))
                     Text(
-                        text = "会议主题会议主题会议主题会议主题会议会议主题会议主题会议主题会议主题会议会议主题会议主题会议主题会议主题会议会议主题会议主题会议主题会议主题会议…",
+                        text = "会议主题会议主题会议主题会议主题会议…",
                         fontSize = 24.sp,
                         modifier = Modifier
 //                    .background(CustomColor.fizz)
@@ -105,104 +104,131 @@ fun ConfListScreen(navController: NavController) {
                         lineHeight = 32.sp
                     )
                 }
-                Text(text = "02 / 09 / 周四", fontSize = 26.sp, modifier = Modifier
-                    .fillMaxWidth()
-                    .background(Color(0xFFf2f2f2))
-                    .padding(20.dp, 6.dp, 20.dp, 6.dp),
-                    color = Color(0xFF969593),
-                    fontWeight = FontWeight(600)
-                )
-                Column(modifier = Modifier
-                    .fillMaxWidth()
-                    .background(Color.White)
-                    .padding(14.dp, 20.dp, 14.dp, 20.dp)) {
-                    Row(modifier = Modifier
-                        .fillMaxWidth()
-//                .background(CustomColor.sand)
-                    ) {
-                        Text(text = "10:30-11:30", fontSize = 24.sp, fontWeight = FontWeight(600))
-                        Spacer(modifier = Modifier.width(20.dp))
-                        Text(text = "Alice(3702)", fontSize = 24.sp)
-                    }
-                    Spacer(modifier = Modifier.height(14.dp))
-                    Text(
-                        text = "111会议主题会议主题会议主题会议主题会议会议主题会议主题会议主题会议主题会议会议主题会议主题会议主题会议主题会议会议主题会议主题会议主题会议主题会议…",
-                        fontSize = 24.sp,
-                        modifier = Modifier
-//                    .background(CustomColor.fizz)
-                        ,
-                        color = Color(0xFF6a696a),
-                        lineHeight = 32.sp
+                Row(modifier = Modifier.fillMaxWidth().background(Color(0xFFf2f2f2)).padding(horizontal = 20.dp, vertical = 6.dp)) {
+                    Text(text = "02 / 09 / 周四", fontSize = 26.sp,
+                        color = Color(0xFF969593),
+                        fontWeight = FontWeight(600)
                     )
                 }
-                Divider(modifier = Modifier.fillMaxWidth().padding(20.dp, 0.dp, 20.dp, 0.dp), thickness = 1.2.dp, color = Color(0xFFadadad))
                 Column(modifier = Modifier
                     .fillMaxWidth()
                     .background(Color.White)
-                    .padding(14.dp, 20.dp, 14.dp, 20.dp)) {
+                    .padding(horizontal = 20.dp, vertical = 12.dp)
+                ) {
                     Row(modifier = Modifier
                         .fillMaxWidth()
 //                .background(CustomColor.sand)
                     ) {
-                        Text(text = "10:30-11:30", fontSize = 24.sp, fontWeight = FontWeight(600))
+                        Text(text = "10:30-11:30", fontSize = 24.sp, fontWeight = FontWeight(600), color = Color.Black)
                         Spacer(modifier = Modifier.width(20.dp))
                         Text(text = "Alice(3702)", fontSize = 24.sp)
-                        Text(text = "即将开始",
+                        Text(text = "进行中",
                             fontSize = 22.sp,
                             color = CustomColor.cranesbill,
                             modifier = Modifier
 //                    .background(CustomColor.tree)
                                 .weight(1f), textAlign = TextAlign.End)
                     }
-                    Spacer(modifier = Modifier.height(14.dp))
+                    Spacer(modifier = Modifier.height(10.dp))
                     Text(
                         text = "会议主题会议主题会议主题会议主题会议会议主题会议主题会议主题会议主题会议会议主题会议主题会议主题会议主题会议会议主题会议主题会议主题会议主题会议…",
                         fontSize = 24.sp,
-//                modifier = Modifier.background(CustomColor.fizz)
+                        modifier = Modifier
+//                    .background(CustomColor.fizz)
+                        ,
                         color = Color(0xFF6a696a),
                         lineHeight = 32.sp
                     )
                 }
-                Divider(modifier = Modifier.fillMaxWidth().padding(20.dp, 0.dp, 20.dp, 0.dp), thickness = 1.2.dp, color = Color(0xFFadadad))
+                Divider(modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp), thickness = 1.2.dp, color = Color(0xFFadadad))
                 Column(modifier = Modifier
                     .fillMaxWidth()
                     .background(Color.White)
-                    .padding(14.dp, 20.dp, 14.dp, 20.dp)) {
+                    .padding(horizontal = 20.dp, vertical = 12.dp)
+                ) {
                     Row(modifier = Modifier
                         .fillMaxWidth()
 //                .background(CustomColor.sand)
                     ) {
-                        Text(text = "10:30-11:30", fontSize = 24.sp, fontWeight = FontWeight(600))
+                        Text(text = "10:30-11:30", fontSize = 24.sp, fontWeight = FontWeight(600), color = Color.Black)
                         Spacer(modifier = Modifier.width(20.dp))
                         Text(text = "Alice(3702)", fontSize = 24.sp)
+                        Text(text = "进行中",
+                            fontSize = 22.sp,
+                            color = CustomColor.cranesbill,
+                            modifier = Modifier
+//                    .background(CustomColor.tree)
+                                .weight(1f), textAlign = TextAlign.End)
                     }
-                    Spacer(modifier = Modifier.height(14.dp))
+                    Spacer(modifier = Modifier.height(10.dp))
                     Text(
                         text = "会议主题会议主题会议主题会议主题会议会议主题会议主题会议主题会议主题会议会议主题会议主题会议主题会议主题会议会议主题会议主题会议主题会议主题会议…",
                         fontSize = 24.sp,
-//                modifier = Modifier.background(CustomColor.fizz)
+                        modifier = Modifier
+//                    .background(CustomColor.fizz)
+                        ,
                         color = Color(0xFF6a696a),
                         lineHeight = 32.sp
                     )
                 }
-                Divider(modifier = Modifier.fillMaxWidth().padding(20.dp, 0.dp, 20.dp, 0.dp), thickness = 1.2.dp, color = Color(0xFFadadad))
+                Divider(modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp), thickness = 1.2.dp, color = Color(0xFFadadad))
                 Column(modifier = Modifier
                     .fillMaxWidth()
                     .background(Color.White)
-                    .padding(14.dp, 20.dp, 14.dp, 20.dp)) {
+                    .padding(horizontal = 20.dp, vertical = 12.dp)
+                ) {
                     Row(modifier = Modifier
                         .fillMaxWidth()
 //                .background(CustomColor.sand)
                     ) {
-                        Text(text = "10:30-11:30", fontSize = 24.sp, fontWeight = FontWeight(600))
+                        Text(text = "10:30-11:30", fontSize = 24.sp, fontWeight = FontWeight(600), color = Color.Black)
                         Spacer(modifier = Modifier.width(20.dp))
                         Text(text = "Alice(3702)", fontSize = 24.sp)
+                        Text(text = "进行中",
+                            fontSize = 22.sp,
+                            color = CustomColor.cranesbill,
+                            modifier = Modifier
+//                    .background(CustomColor.tree)
+                                .weight(1f), textAlign = TextAlign.End)
                     }
-                    Spacer(modifier = Modifier.height(14.dp))
+                    Spacer(modifier = Modifier.height(10.dp))
                     Text(
                         text = "会议主题会议主题会议主题会议主题会议会议主题会议主题会议主题会议主题会议会议主题会议主题会议主题会议主题会议会议主题会议主题会议主题会议主题会议…",
                         fontSize = 24.sp,
-//                modifier = Modifier.background(CustomColor.fizz)
+                        modifier = Modifier
+//                    .background(CustomColor.fizz)
+                        ,
+                        color = Color(0xFF6a696a),
+                        lineHeight = 32.sp
+                    )
+                }
+                Divider(modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp), thickness = 1.2.dp, color = Color(0xFFadadad))
+                Column(modifier = Modifier
+                    .fillMaxWidth()
+                    .background(Color.White)
+                    .padding(horizontal = 20.dp, vertical = 12.dp)
+                ) {
+                    Row(modifier = Modifier
+                        .fillMaxWidth()
+//                .background(CustomColor.sand)
+                    ) {
+                        Text(text = "10:30-11:30", fontSize = 24.sp, fontWeight = FontWeight(600), color = Color.Black)
+                        Spacer(modifier = Modifier.width(20.dp))
+                        Text(text = "Alice(3702)", fontSize = 24.sp)
+                        Text(text = "进行中",
+                            fontSize = 22.sp,
+                            color = CustomColor.cranesbill,
+                            modifier = Modifier
+//                    .background(CustomColor.tree)
+                                .weight(1f), textAlign = TextAlign.End)
+                    }
+                    Spacer(modifier = Modifier.height(10.dp))
+                    Text(
+                        text = "会议主题会议主题会议主题会议主题会议会议主题会议主题会议主题会议主题会议会议主题会议主题会议主题会议主题会议会议主题会议主题会议主题会议主题会议…",
+                        fontSize = 24.sp,
+                        modifier = Modifier
+//                    .background(CustomColor.fizz)
+                        ,
                         color = Color(0xFF6a696a),
                         lineHeight = 32.sp
                     )

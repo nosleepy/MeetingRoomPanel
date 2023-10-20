@@ -144,33 +144,19 @@ fun DelayConfDialog(
                     horizontalArrangement = Arrangement.Center,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Box(modifier = Modifier
-                        .width(200.dp)
-                        .height(50.dp)
-                        .background(Color.White)
-                        .border(1.dp, Color(0xFF818181))
-                        .clickable { onCancel() }) {
-                        Text(
-                            text = "取消",
-                            fontSize = 22.sp,
-                            modifier = Modifier.align(Alignment.Center),
-                            color = Color(0xFF333333)
-                        )
-                    }
+                    SmallClickButtonWidget(
+                        modifier = Modifier.width(200.dp).height(50.dp),
+                        name = "取消",
+                        backgroundColor = Color.White,
+                        onClick = { onCancel() }
+                    )
                     Spacer(modifier = Modifier.width(30.dp))
-                    Box(modifier = Modifier
-                        .width(200.dp)
-                        .height(50.dp)
-                        .background(Color(0xFFcccccc))
-                        .border(1.dp, Color(0xFF818181))
-                        .clickable { onConfirm(delayConfList[selectMode].time) }) {
-                        Text(
-                            text = "延长",
-                            fontSize = 22.sp,
-                            modifier = Modifier.align(Alignment.Center),
-                            color = Color(0xFF333333)
-                        )
-                    }
+                    SmallClickButtonWidget(
+                        modifier = Modifier.width(200.dp).height(50.dp),
+                        name = "延长",
+                        backgroundColor = Color(0xFFcccccc),
+                        onClick = { onConfirm(delayConfList[selectMode].time) }
+                    )
                 }
             }
         }

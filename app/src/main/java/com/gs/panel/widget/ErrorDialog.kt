@@ -22,6 +22,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.gs.panel.entity.startConfList
 import com.gs.panel.viewmodel.RemoteConfViewModel
 
 @Composable
@@ -60,20 +61,12 @@ fun ErrorDialog(viewModel: RemoteConfViewModel) {
                     )
                 }
                 Spacer(modifier = Modifier.height(50.dp))
-                Box(modifier = Modifier
-                    .width(200.dp)
-                    .height(50.dp)
-                    .background(Color(0xFFcccccc))
-                    .border(1.dp, Color(0xFF818181))
-                    .align(Alignment.CenterHorizontally)
-                    .clickable { viewModel.showErrorDialog = false }) {
-                    Text(
-                        text = "设置",
-                        fontSize = 22.sp,
-                        modifier = Modifier.align(Alignment.Center),
-                        color = Color(0xFF333333)
-                    )
-                }
+                SmallClickButtonWidget(
+                    modifier = Modifier.width(200.dp).height(50.dp).align(Alignment.CenterHorizontally),
+                    name = "设置",
+                    backgroundColor = Color(0xFFcccccc),
+                    onClick = { viewModel.showErrorDialog = false }
+                )
             }
         }
     }
