@@ -77,7 +77,8 @@ fun LocalConfScreen(navController: NavController) {
         ) {
             Column(modifier = Modifier
                 .fillMaxWidth()
-                .padding(vertical = 60.dp)
+//                .padding(vertical = 60.dp)
+                .padding(0.dp, 110.dp, 0.dp, 60.dp)
 //                .background(CustomColor.cranesbill)
                 .align(Alignment.TopCenter)) {
                 Text(

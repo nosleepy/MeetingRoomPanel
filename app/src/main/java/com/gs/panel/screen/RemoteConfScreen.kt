@@ -45,6 +45,7 @@ import com.gs.panel.widget.ClickButtonWidget
 import com.gs.panel.widget.DelayConfDialog
 import com.gs.panel.widget.DelayConfSuccessDialog
 import com.gs.panel.widget.ErrorDialog
+import com.gs.panel.widget.ErrorTipScreen
 import com.gs.panel.widget.MoreDeviceDialog
 import com.gs.panel.widget.StartConfDialog
 import com.gs.panel.widget.StartConfSuccessDialog
@@ -62,7 +63,8 @@ fun RemoteConfScreen(navController: NavController) {
     ) {
         Box(modifier = Modifier
             .fillMaxSize()
-            .padding(vertical = 20.dp)
+//            .padding(vertical = 20.dp)
+            .padding(0.dp, 70.dp, 0.dp, 20.dp)
 //            .background(CustomColor.blush)
         ) {
             Column(modifier = Modifier
@@ -556,7 +558,8 @@ fun RemoteConfScreen(navController: NavController) {
             }
         }
         if (viewModel.showErrorDialog) {
-            ErrorDialog(viewModel = viewModel)
+//            ErrorDialog(viewModel = viewModel)
+            ErrorTipScreen(viewModel = viewModel)
         }
         if (viewModel.showMoreDeviceDialog) {
             MoreDeviceDialog(viewModel = viewModel)
