@@ -2,7 +2,6 @@ package com.gs.panel.widget
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -17,7 +16,7 @@ import androidx.compose.ui.unit.sp
 import com.gs.panel.viewmodel.RemoteConfViewModel
 
 @Composable
-fun ErrorTipScreen(viewModel: RemoteConfViewModel) {
+fun ErrorTipWidget(viewModel: RemoteConfViewModel) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
