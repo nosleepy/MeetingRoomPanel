@@ -479,7 +479,7 @@ fun RemoteConfScreen(navController: NavController) {
                             .background(CustomColor.powder),
                         color = Color.White)
                 }
-                Row(modifier = Modifier.fillMaxWidth().height(50.dp).background(CustomColor.tree)) {
+                Row(modifier = Modifier.fillMaxWidth().height(60.dp).background(CustomColor.tree)) {
                     Spacer(modifier = Modifier.weight(1f).fillMaxHeight())
                     Box(modifier = Modifier
                         .weight(48f)
