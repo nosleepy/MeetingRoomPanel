@@ -1,6 +1,9 @@
 package com.gs.panel
 
 import android.os.Bundle
+import android.os.FileUtils
+import android.util.Base64
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
@@ -10,14 +13,18 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.gs.panel.api.Api
 import com.gs.panel.screen.ConfListScreen
 import com.gs.panel.screen.LocalConfScreen
 import com.gs.panel.screen.MainScreen
 import com.gs.panel.screen.RemoteConfScreen
 import com.gs.panel.ui.theme.MeetingRoomPanelTheme
+import com.gs.panel.util.FileUtil
+import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

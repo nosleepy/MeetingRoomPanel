@@ -102,7 +102,7 @@ fun RemoteConfScreen(navController: NavController) {
                     .background(CustomColor.addicted)
                 )
                 Text(
-                    text = "1001会议室会议室会议室会议室会议室会议室",
+                    text = "1001会议室会议室会议室会议室会议室会议室${viewModel.cookie}",
                     modifier = Modifier
                         .background(CustomColor.green)
                         .fillMaxWidth(),
