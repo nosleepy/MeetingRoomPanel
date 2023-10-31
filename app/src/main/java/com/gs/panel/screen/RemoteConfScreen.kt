@@ -1,5 +1,6 @@
 package com.gs.panel.screen
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -44,6 +45,7 @@ import com.gs.panel.viewmodel.RemoteConfViewModel
 import com.gs.panel.widget.ClickButtonWidget
 import com.gs.panel.widget.DelayConfDialog
 import com.gs.panel.widget.DelayConfSuccessDialog
+import com.gs.panel.widget.DynamicsRowWidget
 import com.gs.panel.widget.ErrorDialog
 import com.gs.panel.widget.ErrorTipWidget
 import com.gs.panel.widget.MoreDeviceDialog
@@ -72,29 +74,56 @@ fun RemoteConfScreen(navController: NavController) {
                 .padding(horizontal = 30.dp)
                 .background(CustomColor.cranesbill)
                 .align(Alignment.TopCenter)) {
-                LazyRow(modifier = Modifier.background(CustomColor.tree)) {
-                    itemsIndexed(deviceList) { index, item ->
-                        Text(
-                            text = item.name,
-                            modifier = Modifier
-                                .background(Color(0xFF30831f))
-                                .border(1.dp, Color(0xFF8eb68e))
-                                .padding(6.dp, 3.dp, 6.dp, 3.dp),
-                            color = Color(0xFF8eb68e),
-                            fontSize = 20.sp,)
-                        Spacer(modifier = Modifier.width(10.dp))
+//                LazyRow(modifier = Modifier.background(CustomColor.tree)) {
+//                    itemsIndexed(viewModel.facilityList) { index, item ->
+//                        Text(
+//                            text = item.confFacilityName,
+//                            modifier = Modifier
+//                                .background(Color(0xFF30831f))
+//                                .border(1.dp, Color(0xFF8eb68e))
+//                                .padding(6.dp, 3.dp, 6.dp, 3.dp),
+//                            color = Color(0xFF8eb68e),
+//                            fontSize = 20.sp,)
+//                        Spacer(modifier = Modifier.width(10.dp))
+//                    }
+//                    item {
+//                        Text(
+//                            text = "More",
+//                            modifier = Modifier
+//                                .background(Color.White)
+//                                .border(1.dp, Color(0xFF8eb68e))
+//                                .padding(6.dp, 3.dp, 6.dp, 3.dp)
+//                                .clickable { viewModel.showMoreDeviceDialog = true },
+//                            color = Color(0xFF8eb68e),
+//                            fontSize = 20.sp,)
+//                    }
+//                }
+                if (viewModel.facilityList.isNotEmpty()) {
+                    DynamicsRowWidget(modifier = Modifier.background(CustomColor.blue).fillMaxWidth().height(34.dp)) {
+                        viewModel.facilityList.forEachIndexed { index, facilityItem ->
+                            if (facilityItem.confFacilityId == 0) {
+                                Text(
+                                    text = "More",
+                                    modifier = Modifier
+                                        .background(Color.White)
+                                        .border(1.dp, Color(0xFF8eb68e))
+                                        .padding(6.dp, 3.dp, 6.dp, 3.dp),
+                                    color = Color(0xFF8eb68e),
+                                    fontSize = 20.sp,)
+                            } else {
+                                Text(
+                                    text = facilityItem.confFacilityName,
+                                    modifier = Modifier
+                                        .background(Color(0xFF30831f))
+                                        .border(1.dp, Color(0xFF8eb68e))
+                                        .padding(6.dp, 3.dp, 6.dp, 3.dp),
+                                    color = Color(0xFF8eb68e),
+                                    fontSize = 20.sp,)
+                            }
+                        }
                     }
-                    item {
-                        Text(
-                            text = "More",
-                            modifier = Modifier
-                                .background(Color.White)
-                                .border(1.dp, Color(0xFF8eb68e))
-                                .padding(6.dp, 3.dp, 6.dp, 3.dp)
-                                .clickable { viewModel.showMoreDeviceDialog = true },
-                            color = Color(0xFF8eb68e),
-                            fontSize = 20.sp,)
-                    }
+                } else {
+                    Box(modifier = Modifier.background(CustomColor.blue).fillMaxWidth().height(34.dp))
                 }
                 Spacer(modifier = Modifier
                     .height(30.dp)
@@ -102,7 +131,7 @@ fun RemoteConfScreen(navController: NavController) {
                     .background(CustomColor.addicted)
                 )
                 Text(
-                    text = "1001会议室会议室会议室会议室会议室会议室${viewModel.cookie}",
+                    text = "1001会议室会议室会议室会议室会议室会议室",
                     modifier = Modifier
                         .background(CustomColor.green)
                         .fillMaxWidth(),

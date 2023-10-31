@@ -7,7 +7,9 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewModelScope
+import com.gs.panel.CustomApplication
 import com.gs.panel.api.Api
+import com.gs.panel.entity.FacilityItem
 import com.gs.panel.state.LocalConfState
 import com.gs.panel.util.FileUtil
 import com.gs.panel.util.TimeUtil
@@ -46,7 +48,7 @@ class RemoteConfViewModel : ViewModel() {
         RemoteConfState.DISABLE,
     )
 
-    var cookie by mutableStateOf("")
+    var facilityList by mutableStateOf(listOf<FacilityItem>())
 
     init {
         timeJob = mainScope.launch {
@@ -60,8 +62,15 @@ class RemoteConfViewModel : ViewModel() {
             val res = Api.get().getGscAccessToken(FileUtil.getUsername(), FileUtil.getPassword())
             if (res.isSuccess()) {
                 val loginRes = Api.get().login(res.response!!.extenAccount, res.response!!.token)
-//                Log.d("wlzhou", "loginRes = $loginRes")
-                cookie = loginRes.response!!.cookie
+                Log.d("MeetingRoomPanel", "loginRes = $loginRes")
+                CustomApplication.cookie = loginRes.response!!.cookie
+                val gscConfRes = Api.get().listGscPhysicalConfTimeListByDay("2023-10-31 00:00", "2023-10-31 23:59", CustomApplication.cookie)
+                Log.d("MeetingRoomPanel", "gscConfRes = $gscConfRes")
+                facilityList = mutableListOf<FacilityItem>().apply {
+                    add(FacilityItem(-1, "", "${gscConfRes.response!!.conference[0].memberCapacity}人", ""))
+                    addAll(gscConfRes.response!!.conference[0].facilities)
+                    add(FacilityItem(0, "", "More", ""))
+                }
             }
         }
     }

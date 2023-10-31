@@ -11,5 +11,6 @@ class CustomApplication : Application() {
 
     companion object {
         lateinit var context: Context
+        var cookie: String = ""
     }
 }
