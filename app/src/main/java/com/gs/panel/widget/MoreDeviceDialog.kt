@@ -25,11 +25,15 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.gs.panel.entity.deviceMoreList
+import com.gs.panel.state.DialogState
 import com.gs.panel.viewmodel.RemoteConfViewModel
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-fun MoreDeviceDialog(viewModel: RemoteConfViewModel) {
+fun MoreDeviceDialog(
+    onConfirm: (() -> Unit) = {},
+    dialogState: DialogState.MoreDeviceDialog
+) {
     Box(modifier = Modifier
         .fillMaxSize()
         .background(color = Color(0x80000000))) {
@@ -75,13 +79,13 @@ fun MoreDeviceDialog(viewModel: RemoteConfViewModel) {
                             .padding(horizontal = 24.dp),
 //                            horizontalArrangement = Arrangement.spacedBy(12.dp),
                     ) {
-                        for (device in deviceMoreList) {
+                        for (device in dialogState.facilityList) {
                             Text(
-                                text = device.name,
+                                text = device.confFacilityName,
                                 fontSize = 23.sp,
                                 modifier = Modifier
 //                                            .border(1.dp, Color.Red)
-                                    .padding(8.dp, 8.dp, 8.dp, 8.dp)
+                                    .padding(8.dp, 10.dp, 8.dp, 10.dp)
                                     .border(1.dp, Color(0xFFb3b3b3))
                                     .padding(6.dp, 4.dp, 6.dp, 4.dp),
                                 color = Color(0xFF333333)
@@ -101,7 +105,7 @@ fun MoreDeviceDialog(viewModel: RemoteConfViewModel) {
                         modifier = Modifier.width(200.dp).height(50.dp),
                         name = "我知道了",
                         backgroundColor = Color(0xFFcccccc),
-                        onClick = { viewModel.showMoreDeviceDialog = false }
+                        onClick = { onConfirm() }
                     )
                 }
             }

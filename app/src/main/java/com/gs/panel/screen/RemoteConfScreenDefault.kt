@@ -56,7 +56,7 @@ import com.gs.panel.widget.StopConfDialog
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-fun RemoteConfScreen(navController: NavController) {
+fun RemoteConfScreenDefault(navController: NavController) {
     val viewModel: RemoteConfViewModel = viewModel()
     Box(modifier = Modifier
         .fillMaxSize()

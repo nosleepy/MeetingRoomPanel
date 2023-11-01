@@ -161,6 +161,7 @@ fun LocalConfScreen(navController: NavController) {
                 onCancel = { viewModel.closeDialog() },
                 onConfirm = { viewModel.stopConf() }
             )
+            else -> {}
         }
     }
 }
