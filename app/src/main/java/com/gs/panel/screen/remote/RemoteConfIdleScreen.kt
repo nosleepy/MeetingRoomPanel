@@ -1,6 +1,5 @@
-package com.gs.panel.screen
+package com.gs.panel.screen.remote
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -8,7 +7,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
-import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -18,48 +16,34 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.gs.panel.R
-import com.gs.panel.entity.deviceList
-import com.gs.panel.entity.deviceMoreList
-import com.gs.panel.state.DialogState
+import com.gs.panel.state.RemoteConfState
 import com.gs.panel.ui.theme.CustomColor
-import com.gs.panel.viewmodel.RemoteConfState
+//import com.gs.panel.viewmodel.RemoteConfState
 //import com.gs.panel.viewmodel.ConfState
 import com.gs.panel.viewmodel.RemoteConfViewModel
 import com.gs.panel.widget.ClickButtonWidget
-import com.gs.panel.widget.DelayConfDialog
-import com.gs.panel.widget.DelayConfSuccessDialog
 import com.gs.panel.widget.DynamicsRowWidget
-import com.gs.panel.widget.ErrorDialog
-import com.gs.panel.widget.ErrorTipWidget
-import com.gs.panel.widget.MoreDeviceDialog
-import com.gs.panel.widget.StartConfDialog
-import com.gs.panel.widget.StartConfSuccessDialog
-import com.gs.panel.widget.StopConfDialog
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun RemoteConfIdleScreen(
     navController: NavController,
+    confState: RemoteConfState.IDLE,
     viewModel: RemoteConfViewModel
 ) {
+    val scheduleItem = confState.scheduleItem
     Box(modifier = Modifier
         .fillMaxSize()
         .background(Color(0xFF00a645))
@@ -117,9 +101,9 @@ fun RemoteConfIdleScreen(
 //                    .background(CustomColor.addicted)
                 )
                 Text(
-                    text = viewModel.confName,
+                    text = scheduleItem.confName,
                     modifier = Modifier
-//                        .background(CustomColor.green)
+                        .background(CustomColor.green)
                         .fillMaxWidth(),
                     fontSize = 46.sp,
                     color = Color.White,
@@ -163,20 +147,24 @@ fun RemoteConfIdleScreen(
                     .background(CustomColor.sand)
                     .padding(horizontal = 30.dp)
                 ) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.btn_clock),
-                        contentDescription = null,
-                        modifier = Modifier
-                            .size(26.dp)
-                            .align(Alignment.CenterVertically),
-                        tint = Color.White
-                    )
-                    Spacer(modifier = Modifier.width(20.dp))
-                    Text(text = "下一场", fontSize = 26.sp, color = Color.White)
-                    Spacer(modifier = Modifier.width(20.dp))
-                    Text(text = "10:30-11:30", fontSize = 26.sp, color = Color.White)
-                    Spacer(modifier = Modifier.width(20.dp))
-                    Text(text = "Alice(3702)", fontSize = 26.sp, color = Color.White)
+                    if (scheduleItem.reservationId == "") {
+                        Text(text = "今日无会议", fontSize = 26.sp, color = Color.White)
+                    } else {
+                        Icon(
+                            painter = painterResource(id = R.drawable.btn_clock),
+                            contentDescription = null,
+                            modifier = Modifier
+                                .size(26.dp)
+                                .align(Alignment.CenterVertically),
+                            tint = Color.White
+                        )
+                        Spacer(modifier = Modifier.width(20.dp))
+                        Text(text = "下一场", fontSize = 26.sp, color = Color.White)
+                        Spacer(modifier = Modifier.width(20.dp))
+                        Text(text = "${scheduleItem.configStartTime}-${scheduleItem.configEndTime}", fontSize = 26.sp, color = Color.White)
+                        Spacer(modifier = Modifier.width(20.dp))
+                        Text(text = "${scheduleItem.creator}（${scheduleItem.host}）", fontSize = 26.sp, color = Color.White)
+                    }
                     Row(
                         modifier = Modifier
                             .weight(1f)
@@ -215,7 +203,7 @@ fun RemoteConfIdleScreen(
                     .background(CustomColor.tree)
                 ) {
                     Text(
-                        text = "会议主题会议主题会议会议主题会议主题会议主题会议主题会议主题会议主题…",
+                        text = scheduleItem.subject,
                         fontSize = 26.sp,
                         modifier = Modifier
                             .fillMaxWidth()
@@ -282,7 +270,8 @@ fun RemoteConfIdleScreen(
                 }
                 Row(modifier = Modifier
                     .fillMaxWidth()
-                    .background(CustomColor.green)) {
+                    .background(CustomColor.green)
+                ) {
                     for (i in 0..24) {
                         Text(text = "$i",
                             modifier = Modifier
@@ -291,7 +280,8 @@ fun RemoteConfIdleScreen(
 //                                .border(1.dp, Color.Gray)
                             ,
                             textAlign = TextAlign.Center,
-                            color = Color.White
+                            color = Color.White,
+                            fontSize = 18.sp,
                         )
                     }
                 }

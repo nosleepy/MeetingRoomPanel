@@ -44,7 +44,7 @@ import com.gs.panel.state.DialogState
 import com.gs.panel.state.LocalConfState
 import com.gs.panel.ui.theme.CustomColor
 import com.gs.panel.viewmodel.LocalConfViewModel
-import com.gs.panel.viewmodel.RemoteConfState
+//import com.gs.panel.viewmodel.RemoteConfState
 import com.gs.panel.viewmodel.RemoteConfViewModel
 import com.gs.panel.widget.DelayConfDialog
 import com.gs.panel.widget.DelayConfSuccessDialog

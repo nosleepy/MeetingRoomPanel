@@ -7,8 +7,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.gs.panel.screen.remote.RemoteConfIdleScreen
+import com.gs.panel.screen.remote.RemoteConfReadyFlagScreen
+import com.gs.panel.screen.remote.RemoteConfReadyScreen
+import com.gs.panel.screen.remote.RemoteConfRunScreen
 import com.gs.panel.state.DialogState
-import com.gs.panel.viewmodel.RemoteConfState
+import com.gs.panel.state.RemoteConfState
 import com.gs.panel.viewmodel.RemoteConfViewModel
 import com.gs.panel.widget.MoreDeviceDialog
 
@@ -19,9 +23,21 @@ fun RemoteConfScreen(navController: NavController) {
     Box(modifier = Modifier.fillMaxSize()
     ) {
         when (viewModel.confState) {
-            RemoteConfState.IDLE -> RemoteConfIdleScreen(navController = navController, viewModel = viewModel)
-            RemoteConfState.RUN -> RemoteConfRunScreen(navController = navController, viewModel = viewModel)
-            else -> {}
+            is RemoteConfState.IDLE -> RemoteConfIdleScreen(
+                navController = navController,
+                confState = viewModel.confState as RemoteConfState.IDLE,
+                viewModel = viewModel,
+            )
+            is RemoteConfState.RUN -> RemoteConfRunScreen(
+                navController = navController,
+                confState = viewModel.confState as RemoteConfState.RUN,
+                viewModel = viewModel
+            )
+            is RemoteConfState.READY_FLAG -> RemoteConfReadyFlagScreen(navController = navController)
+            is RemoteConfState.READY -> RemoteConfReadyScreen(
+                navController = navController,
+                confState = viewModel.confState as RemoteConfState.READY
+            )
         }
         when (viewModel.dialogState) {
             DialogState.NoDialog -> {}

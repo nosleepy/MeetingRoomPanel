@@ -1,6 +1,5 @@
-package com.gs.panel.screen
+package com.gs.panel.screen.remote
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -8,7 +7,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
-import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -18,16 +16,12 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
@@ -36,34 +30,23 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.gs.panel.R
-import com.gs.panel.entity.deviceList
-import com.gs.panel.entity.deviceMoreList
-import com.gs.panel.state.DialogState
+import com.gs.panel.state.RemoteConfState
 import com.gs.panel.ui.theme.CustomColor
-import com.gs.panel.viewmodel.RemoteConfState
 //import com.gs.panel.viewmodel.ConfState
 import com.gs.panel.viewmodel.RemoteConfViewModel
-import com.gs.panel.widget.ClickButtonWidget
-import com.gs.panel.widget.DelayConfDialog
-import com.gs.panel.widget.DelayConfSuccessDialog
 import com.gs.panel.widget.DynamicsRowWidget
-import com.gs.panel.widget.ErrorDialog
-import com.gs.panel.widget.ErrorTipWidget
-import com.gs.panel.widget.MoreDeviceDialog
-import com.gs.panel.widget.StartConfDialog
-import com.gs.panel.widget.StartConfSuccessDialog
-import com.gs.panel.widget.StopConfDialog
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-fun RemoteConfRunScreen(
+fun RemoteConfReadyScreen(
     navController: NavController,
-    viewModel: RemoteConfViewModel
+    confState: RemoteConfState.READY
 ) {
+    val scheduleItem = confState.scheduleItem
     val viewModel: RemoteConfViewModel = viewModel()
     Box(modifier = Modifier
         .fillMaxSize()
-        .background(Color(0xFFab021b))
+        .background(Color(0xFFfd9a38))
 
 //        .border(1.dp, Color.Black)
     ) {
@@ -118,7 +101,7 @@ fun RemoteConfRunScreen(
 //                    .background(CustomColor.addicted)
                 )
                 Text(
-                    text = viewModel.confName,
+                    text = scheduleItem.confName,
                     modifier = Modifier
 //                        .background(CustomColor.green)
                         .fillMaxWidth(),
@@ -127,29 +110,41 @@ fun RemoteConfRunScreen(
                     textAlign = TextAlign.Center
                 )
             }
-            Column(modifier = Modifier
+            Row(modifier = Modifier
                 .fillMaxWidth()
+                .height(280.dp)
                 .background(CustomColor.tree)
-                .align(Alignment.Center)) {
-                Text(
-                    text = "会议中",
+                .align(Alignment.Center),
+                horizontalArrangement = Arrangement.Center
+            ) {
+                Row(
                     modifier = Modifier
-                        .background(CustomColor.blue)
-                        .fillMaxWidth(),
-                    color = Color.White,
-                    fontSize = 88.sp,
-                    textAlign = TextAlign.Center
-                )
-                Spacer(modifier = Modifier
-                    .height(20.dp)
-                    .fillMaxWidth()
-                    .background(CustomColor.powder))
+                        .fillMaxHeight()
+                        .weight(1f),
+                    horizontalArrangement = Arrangement.Center
+                ) {
+                    Box(modifier = Modifier
+                        .width(280.dp)
+                        .fillMaxHeight()
+                        .background(CustomColor.tree)
+                        .border(7.dp, Color.White, CircleShape)
+//                            .clip(CircleShape)
+                    ) {
+//                            Box(modifier = Modifier.fillMaxSize().background(CustomColor.cranesbill))
+                        Text(text = "${confState.remindMinute}:${confState.remindSecond}", fontSize = 100.sp, modifier = Modifier.align(Alignment.Center), color = Color.White)
+                    }
+                }
                 Column(
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .background(CustomColor.tree),
-                    horizontalAlignment = Alignment.CenterHorizontally
+                        .fillMaxHeight()
+                        .weight(2f)
+                        .background(CustomColor.powder),
+                    verticalArrangement = Arrangement.Center
                 ) {
+                    Text(text = "即将开始", modifier = Modifier.background(CustomColor.blue), fontSize = 68.sp, color = Color.White)
+                    Spacer(modifier = Modifier.height(16.dp))
+                    Text(text = scheduleItem.subject, modifier = Modifier.background(CustomColor.fizz), fontSize = 26.sp, color = Color.White)
+                    Spacer(modifier = Modifier.height(16.dp))
                     Row(modifier = Modifier.background(CustomColor.addicted)) {
                         Icon(
                             painter = painterResource(id = R.drawable.btn_clock),
@@ -162,45 +157,12 @@ fun RemoteConfRunScreen(
                             tint = Color.White
                         )
                         Spacer(modifier = Modifier.width(20.dp))
-                        Text(text = "会议时间", fontSize = 26.sp, modifier = Modifier.background(CustomColor.cranesbill), color = Color.White)
+                        Text(text = "${scheduleItem.configStartTime}-${scheduleItem.configEndTime}", fontSize = 26.sp, modifier = Modifier.background(CustomColor.cranesbill), color = Color.White)
                         Spacer(modifier = Modifier.width(20.dp))
-                        Text(text = "${viewModel.confStartTime}-${viewModel.confEndTime}", fontSize = 26.sp, modifier = Modifier.background(CustomColor.sand), color = Color.White)
+                        Text(text = "|", fontSize = 26.sp, modifier = Modifier.background(CustomColor.sand), color = Color.White)
+                        Spacer(modifier = Modifier.width(20.dp))
+                        Text(text = "${scheduleItem.creator}（${scheduleItem.host}）", fontSize = 26.sp, modifier = Modifier.background(CustomColor.sand), color = Color.White)
                     }
-                    Spacer(modifier = Modifier.height(16.dp))
-                    Text(text = viewModel.confSubject, modifier = Modifier.background(CustomColor.fizz), fontSize = 26.sp, color = Color.White)
-                    Spacer(modifier = Modifier.height(16.dp))
-                    Text(text = "${viewModel.confCreator}(${viewModel.confHost})", modifier = Modifier.background(CustomColor.blue), fontSize = 26.sp, color = Color.White)
-                }
-                Spacer(modifier = Modifier
-                    .height(20.dp)
-                    .fillMaxWidth()
-                    .background(CustomColor.sand))
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .background(CustomColor.cranesbill),
-                    horizontalArrangement = Arrangement.Center
-                ) {
-                    ClickButtonWidget(
-                        modifier = Modifier
-                            .width(280.dp)
-                            .height(88.dp),
-                        name = "延长会议",
-                        backgroundColor = Color(0xFFab021b),
-                        textColor = Color.White,
-                        borderSize = 2,
-                        onClick = {  }
-                    )
-                    Spacer(modifier = Modifier.width(40.dp))
-                    ClickButtonWidget(
-                        modifier = Modifier
-                            .width(280.dp)
-                            .height(88.dp),
-                        name = "结束会议",
-                        backgroundColor = Color.White,
-                        textColor = Color(0xFFab021b),
-                        onClick = {  }
-                    )
                 }
             }
             Column(modifier = Modifier
@@ -212,24 +174,10 @@ fun RemoteConfRunScreen(
                     .background(CustomColor.sand)
                     .padding(horizontal = 30.dp)
                 ) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.btn_clock),
-                        contentDescription = null,
-                        modifier = Modifier
-                            .size(26.dp)
-                            .align(Alignment.CenterVertically),
-                        tint = Color.White
-                    )
-                    Spacer(modifier = Modifier.width(20.dp))
-                    Text(text = "下一场", fontSize = 26.sp, color = Color.White)
-                    Spacer(modifier = Modifier.width(20.dp))
-                    Text(text = "10:30-11:30", fontSize = 26.sp, color = Color.White)
-                    Spacer(modifier = Modifier.width(20.dp))
-                    Text(text = "Alice(3702)", fontSize = 26.sp, color = Color.White)
                     Row(
                         modifier = Modifier
                             .weight(1f)
-//                            .background(CustomColor.cranesbill)
+                            .background(CustomColor.cranesbill)
                             .align(Alignment.CenterVertically),
                         horizontalArrangement = Arrangement.End,
                     ) {
@@ -264,7 +212,7 @@ fun RemoteConfRunScreen(
                     .background(CustomColor.tree)
                 ) {
                     Text(
-                        text = "会议主题会议主题会议会议主题会议主题会议主题会议主题会议主题会议主题…",
+                        text = "",
                         fontSize = 26.sp,
                         modifier = Modifier
                             .fillMaxWidth()

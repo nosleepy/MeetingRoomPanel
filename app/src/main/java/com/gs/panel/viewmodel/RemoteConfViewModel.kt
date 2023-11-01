@@ -5,13 +5,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.viewModelScope
 import com.gs.panel.CustomApplication
 import com.gs.panel.api.Api
 import com.gs.panel.entity.FacilityItem
+import com.gs.panel.entity.ScheduleItem
 import com.gs.panel.state.DialogState
-import com.gs.panel.state.LocalConfState
+import com.gs.panel.state.RemoteConfState
 import com.gs.panel.util.FileUtil
 import com.gs.panel.util.TimeUtil
 import kotlinx.coroutines.Job
@@ -19,61 +18,67 @@ import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-enum class RemoteConfState {
-    IDLE,
-    READY_FLAG,
-    READY,
-    RUN,
-    DISABLE;
-}
-
 class RemoteConfViewModel : ViewModel() {
-//    var confState by mutableStateOf(RemoteConfState.IDLE)
     var showErrorDialog by mutableStateOf(false)
-    var showMoreDeviceDialog by mutableStateOf(false)
-    var showDelayConfDialog by mutableStateOf(false)
-    var showStartConfDialog by mutableStateOf(false)
-    var showStopConfDialog by mutableStateOf(false)
-    var showStartConfSuccessDialog by mutableStateOf(false)
-    var showDelayConfSuccessDialog by mutableStateOf(false)
 
-//    private val mainScope = MainScope()
-//    private var timeJob: Job
-//
-//    private var index = 0
-//    private val confStateList = listOf<RemoteConfState>(
-//        RemoteConfState.IDLE,
-//        RemoteConfState.READY_FLAG,
-//        RemoteConfState.READY,
-//        RemoteConfState.RUN,
-//        RemoteConfState.DISABLE,
-//    )
+    private val mainScope = MainScope()
+    private var timeJob: Job
+    private var requestJob: Job
 
     var facilityList by mutableStateOf(listOf<FacilityItem>())
-    var confName by mutableStateOf("")
-    var confStartTime by mutableStateOf("")
-    var confEndTime by mutableStateOf("")
-    var confSubject by mutableStateOf("")
-    var confCreator by mutableStateOf("")
-    var confHost by mutableStateOf("")
-    var confState by mutableStateOf<RemoteConfState>(RemoteConfState.IDLE)
+    var confState by mutableStateOf<RemoteConfState>(RemoteConfState.IDLE(ScheduleItem()))
     var dialogState by mutableStateOf<DialogState>(DialogState.NoDialog)
+    private var startHour = 0
+    private var startMinute = 0
+    private var endHour = 0
+    private var endMinute = 0
+    private var scheduleItem = ScheduleItem()
 
     init {
-//        timeJob = mainScope.launch {
-//            repeat(Int.MAX_VALUE) {
-//                delay(10000)
-//                index = (index + 1) % 5
-//                confState = confStateList[index]
-//            }
-//        }
-        viewModelScope.launch {
-            val res = Api.get().getGscAccessToken(FileUtil.getUsername(), FileUtil.getPassword())
-            if (res.isSuccess()) {
-                val loginRes = Api.get().login(res.response!!.extenAccount, res.response!!.token)
-                Log.d("MeetingRoomPanel", "loginRes = $loginRes")
-                CustomApplication.cookie = loginRes.response!!.cookie
-                val gscConfRes = Api.get().listGscPhysicalConfTimeListByDay("2023-11-01 00:00", "2023-11-01 23:59", CustomApplication.cookie)
+        timeJob = mainScope.launch {
+            repeat(Int.MAX_VALUE) {
+                Log.d("wlzhou", "startHour = $startHour, startMinute = $startMinute, endHour = $endHour, endMinute = $endMinute")
+//                Log.d("wlzhou", "second = ${TimeUtil.getSecond()}")
+                if (TimeUtil.getTodaySeconds() == TimeUtil.getTargetSeconds(startHour, startMinute - 10)) {
+                    confState = RemoteConfState.READY_FLAG
+                } else if (TimeUtil.getTodaySeconds() > TimeUtil.getTargetSeconds(startHour, startMinute - 10)
+                    && TimeUtil.getTodaySeconds() < TimeUtil.getTargetSeconds(startHour, startMinute)) {
+                    val remindSecond = TimeUtil.getTargetSeconds(startHour, startMinute) - TimeUtil.getTodaySeconds()
+                    confState = RemoteConfState.READY(
+                        TimeUtil.parseMinuteBySecond(remindSecond),
+                        TimeUtil.parseSecondBySecond(remindSecond),
+                        scheduleItem
+                    )
+                } else if (TimeUtil.getTodaySeconds() >= TimeUtil.getTargetSeconds(startHour, startMinute)
+                    && TimeUtil.getTodaySeconds() < TimeUtil.getTargetSeconds(endHour, endMinute)) {
+                    confState = RemoteConfState.RUN(scheduleItem)
+                } else if(TimeUtil.getTodaySeconds() == TimeUtil.getTargetSeconds(endHour, endMinute)) {
+                    confState = RemoteConfState.IDLE(scheduleItem)
+                } else {
+                    confState = RemoteConfState.IDLE(scheduleItem)
+                }
+                delay(1000)
+            }
+        }
+        requestJob = mainScope.launch {
+            repeat(Int.MAX_VALUE) {
+                if (CustomApplication.extenAccount.isEmpty() || CustomApplication.token.isEmpty()) {
+                    val res = Api.get().getGscAccessToken(FileUtil.getUsername(), FileUtil.getPassword())
+                    if (res.isSuccess()) {
+                        CustomApplication.extenAccount = res.response!!.extenAccount
+                        CustomApplication.token = res.response!!.token
+                    }
+                }
+                if (CustomApplication.cookie.isEmpty()) {
+                    val loginRes = Api.get().login(CustomApplication.extenAccount, CustomApplication.token)
+                    Log.d("MeetingRoomPanel", "loginRes = $loginRes")
+                    CustomApplication.cookie = loginRes.response!!.cookie
+                }
+                val gscConfRes = Api.get().listGscPhysicalConfTimeListByDay(
+                    "2023-11-01 00:00",
+                    "2023-11-01 23:59",
+                    CustomApplication.cookie
+                )
                 Log.d("MeetingRoomPanel", "gscConfRes = $gscConfRes")
                 facilityList = mutableListOf<FacilityItem>().apply {
                     add(FacilityItem(-1, "", "${gscConfRes.response!!.conference[0].memberCapacity}人", ""))
@@ -81,19 +86,23 @@ class RemoteConfViewModel : ViewModel() {
                     add(FacilityItem(0, "", "More", ""))
                 }
                 val scheduleList = gscConfRes.response!!.conference[0].schedules
-                if (scheduleList.isEmpty()) {
-                    confState = RemoteConfState.IDLE
-                } else {
-                    when(scheduleList[0].confReservationStatus) {
-                        "inuse" -> confState = RemoteConfState.RUN
+                if (scheduleList.isNotEmpty()) {
+                    startHour = scheduleList[0].configStartTime.split(' ')[1].split(':')[0].toInt()
+                    startMinute = scheduleList[0].configStartTime.split(' ')[1].split(':')[1].toInt()
+                    endHour = scheduleList[0].configEndTime.split(' ')[1].split(':')[0].toInt()
+                    endMinute = scheduleList[0].configEndTime.split(' ')[1].split(':')[1].toInt()
+                    scheduleItem = scheduleList[0].apply {
+                        configStartTime = configStartTime.split(' ')[1]
+                        configEndTime = configEndTime.split(' ')[1]
                     }
-                    confName = gscConfRes.response!!.conference[0].confName
-                    confStartTime = gscConfRes.response!!.conference[0].schedules[0].configStartTime.split(' ')[1]
-                    confEndTime = gscConfRes.response!!.conference[0].schedules[0].configEndTime.split(' ')[1]
-                    confSubject = gscConfRes.response!!.conference[0].schedules[0].subject
-                    confCreator = gscConfRes.response!!.conference[0].schedules[0].creator
-                    confHost = gscConfRes.response!!.conference[0].schedules[0].host
+                } else {
+                    startHour = 0
+                    startMinute = 0
+                    endHour = 0
+                    endMinute = 0
+                    scheduleItem = ScheduleItem()
                 }
+                delay(3000)
             }
         }
     }
