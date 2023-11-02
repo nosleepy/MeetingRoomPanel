@@ -53,7 +53,7 @@ class LocalConfViewModel : ViewModel() {
     fun stopConf() {
         confState = LocalConfState.IDLE
         closeDialog()
-        Toast.makeText(CustomApplication.context, "会议已结束, 感谢您的使用", Toast.LENGTH_SHORT).show()
+        Toast.makeText(CustomApplication.context, "会议已结束，感谢您的使用", Toast.LENGTH_SHORT).show()
     }
 
     fun openStartConfDialog() {
