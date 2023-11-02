@@ -28,6 +28,7 @@ class RemoteConfViewModel : ViewModel() {
     var facilityList by mutableStateOf(listOf<FacilityItem>())
     var confState by mutableStateOf<RemoteConfState>(RemoteConfState.IDLE(ScheduleItem()))
     var dialogState by mutableStateOf<DialogState>(DialogState.NoDialog)
+    private var confName by mutableStateOf("")
     private var startHour = 0
     private var startMinute = 0
     private var endHour = 0
@@ -47,7 +48,8 @@ class RemoteConfViewModel : ViewModel() {
                     confState = RemoteConfState.READY(
                         TimeUtil.parseMinuteBySecond(remindSecond),
                         TimeUtil.parseSecondBySecond(remindSecond),
-                        scheduleItem
+                        remindSecond * 1.0f / 600,
+                        scheduleItem,
                     )
                 } else if (TimeUtil.getTodaySeconds() >= TimeUtil.getTargetSeconds(startHour, startMinute)
                     && TimeUtil.getTodaySeconds() < TimeUtil.getTargetSeconds(endHour, endMinute)) {
@@ -55,7 +57,11 @@ class RemoteConfViewModel : ViewModel() {
                 } else if(TimeUtil.getTodaySeconds() == TimeUtil.getTargetSeconds(endHour, endMinute)) {
                     confState = RemoteConfState.IDLE(scheduleItem)
                 } else {
-                    confState = RemoteConfState.IDLE(scheduleItem)
+                    confState = if (scheduleItem.reservationId.isEmpty()) {
+                        RemoteConfState.IDLE(ScheduleItem(confName = confName))
+                    } else {
+                        RemoteConfState.IDLE(scheduleItem)
+                    }
                 }
                 delay(1000)
             }
@@ -75,11 +81,12 @@ class RemoteConfViewModel : ViewModel() {
                     CustomApplication.cookie = loginRes.response!!.cookie
                 }
                 val gscConfRes = Api.get().listGscPhysicalConfTimeListByDay(
-                    "2023-11-01 00:00",
-                    "2023-11-01 23:59",
+                    "2023-11-02 00:00",
+                    "2023-11-02 23:59",
                     CustomApplication.cookie
                 )
                 Log.d("MeetingRoomPanel", "gscConfRes = $gscConfRes")
+                confName = gscConfRes.response!!.conference[0].confName
                 facilityList = mutableListOf<FacilityItem>().apply {
                     add(FacilityItem(-1, "", "${gscConfRes.response!!.conference[0].memberCapacity}人", ""))
                     addAll(gscConfRes.response!!.conference[0].facilities)

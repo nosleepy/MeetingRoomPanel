@@ -10,6 +10,7 @@ sealed class RemoteConfState {
     data class READY(
         val remindMinute: String,
         val remindSecond: String,
+        val remindProgress: Float,
         val scheduleItem: ScheduleItem,
     ): RemoteConfState()
     data class RUN(

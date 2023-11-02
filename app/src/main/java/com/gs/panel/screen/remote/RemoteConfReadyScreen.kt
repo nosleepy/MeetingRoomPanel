@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -123,15 +124,15 @@ fun RemoteConfReadyScreen(
                         .weight(1f),
                     horizontalArrangement = Arrangement.Center
                 ) {
-                    Box(modifier = Modifier
-                        .width(280.dp)
-                        .fillMaxHeight()
-                        .background(CustomColor.tree)
-                        .border(7.dp, Color.White, CircleShape)
-//                            .clip(CircleShape)
-                    ) {
-//                            Box(modifier = Modifier.fillMaxSize().background(CustomColor.cranesbill))
-                        Text(text = "${confState.remindMinute}:${confState.remindSecond}", fontSize = 100.sp, modifier = Modifier.align(Alignment.Center), color = Color.White)
+                    Box(modifier = Modifier.size(280.dp).background(CustomColor.cranesbill)) {
+                        CircularProgressIndicator(progress = 1f, modifier = Modifier.width(280.dp).height(280.dp), strokeWidth = 10.dp, color = Color(0xFFd49f79))
+                        CircularProgressIndicator(progress = confState.remindProgress, modifier = Modifier.width(280.dp).height(280.dp), strokeWidth = 10.dp, color = Color.White)
+                        Text(
+                            text = "${confState.remindMinute}:${confState.remindSecond}",
+                            fontSize = 100.sp,
+                            modifier = Modifier.align(Alignment.Center),
+                            color = Color.White
+                        )
                     }
                 }
                 Column(
