@@ -185,9 +185,7 @@ fun RemoteConfReadyFlagScreen(
                                 .size(34.dp)
                                 .align(Alignment.CenterVertically)
                                 .background(CustomColor.gall)
-                                .clickable {
-                                    viewModel.showErrorDialog = !viewModel.showErrorDialog
-                                },
+                                .clickable {},
                             tint = Color.White
                         )
                     }

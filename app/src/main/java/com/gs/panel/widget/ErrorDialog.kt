@@ -65,7 +65,7 @@ fun ErrorDialog(viewModel: RemoteConfViewModel) {
                     modifier = Modifier.width(200.dp).height(50.dp).align(Alignment.CenterHorizontally),
                     name = "设置",
                     backgroundColor = Color(0xFFcccccc),
-                    onClick = { viewModel.showErrorDialog = false }
+                    onClick = {}
                 )
             }
         }

@@ -1,5 +1,6 @@
 package com.gs.panel.screen.remote
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -30,6 +31,7 @@ import androidx.navigation.NavController
 import com.gs.panel.R
 import com.gs.panel.state.RemoteConfState
 import com.gs.panel.ui.theme.CustomColor
+import com.gs.panel.util.TimeUtil
 //import com.gs.panel.viewmodel.RemoteConfState
 //import com.gs.panel.viewmodel.ConfState
 import com.gs.panel.viewmodel.RemoteConfViewModel
@@ -44,6 +46,7 @@ fun RemoteConfIdleScreen(
     viewModel: RemoteConfViewModel
 ) {
     val scheduleItem = confState.scheduleItem
+    val scheduleRange = viewModel.scheduleRange
     Box(modifier = Modifier
         .fillMaxSize()
         .background(Color(0xFF00a645))
@@ -190,9 +193,7 @@ fun RemoteConfIdleScreen(
                                 .size(34.dp)
                                 .align(Alignment.CenterVertically)
                                 .background(CustomColor.gall)
-                                .clickable {
-                                    viewModel.showErrorDialog = !viewModel.showErrorDialog
-                                },
+                                .clickable {},
                             tint = Color.White
                         )
                     }
@@ -212,8 +213,9 @@ fun RemoteConfIdleScreen(
                 }
                 Row(modifier = Modifier
                     .fillMaxWidth()
-                    .height(60.dp)
-                    .background(CustomColor.tree)) {
+                    .height(46.dp)
+//                    .background(CustomColor.tree)
+                ) {
                     Spacer(modifier = Modifier
                         .weight(1f)
                         .fillMaxHeight())
@@ -221,45 +223,56 @@ fun RemoteConfIdleScreen(
                         .weight(48f)
                         .fillMaxHeight()) {
                         Row(modifier = Modifier.fillMaxSize()) {
-                            for (i in 1..24) {
-                                Box(modifier = Modifier
+                            for (i in 0..23) {
+                                Row(modifier = Modifier
                                     .weight(1f)
                                     .fillMaxHeight()
-                                    .background(CustomColor.addicted)
-                                    .border(1.dp, Color.Gray))
-                            }
-                        }
-                        Row(modifier = Modifier.fillMaxSize()) {
-                            for (i in 1..24) {
-                                if (i >= 12) {
-                                    Box(modifier = Modifier
-                                        .weight(1f)
-                                        .fillMaxHeight()
-                                        .background(CustomColor.cranesbill)
-                                        .border(1.dp, Color.Gray))
-                                } else {
-                                    Box(modifier = Modifier
-                                        .weight(1f)
-                                        .fillMaxHeight()
-                                        .background(CustomColor.addicted)
-                                        .border(1.dp, Color.Gray))
+                                    .border(1.dp, Color(0xFF389743))
+                                ) {
+                                    for (j in 0..3) {
+                                        val boxColor = if (scheduleRange.contains(i * 4 + j)) Color(0xFFe31a35) else Color(0xFFd8eadf)
+                                        Box(modifier = Modifier
+                                            .weight(1f)
+                                            .fillMaxHeight()
+                                            .background(boxColor)
+                                        )
+                                    }
                                 }
                             }
                         }
                         Row(modifier = Modifier.fillMaxSize()) {
-                            for (i in 1..24) {
-                                if (i <= 6) {
-                                    Box(modifier = Modifier
+                            for (i in 1..TimeUtil.getHour()) {
+                                Box(modifier = Modifier
+                                    .weight(1f)
+                                    .fillMaxHeight()
+                                    .background(Color(0xFF2bb570))
+                                    .border(1.dp, Color(0xFF389743))
+                                )
+                            }
+                            val remindHourWeight = (24 - TimeUtil.getHour()).toFloat()
+                            Box(modifier = Modifier.fillMaxHeight().weight(remindHourWeight)
+//                                .background(CustomColor.powder)
+                            ) {
+                                Row(modifier = Modifier.fillMaxSize()) {
+                                    Row(modifier = Modifier
                                         .weight(1f)
                                         .fillMaxHeight()
-                                        .background(CustomColor.green)
-                                        .border(1.dp, Color.Gray))
-                                } else {
-                                    Box(modifier = Modifier
-                                        .weight(1f)
-                                        .fillMaxHeight()
-                                        .background(Color.Transparent)
-                                        .border(1.dp, Color.Gray))
+//                                        .background(Color.Red)
+                                        .border(1.dp, Color(0xFF389743))
+                                    ) {
+                                        val curMinute = TimeUtil.getMinute().toFloat()
+                                        val remindMinute = (60 - curMinute)
+                                        Box(modifier = Modifier.fillMaxHeight().weight(curMinute).background(Color(0xFF2bb570)))
+                                        Box(modifier = Modifier.fillMaxHeight().weight(remindMinute).background(Color.Transparent))
+                                    }
+                                    for (i in TimeUtil.getHour() + 2..24) {
+                                        Box(modifier = Modifier
+                                            .weight(1f)
+                                            .fillMaxHeight()
+                                            .background(Color.Transparent)
+                                            .border(1.dp, Color(0xFF389743))
+                                        )
+                                    }
                                 }
                             }
                         }

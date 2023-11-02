@@ -23,7 +23,7 @@ fun ErrorTipWidget(viewModel: RemoteConfViewModel) {
             .height(50.dp)
             .background(color = Color(0xFFaaaaaa))
             .padding(horizontal = 30.dp)
-            .clickable { viewModel.showErrorDialog = false }
+            .clickable {}
         ,
         verticalAlignment = Alignment.CenterVertically
     ) {

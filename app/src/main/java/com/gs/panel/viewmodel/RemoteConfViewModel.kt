@@ -19,8 +19,6 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class RemoteConfViewModel : ViewModel() {
-    var showErrorDialog by mutableStateOf(false)
-
     private val mainScope = MainScope()
     private var timeJob: Job
     private var requestJob: Job
@@ -34,11 +32,13 @@ class RemoteConfViewModel : ViewModel() {
     private var endHour = 0
     private var endMinute = 0
     private var scheduleItem = ScheduleItem()
+    private var scheduleList = listOf<ScheduleItem>()
+    var scheduleRange by mutableStateOf(listOf<Int>())
 
     init {
         timeJob = mainScope.launch {
             repeat(Int.MAX_VALUE) {
-                Log.d("wlzhou", "startHour = $startHour, startMinute = $startMinute, endHour = $endHour, endMinute = $endMinute")
+//                Log.d("wlzhou", "startHour = $startHour, startMinute = $startMinute, endHour = $endHour, endMinute = $endMinute")
 //                Log.d("wlzhou", "second = ${TimeUtil.getSecond()}")
                 if (TimeUtil.getTodaySeconds() == TimeUtil.getTargetSeconds(startHour, startMinute - 10)) {
                     confState = RemoteConfState.READY_FLAG
@@ -92,15 +92,30 @@ class RemoteConfViewModel : ViewModel() {
                     addAll(gscConfRes.response!!.conference[0].facilities)
                     add(FacilityItem(0, "", "More", ""))
                 }
-                val scheduleList = gscConfRes.response!!.conference[0].schedules
+                scheduleList = gscConfRes.response!!.conference[0].schedules
                 if (scheduleList.isNotEmpty()) {
-                    startHour = scheduleList[0].configStartTime.split(' ')[1].split(':')[0].toInt()
-                    startMinute = scheduleList[0].configStartTime.split(' ')[1].split(':')[1].toInt()
-                    endHour = scheduleList[0].configEndTime.split(' ')[1].split(':')[0].toInt()
-                    endMinute = scheduleList[0].configEndTime.split(' ')[1].split(':')[1].toInt()
-                    scheduleItem = scheduleList[0].apply {
-                        configStartTime = configStartTime.split(' ')[1]
-                        configEndTime = configEndTime.split(' ')[1]
+                    scheduleList.forEach {
+                        it.configStartTime = it.configStartTime.split(' ')[1]
+                        it.configEndTime = it.configEndTime.split(' ')[1]
+                    }
+                    startHour = scheduleList[0].configStartTime.split(':')[0].toInt()
+                    startMinute = scheduleList[0].configStartTime.split(':')[1].toInt()
+                    endHour = scheduleList[0].configEndTime.split(':')[0].toInt()
+                    endMinute = scheduleList[0].configEndTime.split(':')[1].toInt()
+                    scheduleItem = scheduleList[0]
+
+                    scheduleRange = listOf()
+                    scheduleList.forEach {
+                        val leftHour = it.configStartTime.split(':')[0].toInt()
+                        val leftMinute = it.configStartTime.split(':')[1].toInt()
+                        val rightHour = it.configEndTime.split(':')[0].toInt()
+                        val rightMinute = it.configEndTime.split(':')[1].toInt()
+                        val leftIndex = leftHour * 4 + leftMinute / 15
+                        val rightIndex = rightHour * 4 + rightMinute / 15
+//                        Log.d("wlzhou", "leftIndex = $leftIndex, rightIndex = $rightIndex")
+                        for (i in leftIndex until rightIndex) {
+                            scheduleRange = scheduleRange.toMutableList().apply { add(i) }
+                        }
                     }
                 } else {
                     startHour = 0
