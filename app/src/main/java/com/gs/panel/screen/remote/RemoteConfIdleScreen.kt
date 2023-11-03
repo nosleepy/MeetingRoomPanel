@@ -36,6 +36,8 @@ import com.gs.panel.util.TimeUtil
 import com.gs.panel.viewmodel.RemoteConfViewModel
 import com.gs.panel.widget.ClickButtonWidget
 import com.gs.panel.widget.DynamicsRowWidget
+import com.gs.panel.widget.FacilityRowWidget
+import com.gs.panel.widget.TimeAxisWidget
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
@@ -61,42 +63,15 @@ fun RemoteConfIdleScreen(
             Column(modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 30.dp)
-                .background(CustomColor.cranesbill)
+//                .background(CustomColor.cranesbill)
                 .align(Alignment.TopCenter)) {
-                if (viewModel.facilityList.isNotEmpty()) {
-                    DynamicsRowWidget(modifier = Modifier
-//                        .background(CustomColor.blue)
-                        .fillMaxWidth()
-                        .height(34.dp)) {
-                        viewModel.facilityList.forEachIndexed { index, facilityItem ->
-                            if (facilityItem.confFacilityId == 0) {
-                                Text(
-                                    text = "More",
-                                    modifier = Modifier
-                                        .background(Color.White)
-                                        .border(1.dp, Color(0xFF8eb68e))
-                                        .clickable { viewModel.openMoreDeviceDialog() }
-                                        .padding(6.dp, 3.dp, 6.dp, 3.dp),
-                                    color = Color(0xFF00a645),
-                                    fontSize = 20.sp,)
-                            } else {
-                                Text(
-                                    text = facilityItem.confFacilityName,
-                                    modifier = Modifier
-                                        .background(Color(0xFF30831f))
-                                        .border(1.dp, Color(0xFF8eb68e))
-                                        .padding(6.dp, 3.dp, 6.dp, 3.dp),
-                                    color = Color(0xFFecece1),
-                                    fontSize = 20.sp,)
-                            }
-                        }
-                    }
-                } else {
-                    Box(modifier = Modifier
-//                        .background(CustomColor.blue)
-                        .fillMaxWidth()
-                        .height(34.dp))
-                }
+                FacilityRowWidget(
+                    modifier = Modifier.fillMaxWidth().height(34.dp),
+                    facilityList = viewModel.facilityList,
+                    itemFillColor = Color(0xFF30831f),
+                    moreItemColor = Color(0xFF00a645),
+                    onMoreClick = { viewModel.openMoreDeviceDialog() }
+                )
                 Spacer(modifier = Modifier
                     .height(30.dp)
                     .fillMaxWidth()
@@ -105,7 +80,7 @@ fun RemoteConfIdleScreen(
                 Text(
                     text = scheduleItem.confName,
                     modifier = Modifier
-                        .background(CustomColor.green)
+//                        .background(CustomColor.green)
                         .fillMaxWidth(),
                     fontSize = 46.sp,
                     color = Color.White,
@@ -211,108 +186,12 @@ fun RemoteConfIdleScreen(
                         ,
                         color = Color.White)
                 }
-                Row(modifier = Modifier
-                    .fillMaxWidth()
-                    .height(46.dp)
-//                    .background(CustomColor.tree)
-                ) {
-                    Spacer(modifier = Modifier
-                        .weight(1f)
-                        .fillMaxHeight())
-                    Box(modifier = Modifier
-                        .weight(48f)
-                        .fillMaxHeight()) {
-                        //绘制预约时间段
-                        Row(modifier = Modifier.fillMaxSize()) {
-                            for (i in 0..23) {
-                                Row(modifier = Modifier
-                                    .weight(1f)
-                                    .fillMaxHeight()
-                                ) {
-                                    for (j in 0..3) {
-                                        val boxColor = if (scheduleRange.contains(i * 4 + j)) Color(0xFFe31a35) else Color(0xFFd8eadf)
-                                        Box(modifier = Modifier
-                                            .weight(1f)
-                                            .fillMaxHeight()
-                                            .background(boxColor)
-                                        )
-                                    }
-                                }
-                            }
-                        }
-                        //绘制已经过去的时间段
-                        Row(modifier = Modifier.fillMaxSize()) {
-                            for (i in 0 until TimeUtil.getHour()) {
-                                Box(modifier = Modifier
-                                    .weight(1f)
-                                    .fillMaxHeight()
-                                    .background(Color(0xFF2bb570))
-                                )
-                            }
-                            val remindHourWeight = (24 - TimeUtil.getHour()).toFloat()
-                            Row(modifier = Modifier.fillMaxSize().weight(remindHourWeight)) {
-                                val curMinute = TimeUtil.getMinute().toFloat()
-                                val remindMinute = (60 - curMinute)
-                                if (curMinute == 0f) {
-                                    for (i in TimeUtil.getHour() until  24) {
-                                        Box(modifier = Modifier
-                                            .weight(1f)
-                                            .fillMaxHeight()
-                                            .background(Color.Transparent)
-                                        )
-                                    }
-                                } else {
-                                    Row(modifier = Modifier
-                                        .weight(1f)
-                                        .fillMaxHeight()
-                                    ) {
-                                        Box(modifier = Modifier.fillMaxHeight().weight(curMinute).background(Color(0xFF2bb570)))
-                                        Box(modifier = Modifier.fillMaxHeight().weight(remindMinute).background(Color.Transparent))
-                                    }
-                                    for (i in TimeUtil.getHour() + 1 until 24) {
-                                        Box(modifier = Modifier
-                                            .weight(1f)
-                                            .fillMaxHeight()
-                                            .background(Color.Transparent)
-                                        )
-                                    }
-                                }
-                            }
-                        }
-                        //绘制边框
-                        Row(modifier = Modifier.fillMaxSize()) {
-                            for (i in 0..23) {
-                                Box(modifier = Modifier
-                                    .weight(1f)
-                                    .fillMaxHeight()
-                                    .background(Color.Transparent)
-                                    .border(1.dp, Color(0xFF389743))
-                                )
-                            }
-                        }
-                    }
-                    Spacer(modifier = Modifier
-                        .weight(1f)
-                        .fillMaxHeight())
-                }
-                Row(modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 4.dp)
-//                    .background(CustomColor.green)
-                ) {
-                    for (i in 0..24) {
-                        Text(text = "$i",
-                            modifier = Modifier
-                                .weight(1f)
-//                                .background(CustomColor.powder)
-//                                .border(1.dp, Color.Gray)
-                            ,
-                            textAlign = TextAlign.Center,
-                            color = Color.White,
-                            fontSize = 18.sp,
-                        )
-                    }
-                }
+                TimeAxisWidget(
+                    modifier = Modifier.fillMaxWidth(),
+                    scheduleRange = scheduleRange,
+                    fillColor = Color(0xFF2bb570),
+                    borderColor = Color(0xFF389743),
+                )
             }
         }
     }

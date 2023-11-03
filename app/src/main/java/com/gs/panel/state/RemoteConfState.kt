@@ -6,7 +6,9 @@ sealed class RemoteConfState {
     data class IDLE(
         val scheduleItem: ScheduleItem,
     ): RemoteConfState()
-    object READY_FLAG: RemoteConfState()
+    data class READY_FLAG(
+        val scheduleItem: ScheduleItem,
+    ): RemoteConfState()
     data class READY(
         val remindMinute: String,
         val remindSecond: String,

@@ -33,10 +33,15 @@ fun RemoteConfScreen(navController: NavController) {
                 confState = viewModel.confState as RemoteConfState.RUN,
                 viewModel = viewModel
             )
-            is RemoteConfState.READY_FLAG -> RemoteConfReadyFlagScreen(navController = navController)
+            is RemoteConfState.READY_FLAG -> RemoteConfReadyFlagScreen(
+                navController = navController,
+                confState = viewModel.confState as RemoteConfState.READY_FLAG,
+                viewModel = viewModel
+            )
             is RemoteConfState.READY -> RemoteConfReadyScreen(
                 navController = navController,
-                confState = viewModel.confState as RemoteConfState.READY
+                confState = viewModel.confState as RemoteConfState.READY,
+                viewModel = viewModel
             )
         }
         when (viewModel.dialogState) {

@@ -41,7 +41,7 @@ class RemoteConfViewModel : ViewModel() {
 //                Log.d("wlzhou", "startHour = $startHour, startMinute = $startMinute, endHour = $endHour, endMinute = $endMinute")
 //                Log.d("wlzhou", "second = ${TimeUtil.getSecond()}")
                 if (TimeUtil.getTodaySeconds() == TimeUtil.getTargetSeconds(startHour, startMinute - 10)) {
-                    confState = RemoteConfState.READY_FLAG
+                    confState = RemoteConfState.READY_FLAG(scheduleItem)
                 } else if (TimeUtil.getTodaySeconds() > TimeUtil.getTargetSeconds(startHour, startMinute - 10)
                     && TimeUtil.getTodaySeconds() < TimeUtil.getTargetSeconds(startHour, startMinute)) {
                     val remindSecond = TimeUtil.getTargetSeconds(startHour, startMinute) - TimeUtil.getTodaySeconds()

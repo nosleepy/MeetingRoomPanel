@@ -29,17 +29,23 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.gs.panel.R
+import com.gs.panel.state.RemoteConfState
 import com.gs.panel.ui.theme.CustomColor
 //import com.gs.panel.viewmodel.ConfState
 import com.gs.panel.viewmodel.RemoteConfViewModel
 import com.gs.panel.widget.DynamicsRowWidget
+import com.gs.panel.widget.FacilityRowWidget
+import com.gs.panel.widget.TimeAxisWidget
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun RemoteConfReadyFlagScreen(
-    navController: NavController
+    navController: NavController,
+    confState: RemoteConfState.READY_FLAG,
+    viewModel: RemoteConfViewModel,
 ) {
-    val viewModel: RemoteConfViewModel = viewModel()
+    val scheduleItem = confState.scheduleItem
+    val scheduleRange = viewModel.scheduleRange
     Box(modifier = Modifier
         .fillMaxSize()
         .background(Color(0xFFfd9a38))
@@ -55,42 +61,15 @@ fun RemoteConfReadyFlagScreen(
             Column(modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 30.dp)
-                .background(CustomColor.cranesbill)
+//                .background(CustomColor.cranesbill)
                 .align(Alignment.TopCenter)) {
-                if (viewModel.facilityList.isNotEmpty()) {
-                    DynamicsRowWidget(modifier = Modifier
-//                        .background(CustomColor.blue)
-                        .fillMaxWidth()
-                        .height(34.dp)) {
-                        viewModel.facilityList.forEachIndexed { index, facilityItem ->
-                            if (facilityItem.confFacilityId == 0) {
-                                Text(
-                                    text = "More",
-                                    modifier = Modifier
-                                        .background(Color.White)
-                                        .border(1.dp, Color(0xFF8eb68e))
-                                        .clickable { viewModel.openMoreDeviceDialog() }
-                                        .padding(6.dp, 3.dp, 6.dp, 3.dp),
-                                    color = Color(0xFF00a645),
-                                    fontSize = 20.sp,)
-                            } else {
-                                Text(
-                                    text = facilityItem.confFacilityName,
-                                    modifier = Modifier
-                                        .background(Color(0xFF30831f))
-                                        .border(1.dp, Color(0xFF8eb68e))
-                                        .padding(6.dp, 3.dp, 6.dp, 3.dp),
-                                    color = Color(0xFFecece1),
-                                    fontSize = 20.sp,)
-                            }
-                        }
-                    }
-                } else {
-                    Box(modifier = Modifier
-//                        .background(CustomColor.blue)
-                        .fillMaxWidth()
-                        .height(34.dp))
-                }
+                FacilityRowWidget(
+                    modifier = Modifier.fillMaxWidth().height(34.dp),
+                    facilityList = viewModel.facilityList,
+                    itemFillColor = Color(0xFFbf7629),
+                    moreItemColor = Color(0xFFfd9a38),
+                    onMoreClick = { viewModel.openMoreDeviceDialog() }
+                )
                 Spacer(modifier = Modifier
                     .height(30.dp)
                     .fillMaxWidth()
@@ -134,7 +113,7 @@ fun RemoteConfReadyFlagScreen(
                             painter = painterResource(id = R.drawable.btn_clock),
                             contentDescription = null,
                             modifier = Modifier
-                                .size(30.dp)
+                                .size(36.dp)
                                 .align(Alignment.CenterVertically)
                                 .background(CustomColor.fizz)
                                 .clickable { },
@@ -143,21 +122,21 @@ fun RemoteConfReadyFlagScreen(
                         Spacer(modifier = Modifier.width(20.dp))
                         Text(text = "会议时间", fontSize = 26.sp, modifier = Modifier.background(CustomColor.cranesbill), color = Color.White)
                         Spacer(modifier = Modifier.width(20.dp))
-                        Text(text = "10:30-11:30", fontSize = 26.sp, modifier = Modifier.background(CustomColor.sand), color = Color.White)
+                        Text(text = "${scheduleItem.configStartTime}-${scheduleItem.configEndTime}", fontSize = 26.sp, modifier = Modifier.background(CustomColor.sand), color = Color.White)
                     }
                     Spacer(modifier = Modifier.height(16.dp))
-                    Text(text = "会议主题会议主题会议会议主题会议主题会议主题", modifier = Modifier.background(CustomColor.fizz), fontSize = 26.sp, color = Color.White)
+                    Text(text = scheduleItem.subject, modifier = Modifier.background(CustomColor.fizz), fontSize = 26.sp, color = Color.White)
                     Spacer(modifier = Modifier.height(16.dp))
-                    Text(text = "Alice(3702)", modifier = Modifier.background(CustomColor.blue), fontSize = 26.sp, color = Color.White)
+                    Text(text = "${scheduleItem.creator}（${scheduleItem.host}）", modifier = Modifier.background(CustomColor.blue), fontSize = 26.sp, color = Color.White)
                 }
             }
             Column(modifier = Modifier
                 .fillMaxWidth()
-                .background(CustomColor.fizz)
+//                .background(CustomColor.fizz)
                 .align(Alignment.BottomCenter)) {
                 Row(modifier = Modifier
                     .fillMaxWidth()
-                    .background(CustomColor.sand)
+//                    .background(CustomColor.sand)
                     .padding(horizontal = 30.dp)
                 ) {
                     Row(
@@ -171,9 +150,9 @@ fun RemoteConfReadyFlagScreen(
                             painter = painterResource(id = R.drawable.btn_list),
                             contentDescription = null,
                             modifier = Modifier
-                                .size(34.dp)
+                                .size(36.dp)
                                 .align(Alignment.CenterVertically)
-                                .background(CustomColor.fizz)
+//                                .background(CustomColor.fizz)
                                 .clickable { navController.navigate("confList") },
                             tint = Color.White
                         )
@@ -182,9 +161,9 @@ fun RemoteConfReadyFlagScreen(
                             painter = painterResource(id = R.drawable.btn_setting),
                             contentDescription = null,
                             modifier = Modifier
-                                .size(34.dp)
+                                .size(36.dp)
                                 .align(Alignment.CenterVertically)
-                                .background(CustomColor.gall)
+//                                .background(CustomColor.gall)
                                 .clickable {},
                             tint = Color.White
                         )
@@ -192,90 +171,24 @@ fun RemoteConfReadyFlagScreen(
                 }
                 Row(modifier = Modifier
                     .fillMaxWidth()
-                    .padding(30.dp, 8.dp, 30.dp, 8.dp)
-                    .background(CustomColor.tree)
+                    .padding(30.dp, 14.dp, 30.dp, 14.dp)
+//                    .background(CustomColor.tree)
                 ) {
                     Text(
                         text = "",
                         fontSize = 26.sp,
                         modifier = Modifier
                             .fillMaxWidth()
-                            .background(CustomColor.powder),
+//                            .background(CustomColor.powder)
+                        ,
                         color = Color.White)
                 }
-                Row(modifier = Modifier
-                    .fillMaxWidth()
-                    .height(60.dp)
-                    .background(CustomColor.tree)) {
-                    Spacer(modifier = Modifier
-                        .weight(1f)
-                        .fillMaxHeight())
-                    Box(modifier = Modifier
-                        .weight(48f)
-                        .fillMaxHeight()) {
-                        Row(modifier = Modifier.fillMaxSize()) {
-                            for (i in 1..24) {
-                                Box(modifier = Modifier
-                                    .weight(1f)
-                                    .fillMaxHeight()
-                                    .background(CustomColor.addicted)
-                                    .border(1.dp, Color.Gray))
-                            }
-                        }
-                        Row(modifier = Modifier.fillMaxSize()) {
-                            for (i in 1..24) {
-                                if (i >= 12) {
-                                    Box(modifier = Modifier
-                                        .weight(1f)
-                                        .fillMaxHeight()
-                                        .background(CustomColor.cranesbill)
-                                        .border(1.dp, Color.Gray))
-                                } else {
-                                    Box(modifier = Modifier
-                                        .weight(1f)
-                                        .fillMaxHeight()
-                                        .background(CustomColor.addicted)
-                                        .border(1.dp, Color.Gray))
-                                }
-                            }
-                        }
-                        Row(modifier = Modifier.fillMaxSize()) {
-                            for (i in 1..24) {
-                                if (i <= 6) {
-                                    Box(modifier = Modifier
-                                        .weight(1f)
-                                        .fillMaxHeight()
-                                        .background(CustomColor.green)
-                                        .border(1.dp, Color.Gray))
-                                } else {
-                                    Box(modifier = Modifier
-                                        .weight(1f)
-                                        .fillMaxHeight()
-                                        .background(Color.Transparent)
-                                        .border(1.dp, Color.Gray))
-                                }
-                            }
-                        }
-                    }
-                    Spacer(modifier = Modifier
-                        .weight(1f)
-                        .fillMaxHeight())
-                }
-                Row(modifier = Modifier
-                    .fillMaxWidth()
-                    .background(CustomColor.green)) {
-                    for (i in 0..24) {
-                        Text(text = "$i",
-                            modifier = Modifier
-                                .weight(1f)
-//                                .background(CustomColor.powder)
-//                                .border(1.dp, Color.Gray)
-                            ,
-                            textAlign = TextAlign.Center,
-                            color = Color.White
-                        )
-                    }
-                }
+                TimeAxisWidget(
+                    modifier = Modifier.fillMaxWidth(),
+                    scheduleRange = scheduleRange,
+                    fillColor = Color(0xFFf2ac62),
+                    borderColor = Color(0xFFc77e33),
+                )
             }
         }
     }
