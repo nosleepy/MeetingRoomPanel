@@ -1,6 +1,5 @@
 package com.gs.panel.screen.remote
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -143,11 +142,11 @@ fun RemoteConfIdleScreen(
             }
             Column(modifier = Modifier
                 .fillMaxWidth()
-                .background(CustomColor.fizz)
+//                .background(CustomColor.fizz)
                 .align(Alignment.BottomCenter)) {
                 Row(modifier = Modifier
                     .fillMaxWidth()
-                    .background(CustomColor.sand)
+//                    .background(CustomColor.sand)
                     .padding(horizontal = 30.dp)
                 ) {
                     if (scheduleItem.reservationId == "") {
@@ -157,7 +156,7 @@ fun RemoteConfIdleScreen(
                             painter = painterResource(id = R.drawable.btn_clock),
                             contentDescription = null,
                             modifier = Modifier
-                                .size(26.dp)
+                                .size(36.dp)
                                 .align(Alignment.CenterVertically),
                             tint = Color.White
                         )
@@ -179,9 +178,9 @@ fun RemoteConfIdleScreen(
                             painter = painterResource(id = R.drawable.btn_list),
                             contentDescription = null,
                             modifier = Modifier
-                                .size(34.dp)
+                                .size(36.dp)
                                 .align(Alignment.CenterVertically)
-                                .background(CustomColor.fizz)
+//                                .background(CustomColor.fizz)
                                 .clickable { navController.navigate("confList") },
                             tint = Color.White
                         )
@@ -190,9 +189,9 @@ fun RemoteConfIdleScreen(
                             painter = painterResource(id = R.drawable.btn_setting),
                             contentDescription = null,
                             modifier = Modifier
-                                .size(34.dp)
+                                .size(36.dp)
                                 .align(Alignment.CenterVertically)
-                                .background(CustomColor.gall)
+//                                .background(CustomColor.gall)
                                 .clickable {},
                             tint = Color.White
                         )
@@ -200,15 +199,16 @@ fun RemoteConfIdleScreen(
                 }
                 Row(modifier = Modifier
                     .fillMaxWidth()
-                    .padding(30.dp, 8.dp, 30.dp, 8.dp)
-                    .background(CustomColor.tree)
+                    .padding(30.dp, 14.dp, 30.dp, 14.dp)
+//                    .background(CustomColor.tree)
                 ) {
                     Text(
                         text = scheduleItem.subject,
                         fontSize = 26.sp,
                         modifier = Modifier
                             .fillMaxWidth()
-                            .background(CustomColor.powder),
+//                            .background(CustomColor.powder)
+                        ,
                         color = Color.White)
                 }
                 Row(modifier = Modifier
@@ -242,7 +242,7 @@ fun RemoteConfIdleScreen(
                         }
                         //绘制已经过去的时间段
                         Row(modifier = Modifier.fillMaxSize()) {
-                            for (i in 1..TimeUtil.getHour()) {
+                            for (i in 0 until TimeUtil.getHour()) {
                                 Box(modifier = Modifier
                                     .weight(1f)
                                     .fillMaxHeight()
@@ -250,18 +250,26 @@ fun RemoteConfIdleScreen(
                                 )
                             }
                             val remindHourWeight = (24 - TimeUtil.getHour()).toFloat()
-                            Box(modifier = Modifier.fillMaxHeight().weight(remindHourWeight)) {
-                                Row(modifier = Modifier.fillMaxSize()) {
+                            Row(modifier = Modifier.fillMaxSize().weight(remindHourWeight)) {
+                                val curMinute = TimeUtil.getMinute().toFloat()
+                                val remindMinute = (60 - curMinute)
+                                if (curMinute == 0f) {
+                                    for (i in TimeUtil.getHour() until  24) {
+                                        Box(modifier = Modifier
+                                            .weight(1f)
+                                            .fillMaxHeight()
+                                            .background(Color.Transparent)
+                                        )
+                                    }
+                                } else {
                                     Row(modifier = Modifier
                                         .weight(1f)
                                         .fillMaxHeight()
                                     ) {
-                                        val curMinute = TimeUtil.getMinute().toFloat()
-                                        val remindMinute = (60 - curMinute)
                                         Box(modifier = Modifier.fillMaxHeight().weight(curMinute).background(Color(0xFF2bb570)))
                                         Box(modifier = Modifier.fillMaxHeight().weight(remindMinute).background(Color.Transparent))
                                     }
-                                    for (i in TimeUtil.getHour() + 2..24) {
+                                    for (i in TimeUtil.getHour() + 1 until 24) {
                                         Box(modifier = Modifier
                                             .weight(1f)
                                             .fillMaxHeight()
@@ -289,7 +297,8 @@ fun RemoteConfIdleScreen(
                 }
                 Row(modifier = Modifier
                     .fillMaxWidth()
-                    .background(CustomColor.green)
+                    .padding(vertical = 4.dp)
+//                    .background(CustomColor.green)
                 ) {
                     for (i in 0..24) {
                         Text(text = "$i",
