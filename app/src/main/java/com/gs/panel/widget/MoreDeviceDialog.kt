@@ -21,6 +21,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -39,7 +40,7 @@ fun MoreDeviceDialog(
         .background(color = Color(0x80000000))) {
         Box(modifier = Modifier
             .width(800.dp)
-            .height(400.dp)
+            .height(440.dp)
             .align(Alignment.Center)
 //                    .background(Color.White)
             .clip(RoundedCornerShape(4)),
@@ -86,8 +87,8 @@ fun MoreDeviceDialog(
                                 modifier = Modifier
 //                                            .border(1.dp, Color.Red)
                                     .padding(8.dp, 10.dp, 8.dp, 10.dp)
-                                    .border(1.dp, Color(0xFFb3b3b3))
-                                    .padding(6.dp, 4.dp, 6.dp, 4.dp),
+                                    .border(1.dp, Color(0xFFb3b3b3), RoundedCornerShape(12))
+                                    .padding(8.dp, 6.dp, 8.dp, 6.dp),
                                 color = Color(0xFF333333)
                             )
                         }

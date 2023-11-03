@@ -36,6 +36,7 @@ fun ConfListScreen(navController: NavController) {
 //        .padding(30.dp)
         .background(Color.White)
     ) {
+        Box(modifier = Modifier.fillMaxWidth().height(50.dp).background(Color(0xFF00a645)))
         Box(modifier = Modifier
             .fillMaxWidth()
             .background(Color.White)
