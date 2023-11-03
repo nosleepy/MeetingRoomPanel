@@ -93,6 +93,7 @@ class RemoteConfViewModel : ViewModel() {
                     add(FacilityItem(0, "", "More", ""))
                 }
                 scheduleList = gscConfRes.response!!.conference[0].schedules
+                scheduleRange = listOf()
                 if (scheduleList.isNotEmpty()) {
                     scheduleList.forEach {
                         it.configStartTime = it.configStartTime.split(' ')[1]
@@ -104,7 +105,6 @@ class RemoteConfViewModel : ViewModel() {
                     endMinute = scheduleList[0].configEndTime.split(':')[1].toInt()
                     scheduleItem = scheduleList[0]
 
-                    scheduleRange = listOf()
                     scheduleList.forEach {
                         val leftHour = it.configStartTime.split(':')[0].toInt()
                         val leftMinute = it.configStartTime.split(':')[1].toInt()
