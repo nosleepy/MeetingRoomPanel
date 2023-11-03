@@ -222,12 +222,12 @@ fun RemoteConfIdleScreen(
                     Box(modifier = Modifier
                         .weight(48f)
                         .fillMaxHeight()) {
+                        //绘制预约时间段
                         Row(modifier = Modifier.fillMaxSize()) {
                             for (i in 0..23) {
                                 Row(modifier = Modifier
                                     .weight(1f)
                                     .fillMaxHeight()
-                                    .border(1.dp, Color(0xFF389743))
                                 ) {
                                     for (j in 0..3) {
                                         val boxColor = if (scheduleRange.contains(i * 4 + j)) Color(0xFFe31a35) else Color(0xFFd8eadf)
@@ -240,25 +240,21 @@ fun RemoteConfIdleScreen(
                                 }
                             }
                         }
+                        //绘制已经过去的时间段
                         Row(modifier = Modifier.fillMaxSize()) {
                             for (i in 1..TimeUtil.getHour()) {
                                 Box(modifier = Modifier
                                     .weight(1f)
                                     .fillMaxHeight()
                                     .background(Color(0xFF2bb570))
-                                    .border(1.dp, Color(0xFF389743))
                                 )
                             }
                             val remindHourWeight = (24 - TimeUtil.getHour()).toFloat()
-                            Box(modifier = Modifier.fillMaxHeight().weight(remindHourWeight)
-//                                .background(CustomColor.powder)
-                            ) {
+                            Box(modifier = Modifier.fillMaxHeight().weight(remindHourWeight)) {
                                 Row(modifier = Modifier.fillMaxSize()) {
                                     Row(modifier = Modifier
                                         .weight(1f)
                                         .fillMaxHeight()
-//                                        .background(Color.Red)
-                                        .border(1.dp, Color(0xFF389743))
                                     ) {
                                         val curMinute = TimeUtil.getMinute().toFloat()
                                         val remindMinute = (60 - curMinute)
@@ -270,10 +266,20 @@ fun RemoteConfIdleScreen(
                                             .weight(1f)
                                             .fillMaxHeight()
                                             .background(Color.Transparent)
-                                            .border(1.dp, Color(0xFF389743))
                                         )
                                     }
                                 }
+                            }
+                        }
+                        //绘制边框
+                        Row(modifier = Modifier.fillMaxSize()) {
+                            for (i in 0..23) {
+                                Box(modifier = Modifier
+                                    .weight(1f)
+                                    .fillMaxHeight()
+                                    .background(Color.Transparent)
+                                    .border(1.dp, Color(0xFF389743))
+                                )
                             }
                         }
                     }

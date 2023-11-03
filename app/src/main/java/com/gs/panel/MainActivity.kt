@@ -40,7 +40,7 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun NavigationScreen() {
     val navController = rememberNavController()
-    NavHost(navController = navController, startDestination = "main") {
+    NavHost(navController = navController, startDestination = "remoteConf") {
         composable("main") { MainScreen(navController = navController) }
         composable("localConf") { LocalConfScreen(navController = navController) }
         composable("remoteConf") { RemoteConfScreen(navController = navController) }
