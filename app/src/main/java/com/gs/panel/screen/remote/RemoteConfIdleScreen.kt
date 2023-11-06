@@ -89,12 +89,12 @@ fun RemoteConfIdleScreen(
             }
             Column(modifier = Modifier
                 .fillMaxWidth()
-                .background(CustomColor.tree)
+//                .background(CustomColor.tree)
                 .align(Alignment.Center)) {
                 Text(
                     text = "空闲",
                     modifier = Modifier
-                        .background(CustomColor.blue)
+//                        .background(CustomColor.blue)
                         .fillMaxWidth(),
                     color = Color.White,
                     fontSize = 88.sp,
@@ -103,7 +103,8 @@ fun RemoteConfIdleScreen(
                 Spacer(modifier = Modifier
                     .height(60.dp)
                     .fillMaxWidth()
-                    .background(CustomColor.powder))
+//                    .background(CustomColor.powder)
+                )
                 ClickButtonWidget(
                     modifier = Modifier
                         .width(280.dp)

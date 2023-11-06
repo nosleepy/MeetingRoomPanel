@@ -109,21 +109,28 @@ fun RemoteConfRunScreen(
                         .background(CustomColor.tree),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    Row(modifier = Modifier.background(CustomColor.addicted)) {
+                    Row(modifier = Modifier
+//                        .background(CustomColor.addicted)
+                    ) {
                         Icon(
                             painter = painterResource(id = R.drawable.btn_clock),
                             contentDescription = null,
                             modifier = Modifier
                                 .size(30.dp)
                                 .align(Alignment.CenterVertically)
-                                .background(CustomColor.fizz)
+//                                .background(CustomColor.fizz)
                                 ,
                             tint = Color.White
                         )
                         Spacer(modifier = Modifier.width(20.dp))
-                        Text(text = "会议时间", fontSize = 26.sp, modifier = Modifier.background(CustomColor.cranesbill), color = Color.White)
+                        Text(text = "会议时间", fontSize = 26.sp, modifier = Modifier
+//                            .background(CustomColor.cranesbill)
+                            , color = Color.White)
                         Spacer(modifier = Modifier.width(20.dp))
-                        Text(text = "${scheduleItem.configStartTime}-${scheduleItem.configEndTime}", fontSize = 26.sp, modifier = Modifier.background(CustomColor.sand), color = Color.White)
+                        Text(text = "${scheduleItem.configStartTime}-${scheduleItem.configEndTime}", fontSize = 26.sp, modifier =
+                        Modifier
+//                            .background(CustomColor.sand)
+                            , color = Color.White)
                     }
                     Spacer(modifier = Modifier.height(16.dp))
                     Text(text = scheduleItem.subject, modifier = Modifier.background(CustomColor.fizz), fontSize = 26.sp, color = Color.White)

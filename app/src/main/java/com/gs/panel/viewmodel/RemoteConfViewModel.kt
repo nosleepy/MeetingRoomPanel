@@ -34,6 +34,7 @@ class RemoteConfViewModel : ViewModel() {
     private var scheduleItem = ScheduleItem()
     private var scheduleList = listOf<ScheduleItem>()
     var scheduleRange by mutableStateOf(listOf<Int>())
+    var isTempConf by mutableStateOf(false) //临时会议
 
     init {
         timeJob = mainScope.launch {
@@ -81,8 +82,8 @@ class RemoteConfViewModel : ViewModel() {
                     CustomApplication.cookie = loginRes.response!!.cookie
                 }
                 val gscConfRes = Api.get().listGscPhysicalConfTimeListByDay(
-                    "2023-11-03 00:00",
-                    "2023-11-03 23:59",
+                    "2023-11-06 00:00",
+                    "2023-11-06 23:59",
                     CustomApplication.cookie
                 )
                 Log.d("MeetingRoomPanel", "gscConfRes = $gscConfRes")

@@ -8,7 +8,7 @@ import javax.net.ssl.HostnameVerifier
 import javax.net.ssl.SSLSession
 
 object Api {
-    private const val BASE_URL = "https://192.168.133.153:8089/"
+    private const val BASE_URL = "https://192.168.124.20:8089/"
 
     private val okHttpClient: OkHttpClient by lazy {
         OkHttpClient.Builder()
