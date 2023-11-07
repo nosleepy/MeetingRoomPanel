@@ -56,5 +56,12 @@ class TimeUtil {
             }
             return "$second"
         }
+
+        fun formatTime(time: Int): String {
+            if (time in 0..9) {
+                return "0$time"
+            }
+            return "$time"
+        }
     }
 }

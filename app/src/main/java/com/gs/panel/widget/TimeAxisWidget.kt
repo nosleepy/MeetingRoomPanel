@@ -1,8 +1,6 @@
 package com.gs.panel.widget
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -22,85 +20,76 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.gs.panel.util.TimeUtil
+import com.gs.panel.util.getScreenWidth
+import kotlin.math.ceil
 
 @Composable
 fun TimeAxisWidget(
     modifier: Modifier,
     scheduleRange: List<Int>,
-    fillColor: Color = Color(0xFF2bb570),
-    borderColor: Color = Color(0xFF389743),
+    fillColor: Color,
+    borderColor: Color,
 ) {
+    val space = (getScreenWidth() * 1.0 / 25).toInt()
+    val rowLength = space * 24
+    val textLength = space * 25
     Column(modifier = modifier) {
         Row(modifier = Modifier
             .fillMaxWidth()
-            .height(46.dp)
-//                    .background(CustomColor.tree)
+            .height(46.dp),
         ) {
-            Box(modifier = Modifier
-                .fillMaxWidth()
-                .fillMaxHeight()) {
+            Box(modifier = Modifier.fillMaxSize()
+            ) {
                 //绘制预约时间段
-                Row(modifier = Modifier.fillMaxSize()) {
-                    Box(modifier = Modifier.weight(1f).fillMaxHeight().background(Color.Transparent))
-                    Row(modifier = Modifier.weight(48f).fillMaxHeight()) {
-                        for (i in 0..23) {
-                            Row(modifier = Modifier
-                                .weight(1f)
-                                .fillMaxHeight()
-//                            .border(1.dp, Color.Blue)
-                            ) {
-                                for (j in 0..3) {
-                                    val boxColor = if (scheduleRange.contains(i * 4 + j)) Color(0xFFe61835) else Color(0xFFd8eadf)
-                                    Box(modifier = Modifier
-                                        .weight(1f)
-                                        .fillMaxHeight()
-                                        .background(boxColor)
-                                    )
-                                }
+                Row(modifier = Modifier.width(rowLength.dp).fillMaxHeight().align(Alignment.Center)) {
+                    for (i in 0..23) {
+                        Row(modifier = Modifier
+                            .width(space.dp)
+                            .fillMaxHeight()
+                        ) {
+                            for (j in 0..3) {
+                                val boxColor = if (scheduleRange.contains(i * 4 + j)) Color(0xFFe61835) else Color(0xFFd8eadf)
+                                Box(modifier = Modifier
+                                    .width((space / 4.0).dp)
+                                    .fillMaxHeight()
+                                    .background(boxColor)
+                                )
                             }
                         }
                     }
-                    Box(modifier = Modifier.weight(1f).fillMaxHeight().background(Color.Transparent))
                 }
                 //绘制已经过去的时间段
-                val curProgress = (TimeUtil.getHour() * 59 + TimeUtil.getMinute()).toFloat()
-                val remindProgress = (1416 - curProgress)
-
-                Row(modifier = Modifier.fillMaxSize()) {
-                    Box(modifier = Modifier.weight(1f).fillMaxHeight().background(Color.Transparent))
-                    Row(modifier = Modifier.weight(48f).fillMaxHeight().background(Color.Transparent)) {
-                        Row(modifier = Modifier.weight(curProgress).fillMaxHeight().background(fillColor)) {}
-                        Row(modifier = Modifier.weight(remindProgress).fillMaxHeight().background(Color.Transparent)) {}
-                    }
-                    Box(modifier = Modifier.weight(1f).fillMaxHeight().background(Color.Transparent))
+                var curProgress = ceil(TimeUtil.getHour() * space + TimeUtil.getMinute() / 60.0 * space).toInt()
+                if (curProgress == 19 * space) {
+                    curProgress--
                 }
-
+                val remindProgress = rowLength - curProgress
+//                Log.d("wlzhou", "l = $curProgress, r = $remindProgress")
+                Row(modifier = Modifier.width(rowLength.dp).fillMaxHeight().align(Alignment.Center)) {
+                    Box(modifier = Modifier.width(curProgress.dp).fillMaxHeight().background(fillColor))
+                    Box(modifier = Modifier.width(remindProgress.dp).fillMaxHeight().background(Color.Transparent))
+                }
                 //绘制边框
-                Row(modifier = Modifier
-                    .fillMaxSize(),
-//                    .background(CustomColor.green)
-                    horizontalArrangement = Arrangement.SpaceAround
-                ) {
+                Row(modifier = Modifier.width(textLength.dp).align(Alignment.Center)) {
                     for (i in 0..24) {
-                        Spacer(modifier = Modifier.width(1.dp).fillMaxHeight().background(borderColor) )
+                        Box(modifier = Modifier
+                            .width(space.dp)
+                            .fillMaxHeight()
+                        ) {
+                            Spacer(modifier = Modifier.width(1.dp).fillMaxHeight().background(borderColor).align(Alignment.Center))
+                        }
                     }
                 }
             }
         }
         Row(modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 4.dp),
-//                    .background(CustomColor.green)
-            horizontalArrangement = Arrangement.SpaceAround
+            .width(textLength.dp)
+            .padding(vertical = 4.dp)
+            .align(Alignment.CenterHorizontally),
         ) {
             for (i in 0..24) {
                 Text(text = "$i",
-                    modifier = Modifier
-//                        .weight(1f)
-                        .width(30.dp)
-//                        .border(1.dp, Color.Black)
-//                        .background(CustomColor.powder)
-                    ,
+                    modifier = Modifier.width(space.dp),
                     textAlign = TextAlign.Center,
                     color = Color.White,
                     fontSize = 18.sp,

@@ -102,11 +102,13 @@ fun RemoteConfRunScreen(
                 Spacer(modifier = Modifier
                     .height(20.dp)
                     .fillMaxWidth()
-                    .background(CustomColor.powder))
+//                    .background(CustomColor.powder)
+                )
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .background(CustomColor.tree),
+//                        .background(CustomColor.tree)
+                    ,
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Row(modifier = Modifier
@@ -133,14 +135,21 @@ fun RemoteConfRunScreen(
                             , color = Color.White)
                     }
                     Spacer(modifier = Modifier.height(16.dp))
-                    Text(text = scheduleItem.subject, modifier = Modifier.background(CustomColor.fizz), fontSize = 26.sp, color = Color.White)
+                    Text(text = scheduleItem.subject, fontSize = 26.sp, color = Color.White)
                     Spacer(modifier = Modifier.height(16.dp))
-                    Text(text = "${scheduleItem.creator}（${scheduleItem.host}）", modifier = Modifier.background(CustomColor.blue), fontSize = 26.sp, color = Color.White)
+                    if (scheduleItem.subject == "临时会议") {
+                        Text(text = "", modifier = Modifier
+//                            .background(CustomColor.blue)
+                            , fontSize = 26.sp, color = Color.White)
+                    } else {
+                        Text(text = "${scheduleItem.creator}（${scheduleItem.host}）", fontSize = 26.sp, color = Color.White)
+                    }
                 }
                 Spacer(modifier = Modifier
                     .height(20.dp)
                     .fillMaxWidth()
-                    .background(CustomColor.sand))
+//                    .background(CustomColor.sand)
+                )
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -156,7 +165,7 @@ fun RemoteConfRunScreen(
                         backgroundColor = Color(0xFFab021b),
                         textColor = Color.White,
                         borderSize = 2,
-                        onClick = {  }
+                        onClick = { viewModel.openDelayConfDialog() }
                     )
                     Spacer(modifier = Modifier.width(40.dp))
                     ClickButtonWidget(
@@ -166,7 +175,7 @@ fun RemoteConfRunScreen(
                         name = "结束会议",
                         backgroundColor = Color.White,
                         textColor = Color(0xFFab021b),
-                        onClick = {  }
+                        onClick = { viewModel.openStopConfDialog() }
                     )
                 }
             }

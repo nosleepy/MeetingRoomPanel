@@ -113,7 +113,7 @@ fun RemoteConfIdleScreen(
                     name = "立即开会",
                     backgroundColor = Color.White,
                     textColor = Color(0xFF00a645),
-                    onClick = {  }
+                    onClick = { viewModel.openStartConfDialog() }
                 )
             }
             Column(modifier = Modifier

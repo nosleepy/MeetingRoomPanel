@@ -90,7 +90,7 @@ fun RemoteConfReadyScreen(
             Row(modifier = Modifier
                 .fillMaxWidth()
                 .height(280.dp)
-                .background(CustomColor.tree)
+//                .background(CustomColor.tree)
                 .align(Alignment.Center),
                 horizontalArrangement = Arrangement.Center
             ) {
@@ -100,7 +100,9 @@ fun RemoteConfReadyScreen(
                         .weight(1f),
                     horizontalArrangement = Arrangement.Center
                 ) {
-                    Box(modifier = Modifier.size(280.dp).background(CustomColor.cranesbill)) {
+                    Box(modifier = Modifier.size(280.dp)
+//                        .background(CustomColor.cranesbill)
+                    ) {
                         CircularProgressIndicator(progress = 1f, modifier = Modifier.width(280.dp).height(280.dp), strokeWidth = 10.dp, color = Color(0xFFd49f79))
                         CircularProgressIndicator(progress = confState.remindProgress, modifier = Modifier.width(280.dp).height(280.dp), strokeWidth = 10.dp, color = Color.White)
                         Text(
@@ -115,30 +117,43 @@ fun RemoteConfReadyScreen(
                     modifier = Modifier
                         .fillMaxHeight()
                         .weight(2f)
-                        .background(CustomColor.powder),
+//                        .background(CustomColor.powder)
+                    ,
                     verticalArrangement = Arrangement.Center
                 ) {
-                    Text(text = "即将开始", modifier = Modifier.background(CustomColor.blue), fontSize = 68.sp, color = Color.White)
+                    Text(text = "即将开始", modifier = Modifier
+//                        .background(CustomColor.blue)
+                        , fontSize = 68.sp, color = Color.White)
                     Spacer(modifier = Modifier.height(16.dp))
-                    Text(text = scheduleItem.subject, modifier = Modifier.background(CustomColor.fizz), fontSize = 26.sp, color = Color.White)
+                    Text(text = scheduleItem.subject, modifier = Modifier
+//                        .background(CustomColor.fizz)
+                        , fontSize = 26.sp, color = Color.White)
                     Spacer(modifier = Modifier.height(16.dp))
-                    Row(modifier = Modifier.background(CustomColor.addicted)) {
+                    Row(modifier = Modifier
+//                        .background(CustomColor.addicted)
+                    ) {
                         Icon(
                             painter = painterResource(id = R.drawable.btn_clock),
                             contentDescription = null,
                             modifier = Modifier
                                 .size(36.dp)
                                 .align(Alignment.CenterVertically)
-                                .background(CustomColor.fizz)
+//                                .background(CustomColor.fizz)
                                 ,
                             tint = Color.White
                         )
                         Spacer(modifier = Modifier.width(20.dp))
-                        Text(text = "${scheduleItem.configStartTime}-${scheduleItem.configEndTime}", fontSize = 26.sp, modifier = Modifier.background(CustomColor.cranesbill), color = Color.White)
+                        Text(text = "${scheduleItem.configStartTime}-${scheduleItem.configEndTime}", fontSize = 26.sp, modifier = Modifier
+//                            .background(CustomColor.cranesbill)
+                            , color = Color.White)
                         Spacer(modifier = Modifier.width(20.dp))
-                        Text(text = "|", fontSize = 26.sp, modifier = Modifier.background(CustomColor.sand), color = Color.White)
+                        Text(text = "|", fontSize = 26.sp, modifier = Modifier
+//                            .background(CustomColor.sand)
+                            , color = Color.White)
                         Spacer(modifier = Modifier.width(20.dp))
-                        Text(text = "${scheduleItem.creator}（${scheduleItem.host}）", fontSize = 26.sp, modifier = Modifier.background(CustomColor.sand), color = Color.White)
+                        Text(text = "${scheduleItem.creator}（${scheduleItem.host}）", fontSize = 26.sp, modifier = Modifier
+//                            .background(CustomColor.sand)
+                            , color = Color.White)
                     }
                 }
             }

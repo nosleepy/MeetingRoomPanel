@@ -1,15 +1,18 @@
 package com.gs.panel.viewmodel
 
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.gs.panel.CustomApplication
 import com.gs.panel.api.Api
 import com.gs.panel.entity.FacilityItem
 import com.gs.panel.entity.ScheduleItem
 import com.gs.panel.state.DialogState
+import com.gs.panel.state.LocalConfState
 import com.gs.panel.state.RemoteConfState
 import com.gs.panel.util.FileUtil
 import com.gs.panel.util.TimeUtil
@@ -27,6 +30,7 @@ class RemoteConfViewModel : ViewModel() {
     var confState by mutableStateOf<RemoteConfState>(RemoteConfState.IDLE(ScheduleItem()))
     var dialogState by mutableStateOf<DialogState>(DialogState.NoDialog)
     private var confName by mutableStateOf("")
+    private var confId by mutableStateOf("")
     private var startHour = 0
     private var startMinute = 0
     private var endHour = 0
@@ -82,12 +86,13 @@ class RemoteConfViewModel : ViewModel() {
                     CustomApplication.cookie = loginRes.response!!.cookie
                 }
                 val gscConfRes = Api.get().listGscPhysicalConfTimeListByDay(
-                    "2023-11-06 00:00",
-                    "2023-11-06 23:59",
+                    "2023-11-07 00:00",
+                    "2023-11-07 23:59",
                     CustomApplication.cookie
                 )
                 Log.d("MeetingRoomPanel", "gscConfRes = $gscConfRes")
                 confName = gscConfRes.response!!.conference[0].confName
+                confId = gscConfRes.response!!.conference[0].confId
                 facilityList = mutableListOf<FacilityItem>().apply {
                     add(FacilityItem(-1, "", "${gscConfRes.response!!.conference[0].memberCapacity}人", ""))
                     addAll(gscConfRes.response!!.conference[0].facilities)
@@ -134,7 +139,72 @@ class RemoteConfViewModel : ViewModel() {
         dialogState = DialogState.MoreDeviceDialog(facilityList.subList(0, facilityList.size - 1))
     }
 
+    fun openStartConfDialog() {
+        dialogState = DialogState.StartConfDialog
+    }
+
+    fun openStopConfDialog() {
+        dialogState = DialogState.StopConfDialog
+    }
+
+    fun openDelayConfDialog() {
+        dialogState = DialogState.DelayConfDialog
+    }
+
     fun closeDialog() {
         dialogState = DialogState.NoDialog
+    }
+
+    fun startConf(time: Int) {
+        viewModelScope.launch {
+            val res = Api.get().addPhyconfReservationNow(
+                confId,
+                time.toString(),
+                "临时会议",
+                (System.currentTimeMillis() / 1000).toString(),
+                CustomApplication.cookie
+            )
+            Log.d("wlzhou", "startConf res = $res")
+            if (res.isSuccess()) {
+                val hour = res.response!!.utcEndTime.split(" ")[1].split(":")[0].toInt()
+                val minute = res.response!!.utcEndTime.split(" ")[1].split(":")[1].toInt()
+                dialogState = DialogState.StartConfSuccessDialog(
+                    TimeUtil.formatTime(hour + 8),
+                    TimeUtil.formatTime(minute)
+                )
+            } else {
+                Toast.makeText(CustomApplication.context, "失败，请检查网络", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    fun stopConf() {
+        viewModelScope.launch {
+            val res = Api.get().hangupPhysicalConfReservation(
+                scheduleItem.reservationId,
+                CustomApplication.cookie
+            )
+            dialogState = DialogState.NoDialog
+            Log.d("wlzhou", "stopConf res = $res")
+            if (res.isSuccess()) {
+                Toast.makeText(CustomApplication.context, "会议已结束，感谢您的使用", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(CustomApplication.context, "失败，请检查网络", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    fun delayConf(time: Int) {
+        viewModelScope.launch {
+            val res = Api.get().extendTimeForPhysicalConfReservation(
+                confId,
+                time,
+                CustomApplication.cookie
+            )
+            Log.d("wlzhou", "delayConf res = $res")
+            if (res.status == -47) {
+                Toast.makeText(CustomApplication.context, "没有权限！", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 }

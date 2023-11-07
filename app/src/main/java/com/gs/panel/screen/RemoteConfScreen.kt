@@ -14,7 +14,11 @@ import com.gs.panel.screen.remote.RemoteConfRunScreen
 import com.gs.panel.state.DialogState
 import com.gs.panel.state.RemoteConfState
 import com.gs.panel.viewmodel.RemoteConfViewModel
+import com.gs.panel.widget.DelayConfDialog
 import com.gs.panel.widget.MoreDeviceDialog
+import com.gs.panel.widget.StartConfDialog
+import com.gs.panel.widget.StartConfSuccessDialog
+import com.gs.panel.widget.StopConfDialog
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
@@ -49,6 +53,22 @@ fun RemoteConfScreen(navController: NavController) {
             is DialogState.MoreDeviceDialog -> MoreDeviceDialog(
                 onConfirm = { viewModel.closeDialog() },
                 dialogState = viewModel.dialogState as DialogState.MoreDeviceDialog
+            )
+            DialogState.StartConfDialog -> StartConfDialog(
+                onCancel = { viewModel.closeDialog() },
+                onConfirm = { time -> viewModel.startConf(time) }
+            )
+            DialogState.StopConfDialog -> StopConfDialog(
+                onCancel = { viewModel.closeDialog() },
+                onConfirm = { viewModel.stopConf() }
+            )
+            is DialogState.StartConfSuccessDialog -> StartConfSuccessDialog(
+                onConfirm = { viewModel.closeDialog() },
+                dialogState = viewModel.dialogState as DialogState.StartConfSuccessDialog
+            )
+            DialogState.DelayConfDialog -> DelayConfDialog(
+                onCancel = { viewModel.closeDialog() },
+                onConfirm = { time -> viewModel.delayConf(time) }
             )
             else -> {}
         }

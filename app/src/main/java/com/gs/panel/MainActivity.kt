@@ -24,6 +24,8 @@ import com.gs.panel.screen.MainScreen
 import com.gs.panel.screen.RemoteConfScreen
 import com.gs.panel.ui.theme.MeetingRoomPanelTheme
 import com.gs.panel.util.FileUtil
+import com.gs.panel.util.getScreenHeight
+import com.gs.panel.util.getScreenWidth
 import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
@@ -34,6 +36,7 @@ class MainActivity : ComponentActivity() {
                 NavigationScreen()
 //            }
         }
+        Log.d("wlzhou", "w = ${getScreenWidth()}, h = ${getScreenHeight()}")
     }
 }
 
