@@ -67,8 +67,8 @@ fun RemoteConfDisableScreen(
                 FacilityRowWidget(
                     modifier = Modifier.fillMaxWidth().height(34.dp),
                     facilityList = viewModel.facilityList,
-                    itemFillColor = Color(0xFF72071e),
-                    moreItemColor = Color(0xFFab021b),
+                    itemFillColor = Color(0xFF7f7f7f),
+                    moreItemColor = Color(0xFFaaaaaa),
                     onMoreClick = { viewModel.openMoreDeviceDialog() }
                 )
                 Spacer(modifier = Modifier
