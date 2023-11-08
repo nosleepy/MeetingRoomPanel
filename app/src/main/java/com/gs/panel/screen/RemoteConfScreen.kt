@@ -7,6 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.gs.panel.screen.remote.RemoteConfDisableScreen
 import com.gs.panel.screen.remote.RemoteConfIdleScreen
 import com.gs.panel.screen.remote.RemoteConfReadyFlagScreen
 import com.gs.panel.screen.remote.RemoteConfReadyScreen
@@ -15,6 +16,7 @@ import com.gs.panel.state.DialogState
 import com.gs.panel.state.RemoteConfState
 import com.gs.panel.viewmodel.RemoteConfViewModel
 import com.gs.panel.widget.DelayConfDialog
+import com.gs.panel.widget.DelayConfSuccessDialog
 import com.gs.panel.widget.MoreDeviceDialog
 import com.gs.panel.widget.StartConfDialog
 import com.gs.panel.widget.StartConfSuccessDialog
@@ -47,6 +49,11 @@ fun RemoteConfScreen(navController: NavController) {
                 confState = viewModel.confState as RemoteConfState.READY,
                 viewModel = viewModel
             )
+            is RemoteConfState.DISABLE -> RemoteConfDisableScreen(
+                navController = navController,
+                confState = viewModel.confState as RemoteConfState.DISABLE,
+                viewModel = viewModel
+            )
         }
         when (viewModel.dialogState) {
             DialogState.NoDialog -> {}
@@ -70,7 +77,10 @@ fun RemoteConfScreen(navController: NavController) {
                 onCancel = { viewModel.closeDialog() },
                 onConfirm = { time -> viewModel.delayConf(time) }
             )
-            else -> {}
+            is DialogState.DelayConfSuccessDialog -> DelayConfSuccessDialog(
+                onConfirm = { viewModel.closeDialog() },
+                dialogState = viewModel.dialogState as DialogState.DelayConfSuccessDialog
+            )
         }
     }
 }

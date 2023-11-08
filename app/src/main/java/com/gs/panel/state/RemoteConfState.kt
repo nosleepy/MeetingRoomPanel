@@ -18,4 +18,7 @@ sealed class RemoteConfState {
     data class RUN(
         val scheduleItem: ScheduleItem,
     ): RemoteConfState()
+    data class DISABLE(
+        val scheduleItem: ScheduleItem,
+    ): RemoteConfState()
 }

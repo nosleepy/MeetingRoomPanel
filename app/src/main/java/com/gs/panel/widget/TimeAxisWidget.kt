@@ -1,5 +1,6 @@
 package com.gs.panel.widget
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -28,6 +29,7 @@ fun TimeAxisWidget(
     modifier: Modifier,
     scheduleRange: List<Int>,
     fillColor: Color,
+    idleColor: Color,
     borderColor: Color,
 ) {
     val space = (getScreenWidth() * 1.0 / 25).toInt()
@@ -48,7 +50,7 @@ fun TimeAxisWidget(
                             .fillMaxHeight()
                         ) {
                             for (j in 0..3) {
-                                val boxColor = if (scheduleRange.contains(i * 4 + j)) Color(0xFFe61835) else Color(0xFFd8eadf)
+                                val boxColor = if (scheduleRange.contains(i * 4 + j)) Color(0xFFe61835) else idleColor
                                 Box(modifier = Modifier
                                     .width((space / 4.0).dp)
                                     .fillMaxHeight()
@@ -60,11 +62,11 @@ fun TimeAxisWidget(
                 }
                 //绘制已经过去的时间段
                 var curProgress = ceil(TimeUtil.getHour() * space + TimeUtil.getMinute() / 60.0 * space).toInt()
-                if (curProgress == 19 * space) {
+                if (curProgress == (TimeUtil.getHour() + 1) * space) {
                     curProgress--
                 }
                 val remindProgress = rowLength - curProgress
-//                Log.d("wlzhou", "l = $curProgress, r = $remindProgress")
+                Log.d("wlzhou", "l = $curProgress, r = $remindProgress")
                 Row(modifier = Modifier.width(rowLength.dp).fillMaxHeight().align(Alignment.Center)) {
                     Box(modifier = Modifier.width(curProgress.dp).fillMaxHeight().background(fillColor))
                     Box(modifier = Modifier.width(remindProgress.dp).fillMaxHeight().background(Color.Transparent))

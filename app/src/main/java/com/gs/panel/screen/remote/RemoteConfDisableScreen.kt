@@ -26,29 +26,30 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.gs.panel.R
 import com.gs.panel.state.RemoteConfState
 import com.gs.panel.ui.theme.CustomColor
+//import com.gs.panel.viewmodel.RemoteConfState
 //import com.gs.panel.viewmodel.ConfState
 import com.gs.panel.viewmodel.RemoteConfViewModel
+import com.gs.panel.widget.ClickButtonWidget
 import com.gs.panel.widget.DynamicsRowWidget
 import com.gs.panel.widget.FacilityRowWidget
 import com.gs.panel.widget.TimeAxisWidget
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-fun RemoteConfReadyFlagScreen(
+fun RemoteConfDisableScreen(
     navController: NavController,
-    confState: RemoteConfState.READY_FLAG,
+    confState: RemoteConfState.DISABLE,
     viewModel: RemoteConfViewModel,
 ) {
     val scheduleItem = confState.scheduleItem
     val scheduleRange = viewModel.scheduleRange
     Box(modifier = Modifier
         .fillMaxSize()
-        .background(Color(0xFFfd9a38))
+        .background(Color(0xFFaaaaaa))
 
 //        .border(1.dp, Color.Black)
     ) {
@@ -66,8 +67,8 @@ fun RemoteConfReadyFlagScreen(
                 FacilityRowWidget(
                     modifier = Modifier.fillMaxWidth().height(34.dp),
                     facilityList = viewModel.facilityList,
-                    itemFillColor = Color(0xFFbf7629),
-                    moreItemColor = Color(0xFFfd9a38),
+                    itemFillColor = Color(0xFF72071e),
+                    moreItemColor = Color(0xFFab021b),
                     onMoreClick = { viewModel.openMoreDeviceDialog() }
                 )
                 Spacer(modifier = Modifier
@@ -76,7 +77,7 @@ fun RemoteConfReadyFlagScreen(
 //                    .background(CustomColor.addicted)
                 )
                 Text(
-                    text = "11111111111",
+                    text = scheduleItem.confName,
                     modifier = Modifier
 //                        .background(CustomColor.green)
                         .fillMaxWidth(),
@@ -90,7 +91,7 @@ fun RemoteConfReadyFlagScreen(
 //                .background(CustomColor.tree)
                 .align(Alignment.Center)) {
                 Text(
-                    text = "即将开始",
+                    text = "禁用中",
                     modifier = Modifier
 //                        .background(CustomColor.blue)
                         .fillMaxWidth(),
@@ -99,7 +100,7 @@ fun RemoteConfReadyFlagScreen(
                     textAlign = TextAlign.Center
                 )
                 Spacer(modifier = Modifier
-                    .height(30.dp)
+                    .height(20.dp)
                     .fillMaxWidth()
 //                    .background(CustomColor.powder)
                 )
@@ -117,29 +118,21 @@ fun RemoteConfReadyFlagScreen(
                             painter = painterResource(id = R.drawable.btn_clock),
                             contentDescription = null,
                             modifier = Modifier
-                                .size(36.dp)
+                                .size(30.dp)
                                 .align(Alignment.CenterVertically)
 //                                .background(CustomColor.fizz)
-                                .clickable { },
+                                ,
                             tint = Color.White
                         )
                         Spacer(modifier = Modifier.width(20.dp))
-                        Text(text = "会议时间", fontSize = 26.sp, modifier = Modifier
-//                            .background(CustomColor.cranesbill)
-                            , color = Color.White)
+                        Text(text = "解禁时间", fontSize = 26.sp, modifier = Modifier, color = Color.White)
                         Spacer(modifier = Modifier.width(20.dp))
-                        Text(text = "${scheduleItem.configStartTime}-${scheduleItem.configEndTime}", fontSize = 26.sp, modifier = Modifier
-//                            .background(CustomColor.sand)
-                            , color = Color.White)
+                        Text(text = "11/08", fontSize = 26.sp, modifier = Modifier, color = Color.White)
+                        Spacer(modifier = Modifier.width(20.dp))
+                        Text(text = "11:00", fontSize = 26.sp, modifier = Modifier, color = Color.White)
                     }
                     Spacer(modifier = Modifier.height(16.dp))
-                    Text(text = scheduleItem.subject, modifier = Modifier
-//                        .background(CustomColor.fizz)
-                        , fontSize = 26.sp, color = Color.White)
-                    Spacer(modifier = Modifier.height(16.dp))
-                    Text(text = "${scheduleItem.creator}（${scheduleItem.host}）", modifier = Modifier
-//                        .background(CustomColor.blue)
-                        , fontSize = 26.sp, color = Color.White)
+                    Text(text = "投影仪故障", fontSize = 26.sp, color = Color.White)
                 }
             }
             Column(modifier = Modifier
@@ -198,9 +191,9 @@ fun RemoteConfReadyFlagScreen(
                 TimeAxisWidget(
                     modifier = Modifier.fillMaxWidth(),
                     scheduleRange = scheduleRange,
-                    fillColor = Color(0xFFf2ac62),
-                    idleColor = Color(0xFFd8eadf),
-                    borderColor = Color(0xFFc77e33),
+                    fillColor = Color(0xFFb7b7b7),
+                    idleColor = Color(0xFFb7b7b7),
+                    borderColor = Color(0xFF828282),
                 )
             }
         }

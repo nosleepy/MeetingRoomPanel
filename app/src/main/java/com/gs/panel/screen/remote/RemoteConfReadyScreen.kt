@@ -214,6 +214,7 @@ fun RemoteConfReadyScreen(
                     modifier = Modifier.fillMaxWidth(),
                     scheduleRange = scheduleRange,
                     fillColor = Color(0xFFf2ac62),
+                    idleColor = Color(0xFFd8eadf),
                     borderColor = Color(0xFFc77e33),
                 )
             }

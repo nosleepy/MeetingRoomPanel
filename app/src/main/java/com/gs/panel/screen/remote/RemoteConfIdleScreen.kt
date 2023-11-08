@@ -191,6 +191,7 @@ fun RemoteConfIdleScreen(
                     modifier = Modifier.fillMaxWidth(),
                     scheduleRange = scheduleRange,
                     fillColor = Color(0xFF2bb570),
+                    idleColor = Color(0xFFd8eadf),
                     borderColor = Color(0xFF389743),
                 )
             }
