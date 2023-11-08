@@ -192,6 +192,7 @@ fun RemoteConfIdleScreen(
                     scheduleRange = scheduleRange,
                     fillColor = Color(0xFF2bb570),
                     idleColor = Color(0xFFd8eadf),
+                    scheduleColor = Color(0xFFe61835),
                     borderColor = Color(0xFF389743),
                 )
             }

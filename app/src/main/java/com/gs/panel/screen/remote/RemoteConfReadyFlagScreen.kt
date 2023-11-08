@@ -200,6 +200,7 @@ fun RemoteConfReadyFlagScreen(
                     scheduleRange = scheduleRange,
                     fillColor = Color(0xFFf2ac62),
                     idleColor = Color(0xFFd8eadf),
+                    scheduleColor = Color(0xFFe61835),
                     borderColor = Color(0xFFc77e33),
                 )
             }

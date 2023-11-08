@@ -32,9 +32,9 @@ fun FacilityRowWidget(
                     Text(
                         text = "More",
                         modifier = Modifier
-                            .clickable { onMoreClick() }
                             .clip(RoundedCornerShape(12))
                             .background(Color.White)
+                            .clickable { onMoreClick() }
                             .padding(6.dp, 3.dp, 6.dp, 3.dp),
                         color = moreItemColor,
                         fontSize = 20.sp,)

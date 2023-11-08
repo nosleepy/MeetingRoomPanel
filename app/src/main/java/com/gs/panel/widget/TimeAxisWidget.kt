@@ -30,6 +30,7 @@ fun TimeAxisWidget(
     scheduleRange: List<Int>,
     fillColor: Color,
     idleColor: Color,
+    scheduleColor: Color,
     borderColor: Color,
 ) {
     val space = (getScreenWidth() * 1.0 / 25).toInt()
@@ -50,7 +51,7 @@ fun TimeAxisWidget(
                             .fillMaxHeight()
                         ) {
                             for (j in 0..3) {
-                                val boxColor = if (scheduleRange.contains(i * 4 + j)) Color(0xFFe61835) else idleColor
+                                val boxColor = if (scheduleRange.contains(i * 4 + j)) scheduleColor else idleColor
                                 Box(modifier = Modifier
                                     .width((space / 4.0).dp)
                                     .fillMaxHeight()

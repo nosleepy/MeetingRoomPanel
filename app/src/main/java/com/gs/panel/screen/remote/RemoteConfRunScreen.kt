@@ -237,6 +237,7 @@ fun RemoteConfRunScreen(
                     scheduleRange = scheduleRange,
                     fillColor = Color(0xFFba4050),
                     idleColor = Color(0xFFd8eadf),
+                    scheduleColor = Color(0xFFe61835),
                     borderColor = Color(0xFF7b0819),
                 )
             }

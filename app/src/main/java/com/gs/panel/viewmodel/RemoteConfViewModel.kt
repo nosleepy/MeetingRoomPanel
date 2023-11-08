@@ -9,10 +9,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.gs.panel.CustomApplication
 import com.gs.panel.api.Api
+import com.gs.panel.entity.ConferenceItem
 import com.gs.panel.entity.FacilityItem
 import com.gs.panel.entity.ScheduleItem
 import com.gs.panel.state.DialogState
-import com.gs.panel.state.LocalConfState
 import com.gs.panel.state.RemoteConfState
 import com.gs.panel.util.FileUtil
 import com.gs.panel.util.TimeUtil
@@ -25,29 +25,27 @@ class RemoteConfViewModel : ViewModel() {
     private val mainScope = MainScope()
     private var timeJob: Job
     private var requestJob: Job
-
-    var facilityList by mutableStateOf(listOf<FacilityItem>())
-    var confState by mutableStateOf<RemoteConfState>(RemoteConfState.IDLE(ScheduleItem()))
-    var dialogState by mutableStateOf<DialogState>(DialogState.NoDialog)
-    private var confName by mutableStateOf("")
-    private var confId by mutableStateOf("")
-    private var confStatus by mutableStateOf("")
     private var startHour = 0
     private var startMinute = 0
     private var endHour = 0
     private var endMinute = 0
     private var scheduleItem = ScheduleItem()
+    private var conferenceItem = ConferenceItem(confStatus = "available")
     private var scheduleList = listOf<ScheduleItem>()
     var scheduleRange by mutableStateOf(listOf<Int>())
+    var facilityList by mutableStateOf(listOf<FacilityItem>())
+    var confState by mutableStateOf<RemoteConfState>(RemoteConfState.IDLE(ScheduleItem()))
+    var dialogState by mutableStateOf<DialogState>(DialogState.NoDialog)
 
     init {
         timeJob = mainScope.launch {
             repeat(Int.MAX_VALUE) {
-                when (confStatus) {
+                when (conferenceItem.confStatus) {
                     "disable" -> {
-                        confState = RemoteConfState.DISABLE(scheduleItem)
+                        confState = RemoteConfState.DISABLE(conferenceItem)
                     }
-                    "available", "inuse" -> {
+                    "available",
+                    "inuse" -> {
                         if (TimeUtil.getTodaySeconds() == TimeUtil.getTargetSeconds(startHour, startMinute - 10)) {
                             confState = RemoteConfState.READY_FLAG(scheduleItem)
                         } else if (TimeUtil.getTodaySeconds() > TimeUtil.getTargetSeconds(startHour, startMinute - 10)
@@ -66,7 +64,7 @@ class RemoteConfViewModel : ViewModel() {
                             confState = RemoteConfState.IDLE(scheduleItem)
                         } else {
                             confState = if (scheduleItem.reservationId.isEmpty()) {
-                                RemoteConfState.IDLE(ScheduleItem(confName = confName))
+                                RemoteConfState.IDLE(ScheduleItem(confName = conferenceItem.confName))
                             } else {
                                 RemoteConfState.IDLE(scheduleItem)
                             }
@@ -96,26 +94,29 @@ class RemoteConfViewModel : ViewModel() {
                     CustomApplication.cookie
                 )
                 Log.d("wlzhou", "gscConfRes = $gscConfRes")
-                confName = gscConfRes.response!!.conference[0].confName
-                confId = gscConfRes.response!!.conference[0].confId
-                confStatus = gscConfRes.response!!.conference[0].confStatus
+                conferenceItem = gscConfRes.response!!.conference[0]
                 facilityList = mutableListOf<FacilityItem>().apply {
-                    add(FacilityItem(-1, "", "${gscConfRes.response!!.conference[0].memberCapacity}人", ""))
-                    addAll(gscConfRes.response!!.conference[0].facilities)
+                    add(FacilityItem(-1, "", "${conferenceItem.memberCapacity}人", ""))
+                    addAll(conferenceItem.facilities)
                     add(FacilityItem(0, "", "More", ""))
                 }
-                when (confStatus) {
+                when (conferenceItem.confStatus) {
                     "disable" -> {
-                        confState = RemoteConfState.DISABLE(scheduleItem)
+                        confState = RemoteConfState.DISABLE(conferenceItem)
                     }
-                    "available", "inuse" -> {
-                        scheduleList = gscConfRes.response!!.conference[0].schedules
+                    "available",
+                    "inuse" -> {
+                        scheduleList = conferenceItem.schedules
                         scheduleRange = listOf()
                         if (scheduleList.isNotEmpty()) {
                             scheduleList.forEach {
                                 it.configStartTime = it.configStartTime.split(' ')[1]
                                 it.configEndTime = it.configEndTime.split(' ')[1]
+                                if (it.configEndTime == "23:59") {
+                                    it.configEndTime = "24:00"
+                                }
                             }
+
                             startHour = scheduleList[0].configStartTime.split(':')[0].toInt()
                             startMinute = scheduleList[0].configStartTime.split(':')[1].toInt()
                             endHour = scheduleList[0].configEndTime.split(':')[0].toInt()
@@ -129,7 +130,6 @@ class RemoteConfViewModel : ViewModel() {
                                 val rightMinute = it.configEndTime.split(':')[1].toInt()
                                 val leftIndex = leftHour * 4 + leftMinute / 15
                                 val rightIndex = rightHour * 4 + rightMinute / 15
-//                        Log.d("wlzhou", "leftIndex = $leftIndex, rightIndex = $rightIndex")
                                 for (i in leftIndex until rightIndex) {
                                     scheduleRange = scheduleRange.toMutableList().apply { add(i) }
                                 }
@@ -140,7 +140,6 @@ class RemoteConfViewModel : ViewModel() {
                             endHour = 0
                             endMinute = 0
                             scheduleItem = ScheduleItem()
-
                             scheduleRange = scheduleRange.toMutableList().apply { add(-1) }
                         }
                     }
@@ -173,7 +172,7 @@ class RemoteConfViewModel : ViewModel() {
     fun startConf(time: Int) {
         viewModelScope.launch {
             val res = Api.get().addPhyconfReservationNow(
-                confId,
+                conferenceItem.confId,
                 time.toString(),
                 "临时会议",
                 (System.currentTimeMillis() / 1000).toString(),
@@ -187,6 +186,8 @@ class RemoteConfViewModel : ViewModel() {
                     TimeUtil.formatTime(hour + 8),
                     TimeUtil.formatTime(minute)
                 )
+            } else if (res.status == -127) {
+                Toast.makeText(CustomApplication.context, "预约时间已经被占用", Toast.LENGTH_SHORT).show()
             } else {
                 Toast.makeText(CustomApplication.context, "失败，请检查网络", Toast.LENGTH_SHORT).show()
             }
@@ -224,6 +225,8 @@ class RemoteConfViewModel : ViewModel() {
                     TimeUtil.formatTime(hour + 8),
                     TimeUtil.formatTime(minute)
                 )
+            } else if (res.status == -127) {
+                Toast.makeText(CustomApplication.context, "预约时间已经被占用", Toast.LENGTH_SHORT).show()
             }
         }
     }

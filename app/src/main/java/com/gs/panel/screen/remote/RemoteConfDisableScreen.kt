@@ -45,8 +45,10 @@ fun RemoteConfDisableScreen(
     confState: RemoteConfState.DISABLE,
     viewModel: RemoteConfViewModel,
 ) {
-    val scheduleItem = confState.scheduleItem
+    val conferenceItem = confState.conferenceItem
     val scheduleRange = viewModel.scheduleRange
+    val disableDate = conferenceItem.disableEndTime.split(" ")[0]
+    val disableTime = conferenceItem.disableEndTime.split(" ")[1]
     Box(modifier = Modifier
         .fillMaxSize()
         .background(Color(0xFFaaaaaa))
@@ -77,7 +79,7 @@ fun RemoteConfDisableScreen(
 //                    .background(CustomColor.addicted)
                 )
                 Text(
-                    text = scheduleItem.confName,
+                    text = conferenceItem.confName,
                     modifier = Modifier
 //                        .background(CustomColor.green)
                         .fillMaxWidth(),
@@ -127,12 +129,12 @@ fun RemoteConfDisableScreen(
                         Spacer(modifier = Modifier.width(20.dp))
                         Text(text = "解禁时间", fontSize = 26.sp, modifier = Modifier, color = Color.White)
                         Spacer(modifier = Modifier.width(20.dp))
-                        Text(text = "11/08", fontSize = 26.sp, modifier = Modifier, color = Color.White)
+                        Text(text = disableDate, fontSize = 26.sp, modifier = Modifier, color = Color.White)
                         Spacer(modifier = Modifier.width(20.dp))
-                        Text(text = "11:00", fontSize = 26.sp, modifier = Modifier, color = Color.White)
+                        Text(text = disableTime, fontSize = 26.sp, modifier = Modifier, color = Color.White)
                     }
                     Spacer(modifier = Modifier.height(16.dp))
-                    Text(text = "投影仪故障", fontSize = 26.sp, color = Color.White)
+                    Text(text = conferenceItem.disableDescription, fontSize = 26.sp, color = Color.White)
                 }
             }
             Column(modifier = Modifier
@@ -193,6 +195,7 @@ fun RemoteConfDisableScreen(
                     scheduleRange = scheduleRange,
                     fillColor = Color(0xFFb7b7b7),
                     idleColor = Color(0xFFb7b7b7),
+                    scheduleColor = Color(0xFFb7b7b7),
                     borderColor = Color(0xFF828282),
                 )
             }
