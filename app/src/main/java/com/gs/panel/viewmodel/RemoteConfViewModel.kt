@@ -39,7 +39,6 @@ class RemoteConfViewModel : ViewModel() {
     private var scheduleItem = ScheduleItem()
     private var scheduleList = listOf<ScheduleItem>()
     var scheduleRange by mutableStateOf(listOf<Int>())
-    var isTempConf by mutableStateOf(false) //临时会议
 
     init {
         timeJob = mainScope.launch {
