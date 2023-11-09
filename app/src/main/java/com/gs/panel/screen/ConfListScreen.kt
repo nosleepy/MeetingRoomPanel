@@ -25,12 +25,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.gs.panel.R
 import com.gs.panel.ui.theme.CustomColor
+import com.gs.panel.viewmodel.ConfListViewModel
 
 @Composable
 fun ConfListScreen(navController: NavController) {
+    val viewModel: ConfListViewModel = viewModel()
     Column(modifier = Modifier
         .fillMaxSize()
 //        .padding(30.dp)

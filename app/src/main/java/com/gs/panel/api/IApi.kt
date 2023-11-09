@@ -2,6 +2,7 @@ package com.gs.panel.api
 
 import com.google.gson.annotations.SerializedName
 import com.gs.panel.entity.ConferenceItem
+import com.gs.panel.entity.ScheduleItem
 import retrofit2.http.GET
 import retrofit2.http.Query
 
@@ -33,6 +34,10 @@ data class CloudImInfoItem(
 
 data class GscPhysicalConfItem(
     @SerializedName("conference") val conference: List<ConferenceItem>
+)
+
+data class GscPhyConfReservationItem(
+    @SerializedName("conference") val conference: List<ScheduleItem>
 )
 
 data class OperationItem(
@@ -118,10 +123,11 @@ interface IApi {
 
     /**
      * 电子门牌获取线下会议室预约列表
+     * conf_id: 会议室唯一id
      */
     @GET("cticgi?action=listGscPhyConfReservation")
     suspend fun listGscPhyConfReservation(
         @Query("conf_id") confId: String,
         @Query("cookie") cookie: String,
-    ): Response<OperationItem>
+    ): Response<GscPhyConfReservationItem>
 }

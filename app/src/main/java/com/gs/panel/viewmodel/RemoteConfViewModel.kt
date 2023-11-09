@@ -89,11 +89,11 @@ class RemoteConfViewModel : ViewModel() {
                     CustomApplication.cookie = loginRes.response!!.cookie
                 }
                 val gscConfRes = Api.get().listGscPhysicalConfTimeListByDay(
-                    "2023-11-08 00:00",
-                    "2023-11-08 23:59",
+                    "${TimeUtil.getTodayDate()} 00:00",
+                    "${TimeUtil.getTodayDate()} 23:59",
                     CustomApplication.cookie
                 )
-                Log.d("wlzhou", "gscConfRes = $gscConfRes")
+//                Log.d("wlzhou", "gscConfRes = $gscConfRes")
                 conferenceItem = gscConfRes.response!!.conference[0]
                 facilityList = mutableListOf<FacilityItem>().apply {
                     add(FacilityItem(-1, "", "${conferenceItem.memberCapacity}人", ""))

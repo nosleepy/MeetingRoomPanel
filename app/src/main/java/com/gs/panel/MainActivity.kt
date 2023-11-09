@@ -24,6 +24,7 @@ import com.gs.panel.screen.MainScreen
 import com.gs.panel.screen.RemoteConfScreen
 import com.gs.panel.ui.theme.MeetingRoomPanelTheme
 import com.gs.panel.util.FileUtil
+import com.gs.panel.util.TimeUtil
 import com.gs.panel.util.getScreenHeight
 import com.gs.panel.util.getScreenWidth
 import kotlinx.coroutines.launch
@@ -37,6 +38,7 @@ class MainActivity : ComponentActivity() {
 //            }
         }
         Log.d("wlzhou", "w = ${getScreenWidth()}, h = ${getScreenHeight()}")
+        Log.d("wlzhou", "date = ${TimeUtil.getTodayDate()}")
     }
 }
 
