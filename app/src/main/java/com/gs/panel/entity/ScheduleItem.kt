@@ -18,7 +18,7 @@ data class ScheduleItem(
     @SerializedName("config_timezone") val configTimezone: String = "",
     @SerializedName("creator") val creator: String = "",
     @SerializedName("host") val host: String = "",
-    @SerializedName("conf_reservation_status") val confReservationStatus: String = "",
+    @SerializedName("conf_reservation_status") var confReservationStatus: String = "",
     @SerializedName("utc_start_time") val utcStartTime: String = "",
     @SerializedName("utc_end_time") val utcEndTime: String = "",
     @SerializedName("join_early") val joinEarly: String = "",

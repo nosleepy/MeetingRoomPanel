@@ -1,6 +1,9 @@
 package com.gs.panel.viewmodel
 
-import android.util.Log
+import android.annotation.SuppressLint
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.gs.panel.CustomApplication
@@ -8,9 +11,11 @@ import com.gs.panel.api.Api
 import com.gs.panel.entity.ScheduleItem
 import com.gs.panel.util.TimeUtil
 import kotlinx.coroutines.launch
+import kotlin.Comparator
 
+@SuppressLint("MutableCollectionMutableState")
 class ConfListViewModel: ViewModel() {
-    private var scheduleMap = mutableMapOf<String, MutableList<ScheduleItem>>()
+    var scheduleMap by mutableStateOf(mutableMapOf<String, MutableList<ScheduleItem>>())
 
     init {
         viewModelScope.launch {
@@ -23,17 +28,26 @@ class ConfListViewModel: ViewModel() {
                 gscConfRes.response!!.conference[0].confId,
                 CustomApplication.cookie
             )
-            Log.d("wlzhou", "reservationRes = $reservationRes")
             reservationRes.response!!.conference.forEach {
                 val configStartTime = it.configStartTime.split(" ")[0]
+                it.configStartTime = it.configStartTime.split(" ")[1]
+                it.configEndTime = it.configEndTime.split(" ")[1]
+                it.confReservationStatus = when (it.confReservationStatus) {
+                    "about_to_begin" -> "即将开始"
+                    "issue" -> "进行中"
+                    "not_begin" -> "未开始"
+                    else -> ""
+                }
                 if (scheduleMap.containsKey(configStartTime)) {
                     val scheduleList = scheduleMap[configStartTime]!!.apply { add(it) }
                     scheduleMap[configStartTime] = scheduleList
                 } else {
-                    scheduleMap[configStartTime] = mutableListOf<ScheduleItem>(it)
+                    scheduleMap[configStartTime] = mutableListOf(it)
                 }
             }
-            Log.d("wlzhou", "scheduleMap = $scheduleMap")
+            scheduleMap.forEach {
+                it.value.sortWith(Comparator { o1, o2 -> o1.configStartTime.compareTo(o2.configStartTime) })
+            }
         }
     }
 }
