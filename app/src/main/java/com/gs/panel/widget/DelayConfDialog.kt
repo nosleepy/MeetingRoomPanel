@@ -39,7 +39,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.gs.panel.R
 import com.gs.panel.entity.delayConfList
-import com.gs.panel.entity.deviceMoreList
 import com.gs.panel.ui.theme.CustomColor
 import com.gs.panel.viewmodel.RemoteConfViewModel
 

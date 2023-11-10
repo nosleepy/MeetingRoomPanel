@@ -25,7 +25,6 @@ import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.gs.panel.entity.deviceMoreList
 import com.gs.panel.state.DialogState
 import com.gs.panel.viewmodel.RemoteConfViewModel
 

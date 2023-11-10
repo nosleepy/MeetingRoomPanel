@@ -38,8 +38,6 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.gs.panel.CustomApplication
 import com.gs.panel.R
-import com.gs.panel.entity.deviceList
-import com.gs.panel.entity.deviceMoreList
 import com.gs.panel.state.DialogState
 import com.gs.panel.state.LocalConfState
 import com.gs.panel.ui.theme.CustomColor

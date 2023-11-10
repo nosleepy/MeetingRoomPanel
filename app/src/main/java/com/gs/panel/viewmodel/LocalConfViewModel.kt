@@ -15,7 +15,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class LocalConfViewModel : ViewModel() {
-    var confState by mutableStateOf<LocalConfState>(LocalConfState.IDLE)
+    var confState by mutableStateOf<LocalConfState>(LocalConfState.Idle)
     var dialogState by mutableStateOf<DialogState>(DialogState.NoDialog)
 
     private val mainScope = MainScope()
@@ -30,7 +30,7 @@ class LocalConfViewModel : ViewModel() {
                 val curTime = TimeUtil.getHour() * 60 + TimeUtil.getMinute()
                 if (TimeUtil.parseHour(curTime) == TimeUtil.parseHour(stopTime) &&
                     TimeUtil.parseMinute(curTime) == TimeUtil.parseMinute(stopTime)) {
-                    confState = LocalConfState.IDLE
+                    confState = LocalConfState.Idle
                 }
                 delay(3000)
             }
@@ -40,18 +40,18 @@ class LocalConfViewModel : ViewModel() {
     fun startConf(time: Int) {
         startTime = TimeUtil.getHour() * 60 + TimeUtil.getMinute()
         stopTime = startTime + time
-        confState = LocalConfState.RUN(TimeUtil.parseHour(startTime), TimeUtil.parseMinute(startTime), TimeUtil.parseHour(stopTime), TimeUtil.parseMinute(stopTime))
+        confState = LocalConfState.Run(TimeUtil.parseHour(startTime), TimeUtil.parseMinute(startTime), TimeUtil.parseHour(stopTime), TimeUtil.parseMinute(stopTime))
         dialogState = DialogState.StartConfSuccessDialog(TimeUtil.parseHour(stopTime), TimeUtil.parseMinute(stopTime))
     }
 
     fun delayConf(time: Int) {
         stopTime += time
-        confState = LocalConfState.RUN(TimeUtil.parseHour(startTime), TimeUtil.parseMinute(startTime), TimeUtil.parseHour(stopTime), TimeUtil.parseMinute(stopTime))
+        confState = LocalConfState.Run(TimeUtil.parseHour(startTime), TimeUtil.parseMinute(startTime), TimeUtil.parseHour(stopTime), TimeUtil.parseMinute(stopTime))
         dialogState = DialogState.DelayConfSuccessDialog(TimeUtil.parseHour(stopTime), TimeUtil.parseMinute(stopTime))
     }
 
     fun stopConf() {
-        confState = LocalConfState.IDLE
+        confState = LocalConfState.Idle
         closeDialog()
         Toast.makeText(CustomApplication.context, "会议已结束，感谢您的使用", Toast.LENGTH_SHORT).show()
     }

@@ -1,7 +1,9 @@
 package com.gs.panel.api
 
 import com.google.gson.annotations.SerializedName
+import com.gs.panel.entity.CloudImInfoItem
 import com.gs.panel.entity.ConferenceItem
+import com.gs.panel.entity.OperationItem
 import com.gs.panel.entity.ScheduleItem
 import retrofit2.http.GET
 import retrofit2.http.Query
@@ -20,31 +22,12 @@ data class LoginInfoItem(
     @SerializedName("remain_time") val remainTime: Int,
 )
 
-data class CloudImInfoItem(
-    @SerializedName("cloud_im_enabled") val cloudImEnabled: String,
-    @SerializedName("cloud_im_address") val cloudImAddress: String,
-    @SerializedName("cloud_im_prefix") val cloudImPrefix: String,
-    @SerializedName("cloud_im_state") val cloudImState: Int,
-    @SerializedName("cloud_im_enterprise_id") val cloudImEnterpriseId: Int,
-    @SerializedName("cloud_im_device_id") val cloudImDeviceId: Int,
-    @SerializedName("area") val area: String,
-    @SerializedName("cloud_im_https_address") val cloudImHttpsAddress: String,
-    @SerializedName("cloud_im_https_port") val cloudImHttpsPort: Int,
-)
-
 data class GscPhysicalConfItem(
     @SerializedName("conference") val conference: List<ConferenceItem>
 )
 
 data class GscPhyConfReservationItem(
     @SerializedName("conference") val conference: List<ScheduleItem>
-)
-
-data class OperationItem(
-    @SerializedName("reservation_id") val reservationId: String,
-    @SerializedName("utc_start_time") val utcStartTime: String,
-    @SerializedName("utc_end_time") val utcEndTime: String,
-    @SerializedName("need_apply") val needApply: String
 )
 
 interface IApi {

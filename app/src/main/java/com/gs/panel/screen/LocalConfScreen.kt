@@ -26,8 +26,8 @@ fun LocalConfScreen(navController: NavController) {
         .fillMaxSize()
     ) {
         when (viewModel.confState) {
-            is LocalConfState.IDLE -> LocalConfIdleScreen(navController = navController, viewModel = viewModel)
-            is LocalConfState.RUN -> LocalConfRunScreen(navController = navController, viewModel = viewModel)
+            is LocalConfState.Idle -> LocalConfIdleScreen(navController = navController, viewModel = viewModel)
+            is LocalConfState.Run -> LocalConfRunScreen(navController = navController, viewModel = viewModel)
         }
         when (viewModel.dialogState) {
             DialogState.NoDialog -> {}

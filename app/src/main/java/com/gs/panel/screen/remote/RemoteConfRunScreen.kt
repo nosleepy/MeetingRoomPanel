@@ -42,7 +42,7 @@ import com.gs.panel.widget.TimeAxisWidget
 @Composable
 fun RemoteConfRunScreen(
     navController: NavController,
-    confState: RemoteConfState.RUN,
+    confState: RemoteConfState.Run,
     viewModel: RemoteConfViewModel,
 ) {
     val scheduleItem = confState.scheduleItem

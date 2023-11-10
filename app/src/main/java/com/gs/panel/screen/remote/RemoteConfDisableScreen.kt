@@ -42,7 +42,7 @@ import com.gs.panel.widget.TimeAxisWidget
 @Composable
 fun RemoteConfDisableScreen(
     navController: NavController,
-    confState: RemoteConfState.DISABLE,
+    confState: RemoteConfState.Disable,
     viewModel: RemoteConfViewModel,
 ) {
     val conferenceItem = confState.conferenceItem

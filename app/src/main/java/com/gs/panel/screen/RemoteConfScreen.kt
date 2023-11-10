@@ -29,29 +29,29 @@ fun RemoteConfScreen(navController: NavController) {
     Box(modifier = Modifier.fillMaxSize()
     ) {
         when (viewModel.confState) {
-            is RemoteConfState.IDLE -> RemoteConfIdleScreen(
+            is RemoteConfState.Idle -> RemoteConfIdleScreen(
                 navController = navController,
-                confState = viewModel.confState as RemoteConfState.IDLE,
+                confState = viewModel.confState as RemoteConfState.Idle,
                 viewModel = viewModel,
             )
-            is RemoteConfState.RUN -> RemoteConfRunScreen(
+            is RemoteConfState.Run -> RemoteConfRunScreen(
                 navController = navController,
-                confState = viewModel.confState as RemoteConfState.RUN,
+                confState = viewModel.confState as RemoteConfState.Run,
                 viewModel = viewModel
             )
-            is RemoteConfState.READY_FLAG -> RemoteConfReadyFlagScreen(
+            is RemoteConfState.ReadyFlag -> RemoteConfReadyFlagScreen(
                 navController = navController,
-                confState = viewModel.confState as RemoteConfState.READY_FLAG,
+                confState = viewModel.confState as RemoteConfState.ReadyFlag,
                 viewModel = viewModel
             )
-            is RemoteConfState.READY -> RemoteConfReadyScreen(
+            is RemoteConfState.Ready -> RemoteConfReadyScreen(
                 navController = navController,
-                confState = viewModel.confState as RemoteConfState.READY,
+                confState = viewModel.confState as RemoteConfState.Ready,
                 viewModel = viewModel
             )
-            is RemoteConfState.DISABLE -> RemoteConfDisableScreen(
+            is RemoteConfState.Disable -> RemoteConfDisableScreen(
                 navController = navController,
-                confState = viewModel.confState as RemoteConfState.DISABLE,
+                confState = viewModel.confState as RemoteConfState.Disable,
                 viewModel = viewModel
             )
         }
