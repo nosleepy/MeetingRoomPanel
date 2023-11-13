@@ -44,8 +44,7 @@ class RemoteConfViewModel : ViewModel() {
                     "disable" -> {
                         confState = RemoteConfState.Disable(conferenceItem)
                     }
-                    "available",
-                    "inuse" -> {
+                    else -> { //available,inuse
                         if (TimeUtil.getTodaySeconds() == TimeUtil.getTargetSeconds(startHour, startMinute - 10)) {
                             confState = RemoteConfState.ReadyFlag(scheduleItem)
                         } else if (TimeUtil.getTodaySeconds() > TimeUtil.getTargetSeconds(startHour, startMinute - 10)
@@ -88,62 +87,7 @@ class RemoteConfViewModel : ViewModel() {
                     Log.d("MeetingRoomPanel", "loginRes = $loginRes")
                     CustomApplication.cookie = loginRes.response!!.cookie
                 }
-                val gscConfRes = Api.get().listGscPhysicalConfTimeListByDay(
-                    "${TimeUtil.getTodayDate()} 00:00",
-                    "${TimeUtil.getTodayDate()} 23:59",
-                    CustomApplication.cookie
-                )
-//                Log.d("wlzhou", "gscConfRes = $gscConfRes")
-                conferenceItem = gscConfRes.response!!.conference[0]
-                facilityList = mutableListOf<FacilityItem>().apply {
-                    add(FacilityItem(-1, "", "${conferenceItem.memberCapacity}人", ""))
-                    addAll(conferenceItem.facilities)
-                    add(FacilityItem(0, "", "More", ""))
-                }
-                when (conferenceItem.confStatus) {
-                    "disable" -> {
-                        confState = RemoteConfState.Disable(conferenceItem)
-                    }
-                    "available",
-                    "inuse" -> {
-                        scheduleList = conferenceItem.schedules
-                        scheduleRange = listOf()
-                        if (scheduleList.isNotEmpty()) {
-                            scheduleList.forEach {
-                                it.configStartTime = it.configStartTime.split(' ')[1]
-                                it.configEndTime = it.configEndTime.split(' ')[1]
-                                if (it.configEndTime == "23:59") {
-                                    it.configEndTime = "24:00"
-                                }
-                            }
-
-                            startHour = scheduleList[0].configStartTime.split(':')[0].toInt()
-                            startMinute = scheduleList[0].configStartTime.split(':')[1].toInt()
-                            endHour = scheduleList[0].configEndTime.split(':')[0].toInt()
-                            endMinute = scheduleList[0].configEndTime.split(':')[1].toInt()
-                            scheduleItem = scheduleList[0]
-
-                            scheduleList.forEach {
-                                val leftHour = it.configStartTime.split(':')[0].toInt()
-                                val leftMinute = it.configStartTime.split(':')[1].toInt()
-                                val rightHour = it.configEndTime.split(':')[0].toInt()
-                                val rightMinute = it.configEndTime.split(':')[1].toInt()
-                                val leftIndex = leftHour * 4 + leftMinute / 15
-                                val rightIndex = rightHour * 4 + rightMinute / 15
-                                for (i in leftIndex until rightIndex) {
-                                    scheduleRange = scheduleRange.toMutableList().apply { add(i) }
-                                }
-                            }
-                        } else {
-                            startHour = 0
-                            startMinute = 0
-                            endHour = 0
-                            endMinute = 0
-                            scheduleItem = ScheduleItem()
-                            scheduleRange = scheduleRange.toMutableList().apply { add(-1) }
-                        }
-                    }
-                }
+                loadConfInfo()
                 delay(3000)
             }
         }
@@ -180,12 +124,23 @@ class RemoteConfViewModel : ViewModel() {
             )
             Log.d("wlzhou", "startConf res = $res")
             if (res.isSuccess()) {
-                val hour = res.response!!.utcEndTime.split(" ")[1].split(":")[0].toInt()
-                val minute = res.response!!.utcEndTime.split(" ")[1].split(":")[1].toInt()
+                startHour = res.response!!.utcStartTime.split(" ")[1].split(":")[0].toInt() + 8
+                startMinute = res.response!!.utcStartTime.split(" ")[1].split(":")[1].toInt()
+                endHour = res.response!!.utcEndTime.split(" ")[1].split(":")[0].toInt() + 8
+                endMinute = res.response!!.utcEndTime.split(" ")[1].split(":")[1].toInt()
+                updateScheduleRange(startHour, startMinute, endHour, endMinute)
                 dialogState = DialogState.StartConfSuccessDialog(
-                    TimeUtil.formatTime(hour + 8),
-                    TimeUtil.formatTime(minute)
+                    TimeUtil.formatTime(endHour),
+                    TimeUtil.formatTime(endMinute)
                 )
+                scheduleItem = ScheduleItem(
+                    reservationId = res.response!!.reservationId,
+                    confName = conferenceItem.confName,
+                    subject = "临时会议",
+                    configStartTime = "${TimeUtil.formatTime(startHour)}:${TimeUtil.formatTime(startMinute)}",
+                    configEndTime = "${TimeUtil.formatTime(endHour)}:${TimeUtil.formatTime(endMinute)}",
+                )
+                confState = RemoteConfState.Run(scheduleItem)
             } else if (res.status == -127) {
                 Toast.makeText(CustomApplication.context, "预约时间已经被占用", Toast.LENGTH_SHORT).show()
             } else {
@@ -200,9 +155,16 @@ class RemoteConfViewModel : ViewModel() {
                 scheduleItem.reservationId,
                 CustomApplication.cookie
             )
-            dialogState = DialogState.NoDialog
             Log.d("wlzhou", "stopConf res = $res")
             if (res.isSuccess()) {
+                updateScheduleRange(startHour, startMinute, endHour, endMinute, false)
+                startHour = 0
+                startMinute = 0
+                endHour = 0
+                endMinute = 0
+                scheduleItem = if (scheduleList.size >= 2) scheduleList[1] else ScheduleItem(confName = conferenceItem.confName)
+                dialogState = DialogState.NoDialog
+                confState = RemoteConfState.Idle(scheduleItem)
                 Toast.makeText(CustomApplication.context, "会议已结束，感谢您的使用", Toast.LENGTH_SHORT).show()
             } else {
                 Toast.makeText(CustomApplication.context, "失败，请检查网络", Toast.LENGTH_SHORT).show()
@@ -219,14 +181,80 @@ class RemoteConfViewModel : ViewModel() {
             )
             Log.d("wlzhou", "delayConf res = $res")
             if (res.isSuccess()) {
-                val hour = res.response!!.utcEndTime.split(" ")[1].split(":")[0].toInt()
-                val minute = res.response!!.utcEndTime.split(" ")[1].split(":")[1].toInt()
+                endHour = res.response!!.utcEndTime.split(" ")[1].split(":")[0].toInt() + 8
+                endMinute = res.response!!.utcEndTime.split(" ")[1].split(":")[1].toInt()
+                updateScheduleRange(startHour, startMinute, endHour, endMinute)
+                scheduleItem.configEndTime = "${TimeUtil.formatTime(endHour)}:${TimeUtil.formatTime(endMinute)}"
                 dialogState = DialogState.DelayConfSuccessDialog(
-                    TimeUtil.formatTime(hour + 8),
-                    TimeUtil.formatTime(minute)
+                    TimeUtil.formatTime(endHour),
+                    TimeUtil.formatTime(endMinute)
                 )
             } else if (res.status == -127) {
                 Toast.makeText(CustomApplication.context, "预约时间已经被占用", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    private fun loadConfInfo() {
+        viewModelScope.launch {
+            val gscConfRes = Api.get().listGscPhysicalConfTimeListByDay(
+                "${TimeUtil.getTodayDate()} 00:00",
+                "${TimeUtil.getTodayDate()} 23:59",
+                CustomApplication.cookie
+            )
+//                Log.d("wlzhou", "gscConfRes = $gscConfRes")
+            conferenceItem = gscConfRes.response!!.conference[0]
+            facilityList = mutableListOf<FacilityItem>().apply {
+                add(FacilityItem(-1, "", "${conferenceItem.memberCapacity}人", ""))
+                addAll(conferenceItem.facilities)
+                add(FacilityItem(0, "", "More", ""))
+            }
+            when (conferenceItem.confStatus) {
+                "disable" -> {
+                    confState = RemoteConfState.Disable(conferenceItem)
+                }
+                else -> { //available,inuse
+                    scheduleList = conferenceItem.schedules
+                    scheduleRange = listOf()
+                    if (scheduleList.isNotEmpty()) {
+                        scheduleList.forEach {
+                            it.configStartTime = it.configStartTime.split(' ')[1]
+                            it.configEndTime = it.configEndTime.split(' ')[1]
+                            if (it.configEndTime == "23:59") {
+                                it.configEndTime = "24:00"
+                            }
+                            val leftHour = it.configStartTime.split(':')[0].toInt()
+                            val leftMinute = it.configStartTime.split(':')[1].toInt()
+                            val rightHour = it.configEndTime.split(':')[0].toInt()
+                            val rightMinute = it.configEndTime.split(':')[1].toInt()
+                            updateScheduleRange(leftHour, leftMinute, rightHour, rightMinute)
+                        }
+                        startHour = scheduleList[0].configStartTime.split(':')[0].toInt()
+                        startMinute = scheduleList[0].configStartTime.split(':')[1].toInt()
+                        endHour = scheduleList[0].configEndTime.split(':')[0].toInt()
+                        endMinute = scheduleList[0].configEndTime.split(':')[1].toInt()
+                        scheduleItem = scheduleList[0]
+                    } else {
+                        startHour = 0
+                        startMinute = 0
+                        endHour = 0
+                        endMinute = 0
+                        scheduleItem = ScheduleItem()
+                        scheduleRange = scheduleRange.toMutableList().apply { add(-1) }
+                    }
+                }
+            }
+        }
+    }
+
+    private fun updateScheduleRange(leftHour: Int, leftMinute: Int, rightHour: Int, rightMinute: Int, isAdd: Boolean = true) {
+        val leftIndex = leftHour * 4 + leftMinute / 15
+        val rightIndex = rightHour * 4 + rightMinute / 15
+        for (i in leftIndex until rightIndex) {
+            scheduleRange = if (isAdd) {
+                scheduleRange.toMutableList().apply { add(i) }
+            } else {
+                scheduleRange.toMutableList().apply { remove(i) }
             }
         }
     }
