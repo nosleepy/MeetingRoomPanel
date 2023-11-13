@@ -203,7 +203,11 @@ class RemoteConfViewModel : ViewModel() {
                 CustomApplication.cookie
             )
 //                Log.d("wlzhou", "gscConfRes = $gscConfRes")
-            conferenceItem = gscConfRes.response!!.conference[0].apply { disableEndTime = TimeUtil.formatUtcTime(disableEndTime) }
+            conferenceItem = gscConfRes.response!!.conference[0].apply {
+                if (disableEndTime.isNotEmpty()) {
+                    disableEndTime = TimeUtil.formatUtcTime(disableEndTime)
+                }
+            }
             facilityList = mutableListOf<FacilityItem>().apply {
                 add(FacilityItem(-1, "", "${conferenceItem.memberCapacity}人", ""))
                 addAll(conferenceItem.facilities)

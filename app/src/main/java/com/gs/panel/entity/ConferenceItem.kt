@@ -12,7 +12,7 @@ data class ConferenceItem(
     @SerializedName("building_id") val buildingId: String = "",
     @SerializedName("member_capacity") val memberCapacity: String = "",
     @SerializedName("disable_starttime") val disableStartTime: String = "",
-    @SerializedName("disable_endtime") val disableEndTime: String = "",
+    @SerializedName("disable_endtime") var disableEndTime: String = "",
     @SerializedName("disable_description") val disableDescription: String = "",
     @SerializedName("description") val description: String = "",
     @SerializedName("conf_picture") val confPicture: String = "",
