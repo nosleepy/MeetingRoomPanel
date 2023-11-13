@@ -1,6 +1,9 @@
 package com.gs.panel.util
 
 import java.time.Year
+import java.time.ZoneId
+import java.time.ZonedDateTime
+import java.time.format.DateTimeFormatter
 import java.util.Calendar
 
 class TimeUtil {
@@ -71,6 +74,13 @@ class TimeUtil {
             val month = calendar.get(Calendar.MONTH) + 1
             val day = calendar.get(Calendar.DAY_OF_MONTH)
             return "$year-${formatTime(month)}-${formatTime(day)}"
+        }
+
+        fun formatUtcTime(timeString: String): String {
+            val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")
+            val utcTime = ZonedDateTime.parse(timeString, formatter.withZone(ZoneId.of("UTC")))
+            val localTime = utcTime.withZoneSameInstant(ZoneId.of("Asia/Shanghai"))
+            return localTime.format(formatter)
         }
     }
 }
