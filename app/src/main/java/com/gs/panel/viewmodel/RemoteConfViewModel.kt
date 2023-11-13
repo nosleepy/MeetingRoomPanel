@@ -124,9 +124,11 @@ class RemoteConfViewModel : ViewModel() {
             )
             Log.d("wlzhou", "startConf res = $res")
             if (res.isSuccess()) {
-                startHour = res.response!!.utcStartTime.split(" ")[1].split(":")[0].toInt() + 8
+                res.response!!.utcStartTime = TimeUtil.formatUtcTime(res.response!!.utcStartTime)
+                res.response!!.utcEndTime = TimeUtil.formatUtcTime(res.response!!.utcEndTime)
+                startHour = res.response!!.utcStartTime.split(" ")[1].split(":")[0].toInt()
                 startMinute = res.response!!.utcStartTime.split(" ")[1].split(":")[1].toInt()
-                endHour = res.response!!.utcEndTime.split(" ")[1].split(":")[0].toInt() + 8
+                endHour = res.response!!.utcEndTime.split(" ")[1].split(":")[0].toInt()
                 endMinute = res.response!!.utcEndTime.split(" ")[1].split(":")[1].toInt()
                 updateScheduleRange(startHour, startMinute, endHour, endMinute)
                 dialogState = DialogState.StartConfSuccessDialog(
@@ -181,7 +183,8 @@ class RemoteConfViewModel : ViewModel() {
             )
             Log.d("wlzhou", "delayConf res = $res")
             if (res.isSuccess()) {
-                endHour = res.response!!.utcEndTime.split(" ")[1].split(":")[0].toInt() + 8
+                res.response!!.utcEndTime = TimeUtil.formatUtcTime(res.response!!.utcEndTime)
+                endHour = res.response!!.utcEndTime.split(" ")[1].split(":")[0].toInt()
                 endMinute = res.response!!.utcEndTime.split(" ")[1].split(":")[1].toInt()
                 updateScheduleRange(startHour, startMinute, endHour, endMinute)
                 scheduleItem.configEndTime = "${TimeUtil.formatTime(endHour)}:${TimeUtil.formatTime(endMinute)}"
