@@ -29,7 +29,7 @@ class ConfListViewModel: ViewModel() {
                 CustomApplication.cookie
             )
             reservationRes.response!!.conference.forEach {
-                val configStartTime = it.configStartTime.split(" ")[0]
+                val configStartDate = it.configStartTime.split(" ")[0]
                 it.configStartTime = it.configStartTime.split(" ")[1]
                 it.configEndTime = it.configEndTime.split(" ")[1]
                 it.confReservationStatus = when (it.confReservationStatus) {
@@ -38,11 +38,11 @@ class ConfListViewModel: ViewModel() {
                     "not_begin" -> "未开始"
                     else -> ""
                 }
-                if (scheduleMap.containsKey(configStartTime)) {
-                    val scheduleList = scheduleMap[configStartTime]!!.apply { add(it) }
-                    scheduleMap[configStartTime] = scheduleList
+                if (scheduleMap.containsKey(configStartDate)) {
+                    val scheduleList = scheduleMap[configStartDate]!!.apply { add(it) }
+                    scheduleMap[configStartDate] = scheduleList
                 } else {
-                    scheduleMap[configStartTime] = mutableListOf(it)
+                    scheduleMap[configStartDate] = mutableListOf(it)
                 }
             }
             scheduleMap.forEach {

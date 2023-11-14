@@ -61,8 +61,4 @@ dependencies {
     implementation("androidx.navigation:navigation-compose:2.6.0-alpha08")
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
-    implementation("com.google.code.gson:gson:2.8.9")
-//    implementation("com.github.franmontiel:PersistentCookieJar:v1.0.1")
-//    implementation("com.google.accompanist:accompanist-pager:0.10.0")
-//    implementation("androidx.datastore:datastore-preferences:1.0.0")
 }

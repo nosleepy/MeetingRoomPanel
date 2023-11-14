@@ -10,10 +10,8 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
-        maven(url="https://jitpack.io")
     }
 }
 
 rootProject.name = "MeetingRoomPanel"
 include(":app")
- 
