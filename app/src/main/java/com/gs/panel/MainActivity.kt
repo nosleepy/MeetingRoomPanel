@@ -20,8 +20,8 @@ import androidx.navigation.compose.rememberNavController
 import com.gs.panel.api.Api
 import com.gs.panel.screen.ConfListScreen
 import com.gs.panel.screen.LocalConfScreen
-import com.gs.panel.screen.MainScreen
 import com.gs.panel.screen.RemoteConfScreen
+import com.gs.panel.screen.TestScreen
 import com.gs.panel.ui.theme.MeetingRoomPanelTheme
 import com.gs.panel.util.FileUtil
 import com.gs.panel.util.TimeUtil
@@ -46,7 +46,7 @@ class MainActivity : ComponentActivity() {
 fun NavigationScreen() {
     val navController = rememberNavController()
     NavHost(navController = navController, startDestination = "remoteConf") {
-        composable("main") { MainScreen(navController = navController) }
+        composable("test") { TestScreen(navController = navController) }
         composable("localConf") { LocalConfScreen(navController = navController) }
         composable("remoteConf") { RemoteConfScreen(navController = navController) }
         composable("confList") { ConfListScreen(navController = navController) }
