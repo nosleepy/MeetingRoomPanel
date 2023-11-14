@@ -1,22 +1,34 @@
 java_import {
-    name: "retrofit",
+    name: "retrofit.jar",
     jars: ["app/libs/retrofit-2.9.0.jar"],
 }
 
 java_import {
-    name: "converter_gson",
+    name: "converter_gson.jar",
     jars: ["app/libs/converter-gson-2.9.0.jar"],
 }
 
 java_import {
-    name: "okhttp",
+    name: "okhttp.jar",
     jars: ["app/libs/okhttp-3.14.9.jar"],
+}
+
+java_import {
+    name: "okio.jar",
+    jars: ["app/libs/okio-1.17.2.jar"],
+}
+
+java_import {
+    name: "json.jar",
+    jars: ["app/libs/gson-2.8.5.jar"],
 }
 
 android_app {
     name: "MeetingRoomPanel",
 
     srcs: ["app/src/**/*.kt"],
+
+    asset_dirs: ["app/src/main/assets"],
 
     defaults: ["platform_app_defaults"],
 
@@ -41,9 +53,11 @@ android_app {
         "androidx.compose.ui_ui-tooling",
         "androidx.compose.material3_material3",
         "androidx.navigation_navigation-compose",
-        "retrofit",
-        "converter_gson",
-        "okhttp",
+        "retrofit.jar",
+        "converter_gson.jar",
+        "okhttp.jar",
+        "okio.jar",
+        "json.jar",
     ],
 
     kotlincflags: ["-Xjvm-default=enable"],
