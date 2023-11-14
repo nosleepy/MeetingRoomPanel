@@ -8,6 +8,11 @@ java_import {
     jars: ["app/libs/converter-gson-2.9.0.jar"],
 }
 
+java_import {
+    name: "okhttp",
+    jars: ["app/libs/okhttp-3.14.9.jar"],
+}
+
 android_app {
     name: "MeetingRoomPanel",
 
@@ -38,6 +43,7 @@ android_app {
         "androidx.navigation_navigation-compose",
         "retrofit",
         "converter_gson",
+        "okhttp",
     ],
 
     kotlincflags: ["-Xjvm-default=enable"],
