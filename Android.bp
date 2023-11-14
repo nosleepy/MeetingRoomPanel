@@ -1,0 +1,46 @@
+java_import {
+    name: "retrofit",
+    jars: ["app/libs/retrofit-2.9.0.jar"],
+}
+
+java_import {
+    name: "converter_gson",
+    jars: ["app/libs/converter-gson-2.9.0.jar"],
+}
+
+android_app {
+    name: "MeetingRoomPanel",
+
+    srcs: ["app/src/**/*.kt"],
+
+    defaults: ["platform_app_defaults"],
+
+    manifest: "app/src/main/AndroidManifest.xml",
+
+    resource_dirs: ["app/src/main/res"],
+
+    certificate: "platform",
+
+    platform_apis: true,
+
+    dex_preopt: {
+        enabled: false,
+    },
+
+    static_libs: [
+        "androidx.compose.runtime_runtime",
+        "androidx.core_core-ktx",
+        "androidx.lifecycle_lifecycle-runtime-ktx",
+        "androidx.activity_activity-compose",
+        "androidx.compose.ui_ui",
+        "androidx.compose.ui_ui-tooling",
+        "androidx.compose.material3_material3",
+        "androidx.navigation_navigation-compose",
+        "retrofit",
+        "converter_gson",
+    ],
+
+    kotlincflags: ["-Xjvm-default=enable"],
+
+    dxflags: ["--multi-dex"],
+}
