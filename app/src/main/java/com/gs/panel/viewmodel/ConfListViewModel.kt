@@ -37,7 +37,7 @@ class ConfListViewModel: ViewModel() {
                 it.configEndTime = it.configEndTime.split(" ")[1]
                 it.confReservationStatus = when (it.confReservationStatus) {
                     "about_to_begin" -> "即将开始"
-                    "issue" -> "进行中"
+                    "inuse" -> "进行中"
                     "not_begin" -> "未开始"
                     else -> ""
                 }
