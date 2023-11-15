@@ -25,8 +25,10 @@ import com.gs.panel.screen.TestScreen
 import com.gs.panel.ui.theme.MeetingRoomPanelTheme
 import com.gs.panel.util.FileUtil
 import com.gs.panel.util.TimeUtil
+import com.gs.panel.util.getNavigationBarHeight
 import com.gs.panel.util.getScreenHeight
 import com.gs.panel.util.getScreenWidth
+import com.gs.panel.util.getStatusBarHeight
 import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
@@ -39,6 +41,7 @@ class MainActivity : ComponentActivity() {
         }
         Log.d("wlzhou", "w = ${getScreenWidth()}, h = ${getScreenHeight()}")
         Log.d("wlzhou", "date = ${TimeUtil.getTodayDate()}")
+        Log.d("wlzhou", "statusBar = ${getStatusBarHeight()}, navigationBar = ${getNavigationBarHeight()}")
     }
 }
 

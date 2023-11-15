@@ -1,14 +1,23 @@
 package com.gs.panel.util
 
+import android.content.Context
 import com.gs.panel.CustomApplication
 
+
 fun getStatusBarHeight(): Int {
-    var result = 0
-    val resourceId = CustomApplication.context.resources.getIdentifier("status_bar_height", "dimen", "android")
-    if (resourceId > 0) {
-        result = CustomApplication.context.resources.getDimensionPixelSize(resourceId)
-    }
-    return result
+    val resources = CustomApplication.context.resources
+    val resourceId = resources.getIdentifier("status_bar_height", "dimen", "android")
+    return if (resourceId > 0) {
+        resources.getDimensionPixelSize(resourceId)
+    } else 0
+}
+
+fun getNavigationBarHeight(): Int {
+    val resources = CustomApplication.context.resources
+    val resourceId = resources.getIdentifier("navigation_bar_height", "dimen", "android")
+    return if (resourceId > 0) {
+        resources.getDimensionPixelSize(resourceId)
+    } else 0
 }
 
 fun getScreenHeight(): Int {
