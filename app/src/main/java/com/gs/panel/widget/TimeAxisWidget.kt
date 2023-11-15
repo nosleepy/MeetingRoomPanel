@@ -62,8 +62,8 @@ fun TimeAxisWidget(
                     }
                 }
                 //绘制已经过去的时间段
-                var curProgress = ceil(TimeUtil.getHour() * space + TimeUtil.getMinute() / 60.0 * space).toInt()
-                if (curProgress == (TimeUtil.getHour() + 1) * space) {
+                var curProgress = ceil(TimeUtil.getCurHour() * space + TimeUtil.getCurMinute() / 60.0 * space).toInt()
+                if (curProgress == (TimeUtil.getCurHour() + 1) * space) {
                     curProgress--
                 }
                 val remindProgress = rowLength - curProgress

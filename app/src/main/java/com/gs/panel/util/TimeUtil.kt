@@ -1,6 +1,5 @@
 package com.gs.panel.util
 
-import java.time.Year
 import java.time.ZoneId
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
@@ -8,15 +7,15 @@ import java.util.Calendar
 
 class TimeUtil {
     companion object {
-        fun getHour(): Int {
+        fun getCurHour(): Int {
             return Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
         }
 
-        fun getMinute(): Int {
+        fun getCurMinute(): Int {
             return Calendar.getInstance().get(Calendar.MINUTE)
         }
 
-        fun getSecond(): Int {
+        fun getCurSecond(): Int {
             return Calendar.getInstance().get(Calendar.SECOND)
         }
 
@@ -27,22 +26,6 @@ class TimeUtil {
 
         fun getTargetSeconds(hour: Int, minute: Int): Int {
             return hour * 60 * 60 + minute * 60
-        }
-
-        fun parseHour(time: Int): String {
-            val hour = time / 60
-            if (hour in 0..9) {
-                return "0$hour"
-            }
-            return "$hour"
-        }
-
-        fun parseMinute(time: Int): String {
-            val minute = time % 60
-            if (minute in 0..9) {
-                return "0$minute"
-            }
-            return "$minute"
         }
 
         fun parseMinuteBySecond(time: Int): String {

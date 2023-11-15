@@ -132,11 +132,7 @@ fun LocalConfIdleScreen(
                             .align(Alignment.CenterVertically)
 //                            .background(CustomColor.gall)
                             .clip(CircleShape)
-                            .clickable {
-                                val intent = Intent("com.gs.intent.action.CUSTOM_CONTENT")
-                                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-                                CustomApplication.context.startActivity(intent)
-                            },
+                            .clickable {  },
                         tint = Color.White
                     )
                 }

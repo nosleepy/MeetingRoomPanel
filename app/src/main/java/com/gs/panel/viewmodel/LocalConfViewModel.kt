@@ -6,6 +6,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import com.gs.panel.CustomApplication
+import com.gs.panel.entity.TimeItem
 import com.gs.panel.state.DialogState
 import com.gs.panel.state.LocalConfState
 import com.gs.panel.util.TimeUtil
@@ -17,19 +18,16 @@ import kotlinx.coroutines.launch
 class LocalConfViewModel : ViewModel() {
     var confState by mutableStateOf<LocalConfState>(LocalConfState.Idle)
     var dialogState by mutableStateOf<DialogState>(DialogState.NoDialog)
-
     private val mainScope = MainScope()
     private var timeJob: Job
-
     private var startTime: Int = 0
-    private var stopTime: Int = 0
+    private var endTime: Int = 0
 
     init {
         timeJob = mainScope.launch {
             repeat(Int.MAX_VALUE) {
-                val curTime = TimeUtil.getHour() * 60 + TimeUtil.getMinute()
-                if (TimeUtil.parseHour(curTime) == TimeUtil.parseHour(stopTime) &&
-                    TimeUtil.parseMinute(curTime) == TimeUtil.parseMinute(stopTime)) {
+                val curTime = TimeUtil.getCurHour() * 60 + TimeUtil.getCurMinute()
+                if (curTime == endTime) {
                     confState = LocalConfState.Idle
                 }
                 delay(3000)
@@ -38,21 +36,25 @@ class LocalConfViewModel : ViewModel() {
     }
 
     fun startConf(time: Int) {
-        startTime = TimeUtil.getHour() * 60 + TimeUtil.getMinute()
-        stopTime = startTime + time
-        confState = LocalConfState.Run(TimeUtil.parseHour(startTime), TimeUtil.parseMinute(startTime), TimeUtil.parseHour(stopTime), TimeUtil.parseMinute(stopTime))
-        dialogState = DialogState.StartConfSuccessDialog(TimeUtil.parseHour(stopTime), TimeUtil.parseMinute(stopTime))
+        startTime = TimeUtil.getCurHour() * 60 + TimeUtil.getCurMinute()
+        endTime = startTime + time
+        val startTimeItem = TimeItem.parseTime(startTime)
+        val endTimeItem = TimeItem.parseTime(endTime)
+        confState = LocalConfState.Run(startTimeItem.hour, startTimeItem.minute, endTimeItem.hour, endTimeItem.minute)
+        dialogState = DialogState.StartConfSuccessDialog(endTimeItem.hour, endTimeItem.minute)
     }
 
     fun delayConf(time: Int) {
-        stopTime += time
-        confState = LocalConfState.Run(TimeUtil.parseHour(startTime), TimeUtil.parseMinute(startTime), TimeUtil.parseHour(stopTime), TimeUtil.parseMinute(stopTime))
-        dialogState = DialogState.DelayConfSuccessDialog(TimeUtil.parseHour(stopTime), TimeUtil.parseMinute(stopTime))
+        endTime += time
+        val startTimeItem = TimeItem.parseTime(startTime)
+        val endTimeItem = TimeItem.parseTime(endTime)
+        confState = LocalConfState.Run(startTimeItem.hour, startTimeItem.minute, endTimeItem.hour, endTimeItem.minute)
+        dialogState = DialogState.DelayConfSuccessDialog(endTimeItem.hour, endTimeItem.minute)
     }
 
     fun stopConf() {
         confState = LocalConfState.Idle
-        closeDialog()
+        dialogState = DialogState.NoDialog
         Toast.makeText(CustomApplication.context, "会议已结束，感谢您的使用", Toast.LENGTH_SHORT).show()
     }
 

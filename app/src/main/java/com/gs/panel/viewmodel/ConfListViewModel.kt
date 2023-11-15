@@ -11,7 +11,7 @@ import com.gs.panel.api.Api
 import com.gs.panel.entity.ScheduleItem
 import com.gs.panel.util.TimeUtil
 import kotlinx.coroutines.launch
-import kotlin.Comparator
+import java.util.Collections
 
 @SuppressLint("MutableCollectionMutableState")
 class ConfListViewModel: ViewModel() {
@@ -28,6 +28,9 @@ class ConfListViewModel: ViewModel() {
                 gscConfRes.response!!.conference[0].confId,
                 CustomApplication.cookie
             )
+            Collections.sort(reservationRes.response!!.conference) {
+                o1, o2 -> o1.configStartTime.compareTo(o2.configStartTime)
+            }
             reservationRes.response!!.conference.forEach {
                 val configStartDate = it.configStartTime.split(" ")[0]
                 it.configStartTime = it.configStartTime.split(" ")[1]
@@ -45,9 +48,9 @@ class ConfListViewModel: ViewModel() {
                     scheduleMap[configStartDate] = mutableListOf(it)
                 }
             }
-            scheduleMap.forEach {
-                it.value.sortWith(Comparator { o1, o2 -> o1.configStartTime.compareTo(o2.configStartTime) })
-            }
+//            scheduleMap.forEach {
+//                it.value.sortWith { o1, o2 -> o1.configStartTime.compareTo(o2.configStartTime) }
+//            }
         }
     }
 }
