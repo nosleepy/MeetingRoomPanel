@@ -38,7 +38,7 @@ fun DynamicsRowWidget(modifier: Modifier = Modifier, space: Int = 8, content: @C
         var xPosition = 0
         layout(constraints.minWidth, constraints.minHeight) {
             placeableList.forEach { placeable ->
-                placeable.placeRelative(xPosition, 0)
+                placeable.placeRelative(xPosition, (constraints.maxHeight - placeable.height) / 2)
                 xPosition += placeable.width + space
             }
         }
