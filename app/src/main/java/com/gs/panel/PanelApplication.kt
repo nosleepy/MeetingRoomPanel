@@ -3,7 +3,7 @@ package com.gs.panel
 import android.app.Application
 import android.content.Context
 
-class CustomApplication : Application() {
+class PanelApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         context = this
@@ -11,8 +11,7 @@ class CustomApplication : Application() {
 
     companion object {
         lateinit var context: Context
-        var extenAccount: String = ""
-        var token: String = ""
         var cookie: String = ""
+        var confId: String = ""
     }
 }

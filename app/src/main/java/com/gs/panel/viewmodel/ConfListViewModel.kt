@@ -6,10 +6,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.gs.panel.CustomApplication
+import com.gs.panel.PanelApplication
 import com.gs.panel.api.Api
+import com.gs.panel.api.safeApiCall
 import com.gs.panel.entity.ScheduleItem
-import com.gs.panel.util.TimeUtil
 import kotlinx.coroutines.launch
 import java.util.Collections
 
@@ -19,38 +19,39 @@ class ConfListViewModel: ViewModel() {
 
     init {
         viewModelScope.launch {
-            val gscConfRes = Api.get().listGscPhysicalConfTimeListByDay(
-                "${TimeUtil.getTodayDate()} 00:00",
-                "${TimeUtil.getTodayDate()} 23:59",
-                CustomApplication.cookie
-            )
-            val reservationRes = Api.get().listGscPhyConfReservation(
-                gscConfRes.response!!.conference[0].confId,
-                CustomApplication.cookie
-            )
-            Collections.sort(reservationRes.response!!.conference) {
-                o1, o2 -> o1.configStartTime.compareTo(o2.configStartTime)
+            val gscConfReservationRes = safeApiCall {
+                Api.get().listGscPhyConfReservation(
+                    PanelApplication.confId,
+                    PanelApplication.cookie
+                )
             }
-            reservationRes.response!!.conference.forEach {
-                val configStartDate = it.configStartTime.split(" ")[0]
-                it.configStartTime = it.configStartTime.split(" ")[1]
-                it.configEndTime = it.configEndTime.split(" ")[1]
-                it.confReservationStatus = when (it.confReservationStatus) {
-                    "about_to_begin" -> "即将开始"
-                    "inuse" -> "进行中"
-                    "not_begin" -> "未开始"
-                    else -> ""
+            if (gscConfReservationRes.isSuccess()) {
+                Collections.sort(gscConfReservationRes.response!!.conference) {
+                    o1, o2 -> o1.configStartTime.compareTo(o2.configStartTime)
                 }
-                if (scheduleMap.containsKey(configStartDate)) {
-                    val scheduleList = scheduleMap[configStartDate]!!.apply { add(it) }
-                    scheduleMap[configStartDate] = scheduleList
-                } else {
-                    scheduleMap[configStartDate] = mutableListOf(it)
+                gscConfReservationRes.response!!.conference.forEach {
+                    val configStartDate = it.configStartTime.split(" ")[0]
+                    it.configStartTime = it.configStartTime.split(" ")[1]
+                    it.configEndTime = it.configEndTime.split(" ")[1]
+                    it.confReservationStatus = when (it.confReservationStatus) {
+                        "about_to_begin" -> "即将开始"
+                        "inuse" -> "进行中"
+                        "not_begin" -> "未开始"
+                        else -> ""
+                    }
+                    if (scheduleMap.containsKey(configStartDate)) {
+                        val scheduleList = scheduleMap[configStartDate]!!.apply { add(it) }
+                        scheduleMap[configStartDate] = scheduleList
+                    } else {
+                        scheduleMap[configStartDate] = mutableListOf(it)
+                    }
                 }
+                scheduleMap.forEach {
+                    it.value.sortWith { o1, o2 -> o1.configStartTime.compareTo(o2.configStartTime) }
+                }
+            } else {
+                gscConfReservationRes.handleErrorCode()
             }
-//            scheduleMap.forEach {
-//                it.value.sortWith { o1, o2 -> o1.configStartTime.compareTo(o2.configStartTime) }
-//            }
         }
     }
 }

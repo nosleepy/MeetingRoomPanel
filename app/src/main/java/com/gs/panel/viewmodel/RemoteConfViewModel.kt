@@ -7,7 +7,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.gs.panel.CustomApplication
+import com.gs.panel.PanelApplication
 import com.gs.panel.api.Api
 import com.gs.panel.api.safeApiCall
 import com.gs.panel.entity.ConferenceItem
@@ -77,14 +77,12 @@ class RemoteConfViewModel : ViewModel() {
         }
         requestJob = viewModelScope.launch {
             repeat(Int.MAX_VALUE) {
-                if (CustomApplication.cookie.isEmpty()) {
+                if (PanelApplication.cookie.isEmpty()) {
                     val gscAccessInfoRes = safeApiCall { Api.get().getGscAccessToken(FileUtil.getUsername(), FileUtil.getPassword()) }
                     if (gscAccessInfoRes.isSuccess()) {
-                        CustomApplication.extenAccount = gscAccessInfoRes.response!!.extenAccount
-                        CustomApplication.token = gscAccessInfoRes.response!!.token
-                        val loginRes = safeApiCall { Api.get().login(CustomApplication.extenAccount, CustomApplication.token) }
+                        val loginRes = safeApiCall { Api.get().login(gscAccessInfoRes.response!!.extenAccount, gscAccessInfoRes.response!!.token) }
                         if (loginRes.isSuccess()) {
-                            CustomApplication.cookie = loginRes.response!!.cookie
+                            PanelApplication.cookie = loginRes.response!!.cookie
                         }
                     }
                 }
@@ -122,7 +120,7 @@ class RemoteConfViewModel : ViewModel() {
                     time.toString(),
                     "临时会议",
                     (System.currentTimeMillis() / 1000).toString(),
-                    CustomApplication.cookie
+                    PanelApplication.cookie
                 )
             }
             Log.d("wlzhou", "startConf res = $res")
@@ -157,7 +155,7 @@ class RemoteConfViewModel : ViewModel() {
             val res = safeApiCall {
                 Api.get().hangupPhysicalConfReservation(
                     scheduleItem.reservationId,
-                    CustomApplication.cookie
+                    PanelApplication.cookie
                 )
             }
             Log.d("wlzhou", "stopConf res = $res")
@@ -170,7 +168,7 @@ class RemoteConfViewModel : ViewModel() {
                 scheduleItem = if (scheduleList.size >= 2) scheduleList[1] else ScheduleItem(confName = conferenceItem.confName)
                 dialogState = DialogState.NoDialog
                 confState = RemoteConfState.Idle(scheduleItem, facilityList, scheduleRange)
-                Toast.makeText(CustomApplication.context, "会议已结束，感谢您的使用", Toast.LENGTH_SHORT).show()
+                Toast.makeText(PanelApplication.context, "会议已结束，感谢您的使用", Toast.LENGTH_SHORT).show()
             } else {
                 res.handleErrorCode()
             }
@@ -183,7 +181,7 @@ class RemoteConfViewModel : ViewModel() {
                 Api.get().extendTimeForPhysicalConfReservation(
                     scheduleItem.reservationId,
                     time,
-                    CustomApplication.cookie
+                    PanelApplication.cookie
                 )
             }
             Log.d("wlzhou", "delayConf res = $res")
@@ -209,7 +207,7 @@ class RemoteConfViewModel : ViewModel() {
                 Api.get().listGscPhysicalConfTimeListByDay(
                     "${TimeUtil.getTodayDate()} 00:00",
                     "${TimeUtil.getTodayDate()} 23:59",
-                    CustomApplication.cookie
+                    PanelApplication.cookie
                 )
             }
             if (gscConfTimeRes.isSuccess()) {
@@ -218,6 +216,7 @@ class RemoteConfViewModel : ViewModel() {
                         disableEndTime = TimeUtil.formatUtcTime(disableEndTime)
                     }
                 }
+                PanelApplication.confId = conferenceItem.confId
                 facilityList = mutableListOf<FacilityItem>().apply {
                     add(FacilityItem(-1, "", "${conferenceItem.memberCapacity}人", ""))
                     addAll(conferenceItem.facilities)

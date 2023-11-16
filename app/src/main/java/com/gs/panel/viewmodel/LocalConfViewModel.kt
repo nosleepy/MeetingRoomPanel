@@ -6,7 +6,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.gs.panel.CustomApplication
+import com.gs.panel.PanelApplication
 import com.gs.panel.entity.TimeItem
 import com.gs.panel.state.DialogState
 import com.gs.panel.state.LocalConfState
@@ -54,7 +54,7 @@ class LocalConfViewModel : ViewModel() {
     fun stopConf() {
         confState = LocalConfState.Idle
         dialogState = DialogState.NoDialog
-        Toast.makeText(CustomApplication.context, "会议已结束，感谢您的使用", Toast.LENGTH_SHORT).show()
+        Toast.makeText(PanelApplication.context, "会议已结束，感谢您的使用", Toast.LENGTH_SHORT).show()
     }
 
     fun openStartConfDialog() {

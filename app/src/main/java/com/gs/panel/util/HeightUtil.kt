@@ -1,11 +1,11 @@
 package com.gs.panel.util
 
-import com.gs.panel.CustomApplication
+import com.gs.panel.PanelApplication
 
 class HeightUtil {
     companion object {
         fun getStatusBarHeight(): Int {
-            val resources = CustomApplication.context.resources
+            val resources = PanelApplication.context.resources
             val resourceId = resources.getIdentifier("status_bar_height", "dimen", "android")
             return if (resourceId > 0) {
                 resources.getDimensionPixelSize(resourceId)
@@ -13,7 +13,7 @@ class HeightUtil {
         }
 
         fun getNavigationBarHeight(): Int {
-            val resources = CustomApplication.context.resources
+            val resources = PanelApplication.context.resources
             val resourceId = resources.getIdentifier("navigation_bar_height", "dimen", "android")
             return if (resourceId > 0) {
                 resources.getDimensionPixelSize(resourceId)
@@ -21,11 +21,11 @@ class HeightUtil {
         }
 
         fun getScreenHeight(): Int {
-            return CustomApplication.context.resources.displayMetrics.heightPixels
+            return PanelApplication.context.resources.displayMetrics.heightPixels
         }
 
         fun getScreenWidth(): Int {
-            return CustomApplication.context.resources.displayMetrics.widthPixels
+            return PanelApplication.context.resources.displayMetrics.widthPixels
         }
     }
 }

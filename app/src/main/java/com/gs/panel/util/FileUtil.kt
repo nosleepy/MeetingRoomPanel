@@ -1,6 +1,6 @@
 package com.gs.panel.util
 
-import com.gs.panel.CustomApplication
+import com.gs.panel.PanelApplication
 import java.security.KeyFactory
 import java.security.Signature
 import java.security.spec.PKCS8EncodedKeySpec
@@ -27,7 +27,7 @@ class FileUtil {
         }
 
         private fun readAssetFileToByteArray(fileName: String): ByteArray {
-            val inputStream = CustomApplication.context.assets.open(fileName)
+            val inputStream = PanelApplication.context.assets.open(fileName)
             val buffer = ByteArray(inputStream.available())
             inputStream.read(buffer)
             inputStream.close()
