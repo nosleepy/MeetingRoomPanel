@@ -35,6 +35,7 @@ class RemoteConfViewModel : ViewModel() {
     private var facilityList by mutableStateOf(listOf<FacilityItem>())
     var confState by mutableStateOf<RemoteConfState>(RemoteConfState.Idle(ScheduleItem(), listOf(), listOf()))
     var dialogState by mutableStateOf<DialogState>(DialogState.NoDialog)
+    var errorMsg by mutableStateOf("")
 
     init {
         timeJob = viewModelScope.launch {
@@ -257,8 +258,9 @@ class RemoteConfViewModel : ViewModel() {
                         }
                     }
                 }
+                errorMsg = ""
             } else {
-                gscConfTimeRes.handleErrorCode()
+                errorMsg = gscConfTimeRes.parseErrorCode()
             }
         }
     }

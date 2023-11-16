@@ -12,14 +12,18 @@ data class Response<T>(
         return status == CODE_SUCCESS && response != null
     }
 
-    fun handleErrorCode() {
-        val errorInfo = when (status) {
+    fun parseErrorCode(): String {
+        return when (status) {
             CODE_ERROR_COOKIE -> "Cookie错误"
             CODE_TIME_OCCUPY -> "预约时间已经被占用"
             CODE_NO_NETWORK -> "网络异常，请检查"
             CODE_EXCEPTION -> "服务器连接失败，请联系管理员"
             else -> "$status"
         }
+    }
+
+    fun handleErrorCode() {
+        val errorInfo = parseErrorCode()
         Toast.makeText(CustomApplication.context, errorInfo, Toast.LENGTH_SHORT).show()
     }
 

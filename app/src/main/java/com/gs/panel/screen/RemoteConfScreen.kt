@@ -16,6 +16,7 @@ import com.gs.panel.state.RemoteConfState
 import com.gs.panel.viewmodel.RemoteConfViewModel
 import com.gs.panel.widget.DelayConfDialog
 import com.gs.panel.widget.DelayConfSuccessDialog
+import com.gs.panel.widget.ErrorTipWidget
 import com.gs.panel.widget.MoreDeviceDialog
 import com.gs.panel.widget.StartConfDialog
 import com.gs.panel.widget.StartConfSuccessDialog
@@ -79,6 +80,9 @@ fun RemoteConfScreen(navController: NavController) {
                 onConfirm = { viewModel.closeDialog() },
                 dialogState = viewModel.dialogState as DialogState.DelayConfSuccessDialog
             )
+        }
+        if (viewModel.errorMsg.isNotEmpty()) {
+            ErrorTipWidget(content = viewModel.errorMsg)
         }
     }
 }

@@ -25,6 +25,6 @@ fun ErrorTipWidget(content: String) {
             .clickable {},
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Text(text = "服务器连接失败，请联系管理员", color = Color(0xFFe40426), fontSize = 24.sp)
+        Text(text = content, color = Color(0xFFe40426), fontSize = 22.sp)
     }
 }
