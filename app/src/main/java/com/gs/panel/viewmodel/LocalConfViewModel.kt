@@ -5,26 +5,25 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.gs.panel.CustomApplication
 import com.gs.panel.entity.TimeItem
 import com.gs.panel.state.DialogState
 import com.gs.panel.state.LocalConfState
 import com.gs.panel.util.TimeUtil
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class LocalConfViewModel : ViewModel() {
     var confState by mutableStateOf<LocalConfState>(LocalConfState.Idle)
     var dialogState by mutableStateOf<DialogState>(DialogState.NoDialog)
-    private val mainScope = MainScope()
     private var timeJob: Job
     private var startTime: Int = 0
     private var endTime: Int = 0
 
     init {
-        timeJob = mainScope.launch {
+        timeJob = viewModelScope.launch {
             repeat(Int.MAX_VALUE) {
                 val curTime = TimeUtil.getCurHour() * 60 + TimeUtil.getCurMinute()
                 if (curTime == endTime) {

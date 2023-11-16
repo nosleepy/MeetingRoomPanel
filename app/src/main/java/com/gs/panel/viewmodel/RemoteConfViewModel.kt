@@ -17,12 +17,10 @@ import com.gs.panel.state.RemoteConfState
 import com.gs.panel.util.FileUtil
 import com.gs.panel.util.TimeUtil
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class RemoteConfViewModel : ViewModel() {
-    private val mainScope = MainScope()
     private var timeJob: Job
     private var requestJob: Job
     private var startHour = 0
@@ -38,7 +36,7 @@ class RemoteConfViewModel : ViewModel() {
     var dialogState by mutableStateOf<DialogState>(DialogState.NoDialog)
 
     init {
-        timeJob = mainScope.launch {
+        timeJob = viewModelScope.launch {
             repeat(Int.MAX_VALUE) {
                 when (conferenceItem.confStatus) {
                     "disable" -> {
@@ -75,7 +73,7 @@ class RemoteConfViewModel : ViewModel() {
                 delay(1000)
             }
         }
-        requestJob = mainScope.launch {
+        requestJob = viewModelScope.launch {
             repeat(Int.MAX_VALUE) {
                 if (CustomApplication.extenAccount.isEmpty() || CustomApplication.token.isEmpty()) {
                     val res = Api.get().getGscAccessToken(FileUtil.getUsername(), FileUtil.getPassword())

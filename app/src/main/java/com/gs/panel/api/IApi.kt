@@ -7,7 +7,17 @@ import com.gs.panel.entity.LoginInfoItem
 import com.gs.panel.entity.OperationItem
 import retrofit2.http.GET
 import retrofit2.http.Query
+import java.net.ConnectException
 
+suspend fun <T> safeApiCall(apiCall: suspend () -> Response<T>): Response<T> {
+    return try {
+        apiCall()
+    } catch (e: ConnectException) {
+        Response(Response.CODE_NO_NETWORK, null)
+    } catch (e: Exception) {
+        Response(Response.CODE_EXCEPTION, null)
+    }
+}
 
 interface IApi {
     /**

@@ -12,5 +12,7 @@ data class Response<T>(
 
     companion object {
         const val CODE_SUCCESS = 0
+        const val CODE_EXCEPTION = -500
+        const val CODE_NO_NETWORK = -501
     }
 }
