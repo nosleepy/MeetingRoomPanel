@@ -13,18 +13,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.gs.panel.viewmodel.RemoteConfViewModel
 
 @Composable
-fun ErrorTipWidget(viewModel: RemoteConfViewModel) {
+fun ErrorTipWidget(content: String) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .height(50.dp)
             .background(color = Color(0xFFaaaaaa))
             .padding(horizontal = 30.dp)
-            .clickable {}
-        ,
+            .clickable {},
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(text = "服务器连接失败，请联系管理员", color = Color(0xFFe40426), fontSize = 24.sp)
