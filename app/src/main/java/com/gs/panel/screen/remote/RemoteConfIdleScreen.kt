@@ -31,15 +31,12 @@ import com.gs.panel.R
 import com.gs.panel.state.RemoteConfState
 import com.gs.panel.ui.theme.CustomColor
 import com.gs.panel.util.TimeUtil
-//import com.gs.panel.viewmodel.RemoteConfState
-//import com.gs.panel.viewmodel.ConfState
 import com.gs.panel.viewmodel.RemoteConfViewModel
 import com.gs.panel.widget.ClickButtonWidget
 import com.gs.panel.widget.DynamicsRowWidget
 import com.gs.panel.widget.FacilityRowWidget
 import com.gs.panel.widget.TimeAxisWidget
 
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun RemoteConfIdleScreen(
     navController: NavController,
