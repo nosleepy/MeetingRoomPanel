@@ -1,7 +1,6 @@
 package com.gs.panel.screen
 
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -18,7 +17,6 @@ import com.gs.panel.widget.StartConfDialog
 import com.gs.panel.widget.StartConfSuccessDialog
 import com.gs.panel.widget.StopConfDialog
 
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun LocalConfScreen(navController: NavController) {
     val viewModel: LocalConfViewModel = viewModel()

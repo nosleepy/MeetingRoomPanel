@@ -32,9 +32,9 @@ class RemoteConfViewModel : ViewModel() {
     private var scheduleItem = ScheduleItem()
     private var conferenceItem = ConferenceItem(confStatus = "available")
     private var scheduleList = listOf<ScheduleItem>()
-    var scheduleRange by mutableStateOf(listOf<Int>())
-    var facilityList by mutableStateOf(listOf<FacilityItem>())
-    var confState by mutableStateOf<RemoteConfState>(RemoteConfState.Idle(ScheduleItem()))
+    private var scheduleRange by mutableStateOf(listOf<Int>())
+    private var facilityList by mutableStateOf(listOf<FacilityItem>())
+    var confState by mutableStateOf<RemoteConfState>(RemoteConfState.Idle(ScheduleItem(), listOf(), listOf()))
     var dialogState by mutableStateOf<DialogState>(DialogState.NoDialog)
 
     init {
@@ -42,30 +42,32 @@ class RemoteConfViewModel : ViewModel() {
             repeat(Int.MAX_VALUE) {
                 when (conferenceItem.confStatus) {
                     "disable" -> {
-                        confState = RemoteConfState.Disable(conferenceItem)
+                        confState = RemoteConfState.Disable(conferenceItem, facilityList)
                     }
                     else -> { //available,inuse
                         if (TimeUtil.getTodaySeconds() == TimeUtil.getTargetSeconds(startHour, startMinute - 10)) {
-                            confState = RemoteConfState.ReadyFlag(scheduleItem)
+                            confState = RemoteConfState.ReadyFlag(scheduleItem, facilityList, scheduleRange)
                         } else if (TimeUtil.getTodaySeconds() > TimeUtil.getTargetSeconds(startHour, startMinute - 10)
                             && TimeUtil.getTodaySeconds() < TimeUtil.getTargetSeconds(startHour, startMinute)) {
                             val remindSecond = TimeUtil.getTargetSeconds(startHour, startMinute) - TimeUtil.getTodaySeconds()
                             confState = RemoteConfState.Ready(
-                                TimeUtil.parseMinuteBySecond(remindSecond),
-                                TimeUtil.parseSecondBySecond(remindSecond),
-                                remindSecond * 1.0f / 600,
+                                TimeUtil.calculateMinute(remindSecond),
+                                TimeUtil.calculateSecond(remindSecond),
+                                TimeUtil.calculatePercent(remindSecond),
                                 scheduleItem,
+                                facilityList,
+                                scheduleRange,
                             )
                         } else if (TimeUtil.getTodaySeconds() >= TimeUtil.getTargetSeconds(startHour, startMinute)
                             && TimeUtil.getTodaySeconds() < TimeUtil.getTargetSeconds(endHour, endMinute)) {
-                            confState = RemoteConfState.Run(scheduleItem)
+                            confState = RemoteConfState.Run(scheduleItem, facilityList, scheduleRange)
                         } else if(TimeUtil.getTodaySeconds() == TimeUtil.getTargetSeconds(endHour, endMinute)) {
-                            confState = RemoteConfState.Idle(scheduleItem)
+                            confState = RemoteConfState.Idle(scheduleItem, facilityList, scheduleRange)
                         } else {
                             confState = if (scheduleItem.reservationId.isEmpty()) {
-                                RemoteConfState.Idle(ScheduleItem(confName = conferenceItem.confName))
+                                RemoteConfState.Idle(ScheduleItem(confName = conferenceItem.confName), facilityList, scheduleRange)
                             } else {
-                                RemoteConfState.Idle(scheduleItem)
+                                RemoteConfState.Idle(scheduleItem, facilityList, scheduleRange)
                             }
                         }
                     }
@@ -142,7 +144,7 @@ class RemoteConfViewModel : ViewModel() {
                     configStartTime = "${TimeUtil.formatTime(startHour)}:${TimeUtil.formatTime(startMinute)}",
                     configEndTime = "${TimeUtil.formatTime(endHour)}:${TimeUtil.formatTime(endMinute)}",
                 )
-                confState = RemoteConfState.Run(scheduleItem)
+                confState = RemoteConfState.Run(scheduleItem, facilityList, scheduleRange)
             } else if (res.status == -127) {
                 Toast.makeText(CustomApplication.context, "预约时间已经被占用", Toast.LENGTH_SHORT).show()
             } else {
@@ -166,7 +168,7 @@ class RemoteConfViewModel : ViewModel() {
                 endMinute = 0
                 scheduleItem = if (scheduleList.size >= 2) scheduleList[1] else ScheduleItem(confName = conferenceItem.confName)
                 dialogState = DialogState.NoDialog
-                confState = RemoteConfState.Idle(scheduleItem)
+                confState = RemoteConfState.Idle(scheduleItem, facilityList, scheduleRange)
                 Toast.makeText(CustomApplication.context, "会议已结束，感谢您的使用", Toast.LENGTH_SHORT).show()
             } else {
                 Toast.makeText(CustomApplication.context, "失败，请检查网络", Toast.LENGTH_SHORT).show()
@@ -218,7 +220,7 @@ class RemoteConfViewModel : ViewModel() {
             }
             when (conferenceItem.confStatus) {
                 "disable" -> {
-                    confState = RemoteConfState.Disable(conferenceItem)
+                    confState = RemoteConfState.Disable(conferenceItem, facilityList)
                 }
                 else -> { //available,inuse
                     scheduleList = conferenceItem.schedules

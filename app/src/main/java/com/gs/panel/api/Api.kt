@@ -4,8 +4,6 @@ import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
-import javax.net.ssl.HostnameVerifier
-import javax.net.ssl.SSLSession
 
 object Api {
     private const val BASE_URL = "https://192.168.124.20:8089/"
@@ -15,8 +13,7 @@ object Api {
             .connectTimeout(15, TimeUnit.SECONDS)
             .readTimeout(15, TimeUnit.SECONDS)
             .writeTimeout(15, TimeUnit.SECONDS)
-//            .cookieJar(PersistentCookieJar(SetCookieCache(), SharedPrefsCookiePersistor(CustomApplication.context))) // cookie持久化
-            .hostnameVerifier { hostname, session -> true }
+            .hostnameVerifier { _, _ -> true }
             .build()
     }
 

@@ -20,8 +20,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.gs.panel.util.HeightUtil
 import com.gs.panel.util.TimeUtil
-import com.gs.panel.util.getScreenWidth
 import kotlin.math.ceil
 
 @Composable
@@ -33,7 +33,7 @@ fun TimeAxisWidget(
     scheduleColor: Color,
     borderColor: Color,
 ) {
-    val space = (getScreenWidth() * 1.0 / 25).toInt()
+    val space = (HeightUtil.getScreenWidth() * 1.0 / 25).toInt()
     val rowLength = space * 24
     val textLength = space * 25
     Column(modifier = modifier) {

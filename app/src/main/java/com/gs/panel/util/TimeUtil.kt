@@ -28,7 +28,7 @@ class TimeUtil {
             return hour * 60 * 60 + minute * 60
         }
 
-        fun parseMinuteBySecond(time: Int): String {
+        fun calculateMinute(time: Int): String {
             val minute = time / 60
             if (minute in 0..9) {
                 return "0$minute"
@@ -36,12 +36,16 @@ class TimeUtil {
             return "$minute"
         }
 
-        fun parseSecondBySecond(time: Int): String {
+        fun calculateSecond(time: Int): String {
             val second = time % 60
             if (second in 0..9) {
                 return "0$second"
             }
             return "$second"
+        }
+
+        fun calculatePercent(time: Int): Float {
+            return time / 600f
         }
 
         fun formatTime(time: Int): String {

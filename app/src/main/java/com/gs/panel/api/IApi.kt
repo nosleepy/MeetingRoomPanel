@@ -1,34 +1,13 @@
 package com.gs.panel.api
 
-import com.google.gson.annotations.SerializedName
-import com.gs.panel.entity.CloudImInfoItem
-import com.gs.panel.entity.ConferenceItem
+import com.gs.panel.entity.GscAccessInfoItem
+import com.gs.panel.entity.GscPhyConfReservationItem
+import com.gs.panel.entity.GscPhysicalConfItem
+import com.gs.panel.entity.LoginInfoItem
 import com.gs.panel.entity.OperationItem
-import com.gs.panel.entity.ScheduleItem
 import retrofit2.http.GET
 import retrofit2.http.Query
 
-data class GscAccessInfoItem (
-    @SerializedName("exten_account") val extenAccount: String,
-    @SerializedName("device_name") val deviceName: String,
-    @SerializedName("device_id") val deviceId: Int,
-    @SerializedName("token") val token: String,
-)
-
-data class LoginInfoItem(
-    @SerializedName("cookie") val cookie: String,
-    @SerializedName("cloud_im_info") val cloudImInfo: CloudImInfoItem,
-    @SerializedName("remain_num") val remainNum: Int,
-    @SerializedName("remain_time") val remainTime: Int,
-)
-
-data class GscPhysicalConfItem(
-    @SerializedName("conference") val conference: List<ConferenceItem>
-)
-
-data class GscPhyConfReservationItem(
-    @SerializedName("conference") val conference: List<ScheduleItem>
-)
 
 interface IApi {
     /**
