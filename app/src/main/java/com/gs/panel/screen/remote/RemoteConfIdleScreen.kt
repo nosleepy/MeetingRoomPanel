@@ -1,15 +1,12 @@
 package com.gs.panel.screen.remote
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -29,11 +26,8 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.gs.panel.R
 import com.gs.panel.state.RemoteConfState
-import com.gs.panel.ui.theme.CustomColor
-import com.gs.panel.util.TimeUtil
 import com.gs.panel.viewmodel.RemoteConfViewModel
 import com.gs.panel.widget.ClickButtonWidget
-import com.gs.panel.widget.DynamicsRowWidget
 import com.gs.panel.widget.FacilityRowWidget
 import com.gs.panel.widget.TimeAxisWidget
 
