@@ -29,7 +29,7 @@ import androidx.navigation.NavController
 import com.gs.panel.R
 import com.gs.panel.state.LocalConfState
 import com.gs.panel.viewmodel.LocalConfViewModel
-import com.gs.panel.widget.ClickButtonWidget
+import com.gs.panel.widget.LargeClickButton
 
 @Composable
 fun LocalConfRunScreen(
@@ -115,7 +115,7 @@ fun LocalConfRunScreen(
                 ,
                 horizontalArrangement = Arrangement.Center
             ) {
-                ClickButtonWidget(
+                LargeClickButton(
                     modifier = Modifier.width(280.dp).height(88.dp),
                     name = "延长会议",
                     backgroundColor = Color(0xFFab021b),
@@ -124,7 +124,7 @@ fun LocalConfRunScreen(
                     onClick = { viewModel.openDelayConfDialog() }
                 )
                 Spacer(modifier = Modifier.width(40.dp))
-                ClickButtonWidget(
+                LargeClickButton(
                     modifier = Modifier.width(280.dp).height(88.dp),
                     name = "结束会议",
                     backgroundColor = Color.White,

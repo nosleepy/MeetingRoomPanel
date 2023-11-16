@@ -27,9 +27,9 @@ import androidx.navigation.NavController
 import com.gs.panel.R
 import com.gs.panel.state.RemoteConfState
 import com.gs.panel.viewmodel.RemoteConfViewModel
-import com.gs.panel.widget.ClickButtonWidget
-import com.gs.panel.widget.FacilityRowWidget
-import com.gs.panel.widget.TimeAxisWidget
+import com.gs.panel.widget.LargeClickButton
+import com.gs.panel.widget.FacilityListRow
+import com.gs.panel.widget.TimeAxis
 
 @Composable
 fun RemoteConfIdleScreen(
@@ -52,7 +52,7 @@ fun RemoteConfIdleScreen(
             .padding(horizontal = 30.dp)
 //                .background(CustomColor.cranesbill)
             .align(Alignment.TopCenter)) {
-            FacilityRowWidget(
+            FacilityListRow(
                 modifier = Modifier.fillMaxWidth().height(34.dp),
                 facilityList = facilityList,
                 itemFillColor = Color(0xFF30831f),
@@ -92,7 +92,7 @@ fun RemoteConfIdleScreen(
                 .fillMaxWidth()
 //                    .background(CustomColor.powder)
             )
-            ClickButtonWidget(
+            LargeClickButton(
                 modifier = Modifier
                     .width(280.dp)
                     .height(88.dp)
@@ -174,7 +174,7 @@ fun RemoteConfIdleScreen(
                     ,
                     color = Color.White)
             }
-            TimeAxisWidget(
+            TimeAxis(
                 modifier = Modifier.fillMaxWidth(),
                 scheduleRange = scheduleRange,
                 fillColor = Color(0xFF2bb570),

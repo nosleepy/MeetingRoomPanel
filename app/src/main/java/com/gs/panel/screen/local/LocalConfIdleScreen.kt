@@ -28,7 +28,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.gs.panel.R
 import com.gs.panel.viewmodel.LocalConfViewModel
-import com.gs.panel.widget.ClickButtonWidget
+import com.gs.panel.widget.LargeClickButton
 
 @Composable
 fun LocalConfIdleScreen(
@@ -76,7 +76,7 @@ fun LocalConfIdleScreen(
                 .fillMaxWidth()
 //                        .background(CustomColor.powder)
             )
-            ClickButtonWidget(
+            LargeClickButton(
                 modifier = Modifier.width(280.dp).height(88.dp).align(Alignment.CenterHorizontally),
                 name = "立即开会",
                 backgroundColor = Color.White,

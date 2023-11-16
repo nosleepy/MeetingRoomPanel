@@ -143,14 +143,14 @@ fun DelayConfDialog(
                     horizontalArrangement = Arrangement.Center,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    SmallClickButtonWidget(
+                    SmallClickButton(
                         modifier = Modifier.width(200.dp).height(50.dp),
                         name = "取消",
                         backgroundColor = Color.White,
                         onClick = { onCancel() }
                     )
                     Spacer(modifier = Modifier.width(30.dp))
-                    SmallClickButtonWidget(
+                    SmallClickButton(
                         modifier = Modifier.width(200.dp).height(50.dp),
                         name = "延长",
                         backgroundColor = Color(0xFFcccccc),

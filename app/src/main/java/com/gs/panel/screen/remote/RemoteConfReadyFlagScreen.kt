@@ -33,9 +33,9 @@ import com.gs.panel.state.RemoteConfState
 import com.gs.panel.ui.theme.CustomColor
 //import com.gs.panel.viewmodel.ConfState
 import com.gs.panel.viewmodel.RemoteConfViewModel
-import com.gs.panel.widget.DynamicsRowWidget
-import com.gs.panel.widget.FacilityRowWidget
-import com.gs.panel.widget.TimeAxisWidget
+import com.gs.panel.widget.DynamicsRow
+import com.gs.panel.widget.FacilityListRow
+import com.gs.panel.widget.TimeAxis
 
 @Composable
 fun RemoteConfReadyFlagScreen(
@@ -58,7 +58,7 @@ fun RemoteConfReadyFlagScreen(
             .padding(horizontal = 30.dp)
 //                .background(CustomColor.cranesbill)
             .align(Alignment.TopCenter)) {
-            FacilityRowWidget(
+            FacilityListRow(
                 modifier = Modifier.fillMaxWidth().height(34.dp),
                 facilityList = facilityList,
                 itemFillColor = Color(0xFFbf7629),
@@ -190,7 +190,7 @@ fun RemoteConfReadyFlagScreen(
                     ,
                     color = Color.White)
             }
-            TimeAxisWidget(
+            TimeAxis(
                 modifier = Modifier.fillMaxWidth(),
                 scheduleRange = scheduleRange,
                 fillColor = Color(0xFFf2ac62),

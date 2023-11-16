@@ -12,14 +12,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.gs.panel.widget.ClickButtonWidget
+import com.gs.panel.widget.LargeClickButton
 
 @Composable
 fun MainScreen(navController: NavController) {
     Box(modifier = Modifier.fillMaxSize()
     ) {
         Row(modifier = Modifier.align(Alignment.Center)) {
-            ClickButtonWidget(
+            LargeClickButton(
                 modifier = Modifier.width(280.dp).height(88.dp),
                 name = "本地模式",
                 backgroundColor = Color.White,
@@ -27,7 +27,7 @@ fun MainScreen(navController: NavController) {
                 onClick = { navController.navigate("localConf") }
             )
             Spacer(modifier = Modifier.width(40.dp))
-            ClickButtonWidget(
+            LargeClickButton(
                 modifier = Modifier.width(280.dp).height(88.dp),
                 name = "服务器模式",
                 backgroundColor = Color.White,

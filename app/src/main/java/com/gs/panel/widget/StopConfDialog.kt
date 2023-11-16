@@ -90,14 +90,14 @@ fun StopConfDialog(
                         .align(Alignment.BottomCenter).padding(vertical = 52.dp),
                     horizontalArrangement = Arrangement.Center
                 ) {
-                    SmallClickButtonWidget(
+                    SmallClickButton(
                         modifier = Modifier.width(200.dp).height(50.dp),
                         name = "取消",
                         backgroundColor = Color.White,
                         onClick = { onCancel() }
                     )
                     Spacer(modifier = Modifier.width(30.dp))
-                    SmallClickButtonWidget(
+                    SmallClickButton(
                         modifier = Modifier.width(200.dp).height(50.dp),
                         name = "结束",
                         backgroundColor = Color(0xFFcccccc),

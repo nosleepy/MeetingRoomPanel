@@ -218,9 +218,9 @@ class RemoteConfViewModel : ViewModel() {
                 }
                 PanelApplication.confId = conferenceItem.confId
                 facilityList = mutableListOf<FacilityItem>().apply {
-                    add(FacilityItem(-1, "", "${conferenceItem.memberCapacity}人", ""))
+                    add(FacilityItem(0, "", "${conferenceItem.memberCapacity}人", ""))
                     addAll(conferenceItem.facilities)
-                    add(FacilityItem(0, "", "More", ""))
+                    add(FacilityItem(0, "", "More", "More"))
                 }
                 when (conferenceItem.confStatus) {
                     "disable" -> {

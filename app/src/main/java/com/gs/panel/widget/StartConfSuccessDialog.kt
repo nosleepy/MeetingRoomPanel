@@ -135,7 +135,7 @@ fun StartConfSuccessDialog(
                         .padding(vertical = 32.dp),
                     horizontalArrangement = Arrangement.Center
                 ) {
-                    SmallClickButtonWidget(
+                    SmallClickButton(
                         modifier = Modifier.width(200.dp).height(50.dp),
                         name = "我知道了",
                         backgroundColor = Color(0xFFcccccc),

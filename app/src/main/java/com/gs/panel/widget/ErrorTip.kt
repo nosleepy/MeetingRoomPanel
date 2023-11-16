@@ -15,7 +15,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun ErrorTipWidget(content: String) {
+fun ErrorTip(content: String) {
     Row(
         modifier = Modifier
             .fillMaxWidth()

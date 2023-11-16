@@ -1,11 +1,8 @@
 package com.gs.panel.widget
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
@@ -18,17 +15,17 @@ import androidx.compose.ui.unit.sp
 import com.gs.panel.entity.FacilityItem
 
 @Composable
-fun FacilityRowWidget(
+fun FacilityListRow(
     modifier: Modifier,
     facilityList: List<FacilityItem>,
-    itemFillColor: Color = Color(0xFF30831f),
-    moreItemColor: Color = Color(0xFF00a645),
+    itemFillColor: Color,
+    moreItemColor: Color,
     onMoreClick: () -> Unit = {},
 ) {
     if (facilityList.isNotEmpty()) {
-        DynamicsRowWidget(modifier = modifier) {
+        DynamicsRow(modifier = modifier) {
             facilityList.forEach { facilityItem ->
-                if (facilityItem.confFacilityId == 0) {
+                if (facilityItem.confFacilityCode == "More") {
                     Text(
                         text = "More",
                         modifier = Modifier

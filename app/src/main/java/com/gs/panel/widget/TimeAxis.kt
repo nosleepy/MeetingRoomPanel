@@ -25,7 +25,7 @@ import com.gs.panel.util.TimeUtil
 import kotlin.math.ceil
 
 @Composable
-fun TimeAxisWidget(
+fun TimeAxis(
     modifier: Modifier,
     scheduleRange: List<Int>,
     fillColor: Color,

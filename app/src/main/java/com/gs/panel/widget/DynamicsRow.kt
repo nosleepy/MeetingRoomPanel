@@ -8,7 +8,7 @@ import androidx.compose.ui.layout.Placeable
 import androidx.compose.ui.unit.Constraints
 
 @Composable
-fun DynamicsRowWidget(modifier: Modifier = Modifier, space: Int = 8, content: @Composable () -> Unit) {
+fun DynamicsRow(modifier: Modifier = Modifier, space: Int = 8, content: @Composable () -> Unit) {
     val measurePolicy = MeasurePolicy { measurables, constraints ->
         val childrenSize = measurables.size
         var childrenSpace = 0

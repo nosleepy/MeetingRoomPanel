@@ -101,7 +101,7 @@ fun MoreDeviceDialog(
                         .padding(vertical = 24.dp),
                     horizontalArrangement = Arrangement.Center
                 ) {
-                    SmallClickButtonWidget(
+                    SmallClickButton(
                         modifier = Modifier.width(200.dp).height(50.dp),
                         name = "我知道了",
                         backgroundColor = Color(0xFFcccccc),
