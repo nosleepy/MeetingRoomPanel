@@ -1,9 +1,6 @@
 package com.gs.panel.viewmodel
 
-import android.annotation.SuppressLint
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.mutableStateMapOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.gs.panel.PanelApplication
@@ -13,9 +10,8 @@ import com.gs.panel.entity.ScheduleItem
 import kotlinx.coroutines.launch
 import java.util.Collections
 
-@SuppressLint("MutableCollectionMutableState")
 class ConfListViewModel: ViewModel() {
-    var scheduleMap by mutableStateOf(mutableMapOf<String, MutableList<ScheduleItem>>())
+    var scheduleMap = mutableStateMapOf<String, MutableList<ScheduleItem>>()
 
     init {
         viewModelScope.launch {
