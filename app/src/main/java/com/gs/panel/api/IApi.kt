@@ -5,17 +5,21 @@ import com.gs.panel.entity.GscPhyConfReservationItem
 import com.gs.panel.entity.GscPhysicalConfItem
 import com.gs.panel.entity.LoginInfoItem
 import com.gs.panel.entity.OperationItem
+import com.gs.panel.util.NetworkUtil
 import retrofit2.http.GET
 import retrofit2.http.Query
 import java.net.ConnectException
 
 suspend fun <T> safeApiCall(apiCall: suspend () -> Response<T>): Response<T> {
+    if (!NetworkUtil.isConnected()) {
+        return Response(Response.CODE_NO_NETWORK, null)
+    }
     return try {
         apiCall()
     } catch (e: ConnectException) {
-        Response(Response.CODE_NO_NETWORK, null)
+        Response(Response.CODE_CONNECT_FAIL, null)
     } catch (e: Exception) {
-        Response(Response.CODE_EXCEPTION, null)
+        Response(Response.CODE_OTHER_EXCEPTION, null)
     }
 }
 

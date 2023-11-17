@@ -83,7 +83,11 @@ class RemoteConfViewModel : ViewModel() {
                         val loginRes = safeApiCall { Api.get().login(gscAccessInfoRes.response!!.extenAccount, gscAccessInfoRes.response!!.token) }
                         if (loginRes.isSuccess()) {
                             PanelApplication.cookie = loginRes.response!!.cookie
+                        } else {
+                            errorMsg = loginRes.parseErrorCode()
                         }
+                    } else {
+                        errorMsg = gscAccessInfoRes.parseErrorCode()
                     }
                 }
                 loadConfInfo()
@@ -203,6 +207,9 @@ class RemoteConfViewModel : ViewModel() {
 
     private fun loadConfInfo() {
         viewModelScope.launch {
+            if (PanelApplication.cookie.isEmpty()) {
+                return@launch
+            }
             val gscConfTimeRes = safeApiCall {
                 Api.get().listGscPhysicalConfTimeListByDay(
                     "${TimeUtil.getTodayDate()} 00:00",
