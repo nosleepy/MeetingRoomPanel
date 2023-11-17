@@ -218,6 +218,9 @@ class RemoteConfViewModel : ViewModel() {
                 )
             }
             if (gscConfTimeRes.isSuccess()) {
+                if (gscConfTimeRes.response!!.conference.isEmpty()) { //电子门牌没有被会议室绑定
+                    return@launch
+                }
                 conferenceItem = gscConfTimeRes.response!!.conference[0].apply {
                     if (disableEndTime.isNotEmpty()) {
                         disableEndTime = TimeUtil.formatUtcTime(disableEndTime)
