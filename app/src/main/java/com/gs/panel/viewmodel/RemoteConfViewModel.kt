@@ -31,8 +31,8 @@ class RemoteConfViewModel : ViewModel() {
     private var scheduleItem = ScheduleItem()
     private var conferenceItem = ConferenceItem(confStatus = "available")
     private var scheduleList = listOf<ScheduleItem>()
-    private var scheduleRange by mutableStateOf(listOf<Int>())
-    private var facilityList by mutableStateOf(listOf<FacilityItem>())
+    private var scheduleRange = mutableListOf<Int>()
+    private var facilityList = mutableListOf<FacilityItem>()
     var confState by mutableStateOf<RemoteConfState>(RemoteConfState.Idle(ScheduleItem(), listOf(), listOf()))
     var dialogState by mutableStateOf<DialogState>(DialogState.NoDialog)
     var errorMsg by mutableStateOf("")
@@ -217,7 +217,8 @@ class RemoteConfViewModel : ViewModel() {
                     }
                 }
                 PanelApplication.confId = conferenceItem.confId
-                facilityList = mutableListOf<FacilityItem>().apply {
+                facilityList.apply {
+                    clear()
                     add(FacilityItem(0, "", "${conferenceItem.memberCapacity}人", ""))
                     addAll(conferenceItem.facilities)
                     add(FacilityItem(0, "", "More", "More"))
@@ -228,7 +229,7 @@ class RemoteConfViewModel : ViewModel() {
                     }
                     else -> { //available,inuse
                         scheduleList = conferenceItem.schedules
-                        scheduleRange = listOf()
+                        scheduleRange.clear()
                         if (scheduleList.isNotEmpty()) {
                             scheduleList.forEach {
                                 it.configStartTime = it.configStartTime.split(' ')[1]
@@ -253,7 +254,7 @@ class RemoteConfViewModel : ViewModel() {
                             endHour = 0
                             endMinute = 0
                             scheduleItem = ScheduleItem()
-                            scheduleRange = scheduleRange.toMutableList().apply { add(-1) }
+                            scheduleRange.add(-1)
                         }
                     }
                 }
