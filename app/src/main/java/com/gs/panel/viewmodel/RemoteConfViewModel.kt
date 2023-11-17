@@ -228,7 +228,7 @@ class RemoteConfViewModel : ViewModel() {
                     }
                     else -> { //available,inuse
                         scheduleList = conferenceItem.schedules
-                        scheduleRange = listOf()
+                        scheduleRange = mutableListOf<Int>().apply { add(TimeUtil.getTodaySeconds()) }
                         if (scheduleList.isNotEmpty()) {
                             scheduleList.forEach {
                                 it.configStartTime = it.configStartTime.split(' ')[1]
@@ -253,7 +253,6 @@ class RemoteConfViewModel : ViewModel() {
                             endHour = 0
                             endMinute = 0
                             scheduleItem = ScheduleItem()
-                            scheduleRange = scheduleRange.toMutableList().apply { add(TimeUtil.getTodaySeconds()) }
                         }
                     }
                 }
