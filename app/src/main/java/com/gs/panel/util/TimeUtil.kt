@@ -1,5 +1,6 @@
 package com.gs.panel.util
 
+import com.gs.panel.entity.TimeItem
 import java.time.ZoneId
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
@@ -46,6 +47,12 @@ class TimeUtil {
 
         fun calculatePercent(time: Int): Float {
             return time / 600f
+        }
+
+        fun parseTime(time: Int): Pair<String, String> {
+            val hour = time / 60
+            val minute = time % 60
+            return Pair(formatTime(hour), formatTime(minute))
         }
 
         fun formatTime(time: Int): String {
