@@ -10,5 +10,6 @@
         <item name="android:windowBackground">#00a645</item>
         <item name="android:windowTranslucentNavigation">true</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:windowNoTitle">true</item>
     </style>
 </resources>
