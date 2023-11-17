@@ -7,7 +7,6 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.gs.panel.PanelApplication
-import com.gs.panel.entity.TimeItem
 import com.gs.panel.state.DialogState
 import com.gs.panel.state.LocalConfState
 import com.gs.panel.util.TimeUtil
