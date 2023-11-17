@@ -4,6 +4,7 @@ import java.time.ZoneId
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 import java.util.Calendar
+import java.util.TimeZone
 
 object TimeUtil {
     fun getCurHour(): Int {
@@ -71,7 +72,7 @@ object TimeUtil {
     fun formatUtcTime(timeString: String): String {
         val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")
         val utcTime = ZonedDateTime.parse(timeString, formatter.withZone(ZoneId.of("UTC")))
-        val localTime = utcTime.withZoneSameInstant(ZoneId.of("Asia/Shanghai"))
+        val localTime = utcTime.withZoneSameInstant(TimeZone.getDefault().toZoneId())
         return localTime.format(formatter)
     }
 }
