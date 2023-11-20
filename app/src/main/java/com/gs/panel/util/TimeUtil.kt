@@ -1,9 +1,11 @@
 package com.gs.panel.util
 
+import java.text.SimpleDateFormat
 import java.time.ZoneId
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 import java.util.Calendar
+import java.util.Date
 import java.util.TimeZone
 
 object TimeUtil {
@@ -62,11 +64,7 @@ object TimeUtil {
     }
 
     fun getTodayDate(): String {
-        val calendar = Calendar.getInstance()
-        val year = calendar.get(Calendar.YEAR)
-        val month = calendar.get(Calendar.MONTH) + 1
-        val day = calendar.get(Calendar.DAY_OF_MONTH)
-        return "$year-${formatTime(month)}-${formatTime(day)}"
+        return SimpleDateFormat("yyyy-MM-dd").format(Date())
     }
 
     fun formatUtcTime(timeString: String): String {
