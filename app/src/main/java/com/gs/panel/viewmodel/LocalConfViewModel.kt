@@ -24,7 +24,7 @@ class LocalConfViewModel : ViewModel() {
     init {
         timeJob = viewModelScope.launch {
             repeat(Int.MAX_VALUE) {
-                val curTime = TimeUtil.getCurHour() * 60 + TimeUtil.getCurMinute()
+                val curTime = TimeUtil.getHour() * 60 + TimeUtil.getMinute()
                 if (curTime == endTime) {
                     confState = LocalConfState.Idle
                 }
@@ -34,12 +34,12 @@ class LocalConfViewModel : ViewModel() {
     }
 
     fun startConf(time: Int) {
-        startTime = TimeUtil.getCurHour() * 60 + TimeUtil.getCurMinute()
+        startTime = TimeUtil.getHour() * 60 + TimeUtil.getMinute()
         endTime = startTime + time
         val startPair = TimeUtil.parseTime(startTime)
         val endPair = TimeUtil.parseTime(endTime)
         confState = LocalConfState.Run(startPair.first, startPair.second, endPair.first, endPair.second)
-        dialogState = DialogState.StartConfSuccessDialog(endPair.first, endPair.second)
+        dialogState = DialogState.StartConfSuccessDialog("${endPair.first}:${endPair.second}")
     }
 
     fun delayConf(time: Int) {
@@ -47,7 +47,7 @@ class LocalConfViewModel : ViewModel() {
         val startPair = TimeUtil.parseTime(startTime)
         val endPair = TimeUtil.parseTime(endTime)
         confState = LocalConfState.Run(startPair.first, startPair.second, endPair.first, endPair.second)
-        dialogState = DialogState.DelayConfSuccessDialog(endPair.first, endPair.second)
+        dialogState = DialogState.DelayConfSuccessDialog("${endPair.first}:${endPair.second}")
     }
 
     fun stopConf() {

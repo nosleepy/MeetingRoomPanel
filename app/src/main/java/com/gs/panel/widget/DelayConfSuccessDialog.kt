@@ -96,7 +96,7 @@ fun DelayConfSuccessDialog(
                             color = Color(0xFF333333)
                         )
                         Spacer(modifier = Modifier.width(16.dp))
-                        Text(text = "${dialogState!!.stopHour}:${dialogState.stopMinute}", modifier = Modifier
+                        Text(text = dialogState!!.endTime, modifier = Modifier
 //                                .fillMaxWidth()
 //                            .background(CustomColor.tree)
 //                                .padding(0.dp, 10.dp, 0.dp, 10.dp)

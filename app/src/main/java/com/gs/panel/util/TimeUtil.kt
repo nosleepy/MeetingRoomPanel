@@ -6,32 +6,22 @@ import java.time.ZoneId
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 import java.util.Calendar
-import java.util.Date
 import java.util.TimeZone
 
 object TimeUtil {
-    fun getCurHour(): Int {
+    fun getHour(): Int {
         return Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
     }
 
-    fun getCurMinute(): Int {
+    fun getMinute(): Int {
         return Calendar.getInstance().get(Calendar.MINUTE)
     }
 
-    fun getCurSecond(): Int {
-        return Calendar.getInstance().get(Calendar.SECOND)
+    fun getSecond(): Int {
+        return return Calendar.getInstance().get(Calendar.SECOND)
     }
 
-    fun getTodaySeconds(): Int {
-        val calendar = Calendar.getInstance()
-        return calendar.get(Calendar.HOUR_OF_DAY) * 60 * 60 + calendar.get(Calendar.MINUTE) * 60 + calendar.get(Calendar.SECOND)
-    }
-
-    fun getTargetSeconds(hour: Int, minute: Int): Int {
-        return hour * 60 * 60 + minute * 60
-    }
-
-    fun calculateMinute(time: Int): String {
+    fun calculateMinute(time: Long): String {
         val minute = time / 60
         if (minute in 0..9) {
             return "0$minute"
@@ -39,7 +29,7 @@ object TimeUtil {
         return "$minute"
     }
 
-    fun calculateSecond(time: Int): String {
+    fun calculateSecond(time: Long): String {
         val second = time % 60
         if (second in 0..9) {
             return "0$second"
@@ -47,7 +37,7 @@ object TimeUtil {
         return "$second"
     }
 
-    fun calculatePercent(time: Int): Float {
+    fun calculatePercent(time: Long): Float {
         return time / 600f
     }
 
@@ -57,7 +47,7 @@ object TimeUtil {
         return Pair(formatTime(hour), formatTime(minute))
     }
 
-    fun formatTime(time: Int): String {
+    private fun formatTime(time: Int): String {
         if (time in 0..9) {
             return "0$time"
         }
@@ -69,11 +59,11 @@ object TimeUtil {
         return LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
     }
 
-    fun getYesterdayDate(): String {
+    fun getLastDate(): String {
         return LocalDateTime.now().minusDays(1).format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
     }
 
-    fun getTomorrowDate(): String {
+    fun getNextDate(): String {
         return LocalDateTime.now().plusDays(1).format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
     }
 
@@ -82,5 +72,13 @@ object TimeUtil {
         val utcTime = ZonedDateTime.parse(timeString, formatter.withZone(ZoneId.of("UTC")))
         val localTime = utcTime.withZoneSameInstant(TimeZone.getDefault().toZoneId())
         return localTime.format(formatter)
+    }
+
+    fun getCurSecond(): Long {
+        return System.currentTimeMillis() / 1000
+    }
+
+    fun getTargetSecond(source: String): Long {
+        return SimpleDateFormat("yyyy-MM-dd HH:mm").parse(source).time / 1000
     }
 }
