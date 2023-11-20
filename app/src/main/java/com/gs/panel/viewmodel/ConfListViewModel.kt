@@ -47,7 +47,7 @@ class ConfListViewModel: ViewModel() {
                     it.value.sortWith { o1, o2 -> o1.configStartTime.compareTo(o2.configStartTime) }
                 }
             } else {
-                ToastUtil.show(gscConfReservationRes.parseErrorCode())
+                ToastUtil.show(gscConfReservationRes.getErrorMsg())
             }
         }
     }

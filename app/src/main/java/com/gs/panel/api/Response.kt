@@ -10,7 +10,7 @@ data class Response<T>(
         return status == CODE_SUCCESS && response != null
     }
 
-    fun parseErrorCode(): String {
+    fun getErrorMsg(): String {
         return when (status) {
             CODE_ERROR_COOKIE -> "Cookie错误"
             CODE_GSC_ACCESS_FAIL -> "鉴权失败，请联系管理员"

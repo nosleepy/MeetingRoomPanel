@@ -143,7 +143,7 @@ class RemoteConfViewModel : ViewModel() {
                 )
                 confState = RemoteConfState.Run(scheduleItem, facilityList, scheduleRange)
             } else {
-                ToastUtil.show(res.parseErrorCode())
+                ToastUtil.show(res.getErrorMsg())
             }
         }
     }
@@ -168,7 +168,7 @@ class RemoteConfViewModel : ViewModel() {
                 confState = RemoteConfState.Idle(scheduleItem, facilityList, scheduleRange)
                 Toast.makeText(PanelApplication.context, "会议已结束，感谢您的使用", Toast.LENGTH_SHORT).show()
             } else {
-                ToastUtil.show(res.parseErrorCode())
+                ToastUtil.show(res.getErrorMsg())
             }
         }
     }
@@ -195,7 +195,7 @@ class RemoteConfViewModel : ViewModel() {
                     TimeUtil.formatTime(endMinute)
                 )
             } else {
-                ToastUtil.show(res.parseErrorCode())
+                ToastUtil.show(res.getErrorMsg())
             }
         }
     }
@@ -208,10 +208,10 @@ class RemoteConfViewModel : ViewModel() {
                 if (loginRes.isSuccess()) {
                     PanelApplication.cookie = loginRes.response!!.cookie
                 } else {
-                    errorMsg = loginRes.parseErrorCode()
+                    errorMsg = loginRes.getErrorMsg()
                 }
             } else {
-                errorMsg = gscAccessInfoRes.parseErrorCode()
+                errorMsg = gscAccessInfoRes.getErrorMsg()
             }
         }
     }
@@ -276,7 +276,7 @@ class RemoteConfViewModel : ViewModel() {
                 }
                 errorMsg = ""
             } else {
-                errorMsg = gscConfTimeRes.parseErrorCode()
+                errorMsg = gscConfTimeRes.getErrorMsg()
             }
         }
     }
