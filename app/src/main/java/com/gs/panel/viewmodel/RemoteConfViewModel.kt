@@ -216,9 +216,6 @@ class RemoteConfViewModel : ViewModel() {
 
     private fun loadConfInfo() {
         viewModelScope.launch {
-            if (PanelApplication.cookie.isEmpty()) {
-                return@launch
-            }
             val gscConfTimeRes = safeApiCall {
                 Api.get().listGscPhysicalConfTimeListByDay(
                     "${TimeUtil.getTodayDate()} 00:00",
