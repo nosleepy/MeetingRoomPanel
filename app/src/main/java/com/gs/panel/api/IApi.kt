@@ -48,6 +48,14 @@ interface IApi {
     ): Response<LoginInfoItem>
 
     /**
+     * 保活
+     */
+    @GET("cticgi?action=ping")
+    suspend fun ping(
+        @Query("cookie") cookie: String,
+    ): Response<OperationItem>
+
+    /**
      * 电子门牌获取线下会议室日程
      * start_time: UTC开始时间, 格式：YYYY-MM-DD HH:SS
      * end_time: UTC结束时间, 格式：YYYY-MM-DD HH:SS

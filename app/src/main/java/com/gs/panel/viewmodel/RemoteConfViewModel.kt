@@ -77,20 +77,13 @@ class RemoteConfViewModel : ViewModel() {
         }
         requestJob = viewModelScope.launch {
             repeat(Int.MAX_VALUE) {
-                if (PanelApplication.cookie.isEmpty()) {
-                    val gscAccessInfoRes = safeApiCall { Api.get().getGscAccessToken(FileUtil.getUsername(), FileUtil.getPassword()) }
-                    if (gscAccessInfoRes.isSuccess()) {
-                        val loginRes = safeApiCall { Api.get().login(gscAccessInfoRes.response!!.extenAccount, gscAccessInfoRes.response!!.token) }
-                        if (loginRes.isSuccess()) {
-                            PanelApplication.cookie = loginRes.response!!.cookie
-                        } else {
-                            errorMsg = loginRes.parseErrorCode()
-                        }
-                    } else {
-                        errorMsg = gscAccessInfoRes.parseErrorCode()
-                    }
+                val pingRes = safeApiCall { Api.get().ping(PanelApplication.cookie) }
+                Log.d("wlzhou", "pingRes = $pingRes")
+                if (pingRes.isSuccess()) {
+                    loadConfInfo()
+                } else {
+                    updateCookie()
                 }
-                loadConfInfo()
                 delay(3000)
             }
         }
@@ -201,6 +194,22 @@ class RemoteConfViewModel : ViewModel() {
                 )
             } else {
                 res.handleErrorCode()
+            }
+        }
+    }
+
+    private fun updateCookie() {
+        viewModelScope.launch {
+            val gscAccessInfoRes = safeApiCall { Api.get().getGscAccessToken(FileUtil.getUsername(), FileUtil.getPassword()) }
+            if (gscAccessInfoRes.isSuccess()) {
+                val loginRes = safeApiCall { Api.get().login(gscAccessInfoRes.response!!.extenAccount, gscAccessInfoRes.response!!.token) }
+                if (loginRes.isSuccess()) {
+                    PanelApplication.cookie = loginRes.response!!.cookie
+                } else {
+                    errorMsg = loginRes.parseErrorCode()
+                }
+            } else {
+                errorMsg = gscAccessInfoRes.parseErrorCode()
             }
         }
     }
