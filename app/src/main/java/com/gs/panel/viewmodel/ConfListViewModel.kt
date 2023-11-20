@@ -7,6 +7,7 @@ import com.gs.panel.PanelApplication
 import com.gs.panel.api.Api
 import com.gs.panel.api.safeApiCall
 import com.gs.panel.entity.ScheduleItem
+import com.gs.panel.util.ToastUtil
 import kotlinx.coroutines.launch
 import java.util.Collections
 
@@ -46,7 +47,7 @@ class ConfListViewModel: ViewModel() {
                     it.value.sortWith { o1, o2 -> o1.configStartTime.compareTo(o2.configStartTime) }
                 }
             } else {
-                gscConfReservationRes.handleErrorCode()
+                ToastUtil.show(gscConfReservationRes.parseErrorCode())
             }
         }
     }

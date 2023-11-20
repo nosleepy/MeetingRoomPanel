@@ -17,6 +17,7 @@ import com.gs.panel.state.DialogState
 import com.gs.panel.state.RemoteConfState
 import com.gs.panel.util.FileUtil
 import com.gs.panel.util.TimeUtil
+import com.gs.panel.util.ToastUtil
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -142,7 +143,7 @@ class RemoteConfViewModel : ViewModel() {
                 )
                 confState = RemoteConfState.Run(scheduleItem, facilityList, scheduleRange)
             } else {
-                res.handleErrorCode()
+                ToastUtil.show(res.parseErrorCode())
             }
         }
     }
@@ -167,7 +168,7 @@ class RemoteConfViewModel : ViewModel() {
                 confState = RemoteConfState.Idle(scheduleItem, facilityList, scheduleRange)
                 Toast.makeText(PanelApplication.context, "会议已结束，感谢您的使用", Toast.LENGTH_SHORT).show()
             } else {
-                res.handleErrorCode()
+                ToastUtil.show(res.parseErrorCode())
             }
         }
     }
@@ -194,7 +195,7 @@ class RemoteConfViewModel : ViewModel() {
                     TimeUtil.formatTime(endMinute)
                 )
             } else {
-                res.handleErrorCode()
+                ToastUtil.show(res.parseErrorCode())
             }
         }
     }

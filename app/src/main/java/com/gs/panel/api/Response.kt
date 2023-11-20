@@ -1,8 +1,6 @@
 package com.gs.panel.api
 
-import android.widget.Toast
 import com.google.gson.annotations.SerializedName
-import com.gs.panel.PanelApplication
 
 data class Response<T>(
     @SerializedName("status") var status: Int = 0,
@@ -24,11 +22,6 @@ data class Response<T>(
             CODE_OTHER_EXCEPTION -> "其他异常"
             else -> "$status"
         }
-    }
-
-    fun handleErrorCode() {
-        val errorInfo = parseErrorCode()
-        Toast.makeText(PanelApplication.context, errorInfo, Toast.LENGTH_SHORT).show()
     }
 
     companion object {
