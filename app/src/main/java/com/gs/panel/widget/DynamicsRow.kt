@@ -24,7 +24,7 @@ fun DynamicsRow(modifier: Modifier = Modifier, space: Int = 8, content: @Composa
         if (childrenSpace > constraints.maxWidth) {
             var sumSpace = placeables[childrenSize - 1].width
             for (i in 0 until placeables.size - 1) {
-                if (sumSpace + placeables[i].width <= constraints.maxWidth) {
+                if (sumSpace + space + placeables[i].width <= constraints.maxWidth) {
                     placeableList.add(placeables[i])
                     sumSpace += placeables[i].width + space
                 } else {
