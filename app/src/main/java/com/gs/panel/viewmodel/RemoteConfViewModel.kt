@@ -188,6 +188,7 @@ class RemoteConfViewModel : ViewModel() {
                 endMinute = res.response!!.utcEndTime.split(" ")[1].split(":")[1].toInt()
                 updateScheduleRange(startHour, startMinute, endHour, endMinute)
                 scheduleItem.configEndTime = "${TimeUtil.formatTime(endHour)}:${TimeUtil.formatTime(endMinute)}"
+                confState = RemoteConfState.Run(scheduleItem, facilityList, scheduleRange)
                 dialogState = DialogState.DelayConfSuccessDialog(
                     TimeUtil.formatTime(endHour),
                     TimeUtil.formatTime(endMinute)
