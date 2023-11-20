@@ -1,5 +1,6 @@
 package com.gs.panel.api
 
+import com.gs.panel.PanelApplication
 import com.gs.panel.entity.GscAccessInfoItem
 import com.gs.panel.entity.GscPhyConfReservationItem
 import com.gs.panel.entity.GscPhysicalConfItem
@@ -52,7 +53,7 @@ interface IApi {
      */
     @GET("cticgi?action=ping")
     suspend fun ping(
-        @Query("cookie") cookie: String,
+        @Query("cookie") cookie: String = PanelApplication.cookie,
     ): Response<OperationItem>
 
     /**
@@ -64,7 +65,7 @@ interface IApi {
     suspend fun listGscPhysicalConfTimeListByDay(
         @Query("start_time") startTime: String,
         @Query("end_time") endTime: String,
-        @Query("cookie") cookie: String,
+        @Query("cookie") cookie: String = PanelApplication.cookie,
     ): Response<GscPhysicalConfItem>
 
     /**
@@ -74,7 +75,7 @@ interface IApi {
     @GET("cticgi?action=hangupPhysicalConfReservation")
     suspend fun hangupPhysicalConfReservation(
         @Query("reservation_id") reservationId: String,
-        @Query("cookie") cookie: String,
+        @Query("cookie") cookie: String = PanelApplication.cookie,
     ): Response<OperationItem>
 
     /**
@@ -90,7 +91,7 @@ interface IApi {
         @Query("duration") duration: String,
         @Query("subject") subject: String,
         @Query("reservation_id") reservationId: String,
-        @Query("cookie") cookie: String,
+        @Query("cookie") cookie: String = PanelApplication.cookie,
     ): Response<OperationItem>
 
     /**
@@ -102,7 +103,7 @@ interface IApi {
     suspend fun extendTimeForPhysicalConfReservation(
         @Query("reservation_id") reservationId: String,
         @Query("extend_interval") extendInterval: Int,
-        @Query("cookie") cookie: String,
+        @Query("cookie") cookie: String = PanelApplication.cookie,
     ): Response<OperationItem>
 
     /**
@@ -112,6 +113,6 @@ interface IApi {
     @GET("cticgi?action=listGscPhyConfReservation")
     suspend fun listGscPhyConfReservation(
         @Query("conf_id") confId: String,
-        @Query("cookie") cookie: String,
+        @Query("cookie") cookie: String = PanelApplication.cookie,
     ): Response<GscPhyConfReservationItem>
 }

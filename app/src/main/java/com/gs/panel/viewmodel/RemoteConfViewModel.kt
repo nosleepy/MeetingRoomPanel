@@ -78,7 +78,9 @@ class RemoteConfViewModel : ViewModel() {
         }
         requestJob = viewModelScope.launch {
             repeat(Int.MAX_VALUE) {
-                val pingRes = safeApiCall { Api.get().ping(PanelApplication.cookie) }
+                val pingRes = safeApiCall {
+                    Api.get().ping()
+                }
                 Log.d("wlzhou", "pingRes = $pingRes")
                 if (pingRes.isSuccess()) {
                     loadConfInfo()
@@ -118,7 +120,6 @@ class RemoteConfViewModel : ViewModel() {
                     time.toString(),
                     "临时会议",
                     (System.currentTimeMillis() / 1000).toString(),
-                    PanelApplication.cookie
                 )
             }
             Log.d("wlzhou", "startConf res = $res")
@@ -151,10 +152,7 @@ class RemoteConfViewModel : ViewModel() {
     fun stopConf() {
         viewModelScope.launch {
             val res = safeApiCall {
-                Api.get().hangupPhysicalConfReservation(
-                    scheduleItem.reservationId,
-                    PanelApplication.cookie
-                )
+                Api.get().hangupPhysicalConfReservation(scheduleItem.reservationId)
             }
             Log.d("wlzhou", "stopConf res = $res")
             if (res.isSuccess()) {
@@ -176,11 +174,7 @@ class RemoteConfViewModel : ViewModel() {
     fun delayConf(time: Int) {
         viewModelScope.launch {
             val res = safeApiCall {
-                Api.get().extendTimeForPhysicalConfReservation(
-                    scheduleItem.reservationId,
-                    time,
-                    PanelApplication.cookie
-                )
+                Api.get().extendTimeForPhysicalConfReservation(scheduleItem.reservationId, time)
             }
             Log.d("wlzhou", "delayConf res = $res")
             if (res.isSuccess()) {
@@ -202,9 +196,13 @@ class RemoteConfViewModel : ViewModel() {
 
     private fun updateCookie() {
         viewModelScope.launch {
-            val gscAccessInfoRes = safeApiCall { Api.get().getGscAccessToken(FileUtil.getUsername(), FileUtil.getPassword()) }
+            val gscAccessInfoRes = safeApiCall {
+                Api.get().getGscAccessToken(FileUtil.getUsername(), FileUtil.getPassword())
+            }
             if (gscAccessInfoRes.isSuccess()) {
-                val loginRes = safeApiCall { Api.get().login(gscAccessInfoRes.response!!.extenAccount, gscAccessInfoRes.response!!.token) }
+                val loginRes = safeApiCall {
+                    Api.get().login(gscAccessInfoRes.response!!.extenAccount, gscAccessInfoRes.response!!.token)
+                }
                 if (loginRes.isSuccess()) {
                     PanelApplication.cookie = loginRes.response!!.cookie
                 } else {
@@ -219,11 +217,7 @@ class RemoteConfViewModel : ViewModel() {
     private fun loadConfInfo() {
         viewModelScope.launch {
             val gscConfTimeRes = safeApiCall {
-                Api.get().listGscPhysicalConfTimeListByDay(
-                    "${TimeUtil.getTodayDate()} 00:00",
-                    "${TimeUtil.getTodayDate()} 23:59",
-                    PanelApplication.cookie
-                )
+                Api.get().listGscPhysicalConfTimeListByDay("${TimeUtil.getTodayDate()} 00:00","${TimeUtil.getTodayDate()} 23:59")
             }
             if (gscConfTimeRes.isSuccess()) {
                 if (gscConfTimeRes.response!!.conference.isEmpty()) { //电子门牌没有被会议室绑定
