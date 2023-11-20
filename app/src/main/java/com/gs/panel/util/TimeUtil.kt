@@ -1,6 +1,7 @@
 package com.gs.panel.util
 
 import java.text.SimpleDateFormat
+import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
@@ -63,8 +64,17 @@ object TimeUtil {
         return "$time"
     }
 
-    fun getTodayDate(): String {
-        return SimpleDateFormat("yyyy-MM-dd").format(Date())
+    fun getCurDate(): String {
+//        return SimpleDateFormat("yyyy-MM-dd").format(Date())
+        return LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
+    }
+
+    fun getYesterdayDate(): String {
+        return LocalDateTime.now().minusDays(1).format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
+    }
+
+    fun getTomorrowDate(): String {
+        return LocalDateTime.now().plusDays(1).format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
     }
 
     fun formatUtcTime(timeString: String): String {

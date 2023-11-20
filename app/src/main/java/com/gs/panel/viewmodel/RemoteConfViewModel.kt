@@ -217,7 +217,7 @@ class RemoteConfViewModel : ViewModel() {
     private fun loadConfInfo() {
         viewModelScope.launch {
             val gscConfTimeRes = safeApiCall {
-                Api.get().listGscPhysicalConfTimeListByDay("${TimeUtil.getTodayDate()} 00:00","${TimeUtil.getTodayDate()} 23:59")
+                Api.get().listGscPhysicalConfTimeListByDay("${TimeUtil.getCurDate()} 00:00","${TimeUtil.getCurDate()} 23:59")
             }
             if (gscConfTimeRes.isSuccess()) {
                 if (gscConfTimeRes.response!!.conference.isEmpty()) { //电子门牌没有被会议室绑定
