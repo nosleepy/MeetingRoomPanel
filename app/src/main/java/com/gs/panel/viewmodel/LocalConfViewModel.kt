@@ -1,15 +1,14 @@
 package com.gs.panel.viewmodel
 
-import android.widget.Toast
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.gs.panel.PanelApplication
 import com.gs.panel.state.DialogState
 import com.gs.panel.state.LocalConfState
 import com.gs.panel.util.TimeUtil
+import com.gs.panel.util.ToastUtil
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -49,7 +48,7 @@ class LocalConfViewModel : ViewModel() {
     fun stopConf() {
         confState = LocalConfState.Idle
         dialogState = DialogState.NoDialog
-        Toast.makeText(PanelApplication.context, "会议已结束，感谢您的使用", Toast.LENGTH_SHORT).show()
+        ToastUtil.show("会议已结束，感谢您的使用")
     }
 
     fun openStartConfDialog() {

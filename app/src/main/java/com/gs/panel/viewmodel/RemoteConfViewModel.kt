@@ -1,7 +1,6 @@
 package com.gs.panel.viewmodel
 
 import android.util.Log
-import android.widget.Toast
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -156,7 +155,7 @@ class RemoteConfViewModel : ViewModel() {
                 scheduleItem = if (scheduleList.size >= 2) scheduleList[1] else ScheduleItem(confName = conferenceItem.confName)
                 dialogState = DialogState.NoDialog
                 confState = RemoteConfState.Idle(scheduleItem, facilityList, scheduleRange)
-                Toast.makeText(PanelApplication.context, "会议已结束，感谢您的使用", Toast.LENGTH_SHORT).show()
+                ToastUtil.show("会议已结束，感谢您的使用")
             } else {
                 ToastUtil.show(res.getErrorMsg())
             }
