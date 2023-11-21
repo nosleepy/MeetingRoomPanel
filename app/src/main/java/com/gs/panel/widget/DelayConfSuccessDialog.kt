@@ -28,15 +28,19 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.gs.panel.R
+import com.gs.panel.entity.ConfTimeItem
 import com.gs.panel.state.DialogState
 import com.gs.panel.ui.theme.CustomColor
+import com.gs.panel.util.TimeUtil
 import com.gs.panel.viewmodel.RemoteConfViewModel
 
 @Composable
 fun DelayConfSuccessDialog(
     onConfirm: (() -> Unit) = {},
-    dialogState: DialogState.DelayConfSuccessDialog? = null
+    dialogState: DialogState.DelayConfSuccessDialog,
 ) {
+    val endItem = ConfTimeItem.parse(dialogState.endTime)
+    val endTime = if (endItem.date == TimeUtil.getNextDate()) "${endItem.time}(+1)" else endItem.time
     Box(modifier = Modifier
         .fillMaxSize()
         .background(color = Color(0x80000000))) {
@@ -96,7 +100,7 @@ fun DelayConfSuccessDialog(
                             color = Color(0xFF333333)
                         )
                         Spacer(modifier = Modifier.width(16.dp))
-                        Text(text = dialogState!!.endTime, modifier = Modifier
+                        Text(text = endTime, modifier = Modifier
 //                                .fillMaxWidth()
 //                            .background(CustomColor.tree)
 //                                .padding(0.dp, 10.dp, 0.dp, 10.dp)

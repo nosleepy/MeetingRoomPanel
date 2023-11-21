@@ -1,7 +1,6 @@
 package com.gs.panel.widget
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -28,16 +27,17 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.gs.panel.R
-import com.gs.panel.entity.startConfList
+import com.gs.panel.entity.ConfTimeItem
 import com.gs.panel.state.DialogState
-import com.gs.panel.ui.theme.CustomColor
-import com.gs.panel.viewmodel.RemoteConfViewModel
+import com.gs.panel.util.TimeUtil
 
 @Composable
 fun StartConfSuccessDialog(
     onConfirm: (() -> Unit) = {},
-    dialogState: DialogState.StartConfSuccessDialog? = null
+    dialogState: DialogState.StartConfSuccessDialog,
 ) {
+    val endItem = ConfTimeItem.parse(dialogState.endTime)
+    val endTime = if (endItem.date == TimeUtil.getNextDate()) "${endItem.time}(+1)" else endItem.time
     Box(modifier = Modifier
         .fillMaxSize()
         .background(color = Color(0x80000000))) {
@@ -115,7 +115,7 @@ fun StartConfSuccessDialog(
                             color = Color(0xFF333333)
                         )
                         Spacer(modifier = Modifier.width(16.dp))
-                        Text(text = dialogState!!.endTime, modifier = Modifier
+                        Text(text = endTime, modifier = Modifier
 //                                .fillMaxWidth()
 //                            .background(CustomColor.tree)
 //                                .padding(0.dp, 10.dp, 0.dp, 10.dp)

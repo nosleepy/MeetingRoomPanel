@@ -25,7 +25,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.gs.panel.R
+import com.gs.panel.entity.ConfTimeItem
 import com.gs.panel.state.RemoteConfState
+import com.gs.panel.util.TimeUtil
 import com.gs.panel.viewmodel.RemoteConfViewModel
 import com.gs.panel.widget.LargeClickButton
 import com.gs.panel.widget.FacilityListRow
@@ -40,6 +42,8 @@ fun RemoteConfIdleScreen(
     val scheduleItem = confState.scheduleItem
     val facilityList = confState.facilityList
     val scheduleRange = confState.scheduleRange
+    val startTime = ConfTimeItem.formatStartTime(scheduleItem.configStartTime)
+    val endTime = ConfTimeItem.formatEndTime(scheduleItem.configEndTime)
     Box(modifier = Modifier
         .fillMaxSize()
         .background(Color(0xFF00a645))
@@ -126,7 +130,7 @@ fun RemoteConfIdleScreen(
                     Spacer(modifier = Modifier.width(20.dp))
                     Text(text = "下一场", fontSize = 26.sp, color = Color.White)
                     Spacer(modifier = Modifier.width(20.dp))
-                    Text(text = "${scheduleItem.configStartTime}-${scheduleItem.configEndTime}", fontSize = 26.sp, color = Color.White)
+                    Text(text = "$startTime-$endTime", fontSize = 26.sp, color = Color.White)
                     Spacer(modifier = Modifier.width(20.dp))
                     Text(text = "${scheduleItem.creator}（${scheduleItem.host}）", fontSize = 26.sp, color = Color.White)
                 }

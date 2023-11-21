@@ -28,8 +28,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.gs.panel.R
+import com.gs.panel.entity.ConfTimeItem
 import com.gs.panel.state.RemoteConfState
 import com.gs.panel.ui.theme.CustomColor
+import com.gs.panel.util.TimeUtil
 //import com.gs.panel.viewmodel.RemoteConfState
 //import com.gs.panel.viewmodel.ConfState
 import com.gs.panel.viewmodel.RemoteConfViewModel
@@ -47,6 +49,8 @@ fun RemoteConfRunScreen(
     val scheduleItem = confState.scheduleItem
     val facilityList = confState.facilityList
     val scheduleRange = confState.scheduleRange
+    val startTime = ConfTimeItem.formatStartTime(scheduleItem.configStartTime)
+    val endTime = ConfTimeItem.formatEndTime(scheduleItem.configEndTime)
     Box(modifier = Modifier
         .fillMaxSize()
         .background(Color(0xFFab021b))
@@ -124,7 +128,7 @@ fun RemoteConfRunScreen(
 //                            .background(CustomColor.cranesbill)
                         , color = Color.White)
                     Spacer(modifier = Modifier.width(20.dp))
-                    Text(text = "${scheduleItem.configStartTime}-${scheduleItem.configEndTime}", fontSize = 26.sp, modifier =
+                    Text(text = "$startTime-$endTime", fontSize = 26.sp, modifier =
                     Modifier
 //                            .background(CustomColor.sand)
                         , color = Color.White)
