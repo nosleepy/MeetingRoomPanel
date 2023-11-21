@@ -41,23 +41,14 @@ class RemoteConfViewModel : ViewModel() {
         timeJob = viewModelScope.launch {
             repeat(Int.MAX_VALUE) {
                 when (conferenceItem.confStatus) {
-                    "disable" -> {
-                        confState = RemoteConfState.Disable(conferenceItem, facilityList)
-                    }
+                    "disable" -> confState = RemoteConfState.Disable(conferenceItem, facilityList)
                     else -> { //available,inuse
                         if (TimeUtil.getCurSecond() == TimeUtil.getTargetSecond(startTime) - 10 * 60) {
                             confState = RemoteConfState.ReadyFlag(scheduleItem, facilityList, scheduleRange)
                         } else if (TimeUtil.getCurSecond() > TimeUtil.getTargetSecond(startTime) - 10 * 60
                             && TimeUtil.getCurSecond() < TimeUtil.getTargetSecond(startTime)) {
-                            val remindSecond = TimeUtil.getTargetSecond(startTime) - TimeUtil.getCurSecond()
-                            confState = RemoteConfState.Ready(
-                                TimeUtil.calculateMinute(remindSecond),
-                                TimeUtil.calculateSecond(remindSecond),
-                                TimeUtil.calculatePercent(remindSecond),
-                                scheduleItem,
-                                facilityList,
-                                scheduleRange,
-                            )
+                            val remindTime = TimeUtil.getTargetSecond(startTime) - TimeUtil.getCurSecond()
+                            confState = RemoteConfState.Ready(remindTime, scheduleItem, facilityList, scheduleRange,)
                         } else if (TimeUtil.getCurSecond() >= TimeUtil.getTargetSecond(startTime)
                             && TimeUtil.getCurSecond() < TimeUtil.getTargetSecond(endTime)) {
                             confState = RemoteConfState.Run(scheduleItem, facilityList, scheduleRange)

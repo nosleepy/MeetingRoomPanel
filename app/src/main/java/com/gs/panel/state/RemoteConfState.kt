@@ -16,9 +16,7 @@ sealed class RemoteConfState {
         val scheduleRange: List<Int>,
     ): RemoteConfState()
     data class Ready(
-        val remindMinute: String,
-        val remindSecond: String,
-        val remindProgress: Float,
+        val remindTime: Long,
         val scheduleItem: ScheduleItem,
         val facilityList: List<FacilityItem>,
         val scheduleRange: List<Int>,

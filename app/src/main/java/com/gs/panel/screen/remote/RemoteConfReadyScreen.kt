@@ -1,7 +1,6 @@
 package com.gs.panel.screen.remote
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -15,7 +14,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -33,6 +31,7 @@ import com.gs.panel.R
 import com.gs.panel.entity.ConfTimeItem
 import com.gs.panel.state.RemoteConfState
 import com.gs.panel.ui.theme.CustomColor
+import com.gs.panel.util.TimeUtil
 //import com.gs.panel.viewmodel.ConfState
 import com.gs.panel.viewmodel.RemoteConfViewModel
 import com.gs.panel.widget.DynamicsRow
@@ -50,6 +49,9 @@ fun RemoteConfReadyScreen(
     val scheduleRange = confState.scheduleRange
     val startTime = ConfTimeItem.formatStartTime(scheduleItem.configStartTime)
     val endTime = ConfTimeItem.formatEndTime(scheduleItem.configEndTime)
+    val remindMinute = TimeUtil.calculateMinute(confState.remindTime)
+    val remindSecond = TimeUtil.calculateSecond(confState.remindTime)
+    val remindProgress = TimeUtil.calculatePercent(confState.remindTime)
     Box(modifier = Modifier
         .fillMaxSize()
         .background(Color(0xFFfd9a38))
@@ -101,9 +103,9 @@ fun RemoteConfReadyScreen(
 //                        .background(CustomColor.cranesbill)
                 ) {
                     CircularProgressIndicator(progress = 1f, modifier = Modifier.width(280.dp).height(280.dp), strokeWidth = 10.dp, color = Color(0xFFd49f79))
-                    CircularProgressIndicator(progress = confState.remindProgress, modifier = Modifier.width(280.dp).height(280.dp), strokeWidth = 10.dp, color = Color.White)
+                    CircularProgressIndicator(progress = remindProgress, modifier = Modifier.width(280.dp).height(280.dp), strokeWidth = 10.dp, color = Color.White)
                     Text(
-                        text = "${confState.remindMinute}:${confState.remindSecond}",
+                        text = "$remindMinute:$remindSecond",
                         fontSize = 100.sp,
                         modifier = Modifier.align(Alignment.Center),
                         color = Color.White
