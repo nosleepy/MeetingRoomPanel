@@ -21,6 +21,10 @@ object TimeUtil {
         return return Calendar.getInstance().get(Calendar.SECOND)
     }
 
+    fun getTime(): Int {
+        return getHour() * 60 * 60 + getMinute() * 60 + getSecond()
+    }
+
     fun calculateMinute(time: Long): String {
         val minute = time / 60
         if (minute in 0..9) {

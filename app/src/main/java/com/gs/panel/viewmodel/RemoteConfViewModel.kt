@@ -226,7 +226,7 @@ class RemoteConfViewModel : ViewModel() {
                     }
                     else -> { //available,inuse
                         scheduleList = conferenceItem.schedules
-                        scheduleRange = mutableListOf<Int>().apply { add(TimeUtil.getSecond()) }
+                        scheduleRange = mutableListOf<Int>().apply { add(TimeUtil.getTime()) }
                         if (scheduleList.isNotEmpty()) {
                             scheduleList.forEach {
                                 updateScheduleRange(it.configStartTime, it.configEndTime)
