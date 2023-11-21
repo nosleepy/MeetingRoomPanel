@@ -17,10 +17,7 @@ class ConfListViewModel: ViewModel() {
     init {
         viewModelScope.launch {
             val gscConfReservationRes = safeApiCall {
-                Api.get().listGscPhyConfReservation(
-                    PanelApplication.confId,
-                    PanelApplication.cookie
-                )
+                Api.get().listGscPhyConfReservation(PanelApplication.confId, PanelApplication.cookie)
             }
             if (gscConfReservationRes.isSuccess()) {
                 Collections.sort(gscConfReservationRes.response!!.conference) {

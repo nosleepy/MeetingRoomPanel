@@ -43,24 +43,20 @@ class RemoteConfViewModel : ViewModel() {
                 when (conferenceItem.confStatus) {
                     "disable" -> confState = RemoteConfState.Disable(conferenceItem, facilityList)
                     else -> { //available,inuse
-                        if (TimeUtil.getCurSecond() == TimeUtil.getTargetSecond(startTime) - 10 * 60) {
+                        if (TimeUtil.getNowTimeStamp() == TimeUtil.getTimeStamp(startTime) - 10 * 60) {
                             confState = RemoteConfState.ReadyFlag(scheduleItem, facilityList, scheduleRange)
-                        } else if (TimeUtil.getCurSecond() > TimeUtil.getTargetSecond(startTime) - 10 * 60
-                            && TimeUtil.getCurSecond() < TimeUtil.getTargetSecond(startTime)) {
-                            val remindTime = TimeUtil.getTargetSecond(startTime) - TimeUtil.getCurSecond()
+                        } else if (TimeUtil.getNowTimeStamp() > TimeUtil.getTimeStamp(startTime) - 10 * 60
+                            && TimeUtil.getNowTimeStamp() < TimeUtil.getTimeStamp(startTime)) {
+                            val remindTime = TimeUtil.getTimeStamp(startTime) - TimeUtil.getNowTimeStamp()
                             confState = RemoteConfState.Ready(remindTime, scheduleItem, facilityList, scheduleRange,)
-                        } else if (TimeUtil.getCurSecond() >= TimeUtil.getTargetSecond(startTime)
-                            && TimeUtil.getCurSecond() < TimeUtil.getTargetSecond(endTime)) {
+                        } else if (TimeUtil.getNowTimeStamp() >= TimeUtil.getTimeStamp(startTime)
+                            && TimeUtil.getNowTimeStamp() < TimeUtil.getTimeStamp(endTime)) {
                             confState = RemoteConfState.Run(scheduleItem, facilityList, scheduleRange)
-                        } else if(TimeUtil.getCurSecond() == TimeUtil.getTargetSecond(endTime)) {
+                        } else if(TimeUtil.getNowTimeStamp() == TimeUtil.getTimeStamp(endTime)) {
                             scheduleItem = if (scheduleList.size >= 2) scheduleList[1] else ScheduleItem(confName = conferenceItem.confName)
                             confState = RemoteConfState.Idle(scheduleItem, facilityList, scheduleRange)
                         } else {
-                            confState = if (scheduleItem.reservationId.isEmpty()) {
-                                RemoteConfState.Idle(ScheduleItem(confName = conferenceItem.confName), facilityList, scheduleRange)
-                            } else {
-                                RemoteConfState.Idle(scheduleItem, facilityList, scheduleRange)
-                            }
+                            confState = RemoteConfState.Idle(scheduleItem, facilityList, scheduleRange)
                         }
                     }
                 }
@@ -69,9 +65,7 @@ class RemoteConfViewModel : ViewModel() {
         }
         requestJob = viewModelScope.launch {
             repeat(Int.MAX_VALUE) {
-                val pingRes = safeApiCall {
-                    Api.get().ping()
-                }
+                val pingRes = safeApiCall { Api.get().ping() }
                 Log.d(ConstantUtil.TAG, "pingRes = $pingRes")
                 if (pingRes.isSuccess()) {
                     loadConfInfo()
@@ -110,7 +104,7 @@ class RemoteConfViewModel : ViewModel() {
                     conferenceItem.confId,
                     time.toString(),
                     "临时会议",
-                    (System.currentTimeMillis() / 1000).toString(),
+                    TimeUtil.getNowTimeStamp().toString(),
                 )
             }
             Log.d(ConstantUtil.TAG, "startConf res = $res")
@@ -135,9 +129,7 @@ class RemoteConfViewModel : ViewModel() {
 
     fun stopConf() {
         viewModelScope.launch {
-            val res = safeApiCall {
-                Api.get().hangupPhysicalConfReservation(scheduleItem.reservationId)
-            }
+            val res = safeApiCall { Api.get().hangupPhysicalConfReservation(scheduleItem.reservationId) }
             Log.d(ConstantUtil.TAG, "stopConf res = $res")
             if (res.isSuccess()) {
                 updateScheduleRange(startTime, endTime, false)
@@ -155,9 +147,7 @@ class RemoteConfViewModel : ViewModel() {
 
     fun delayConf(time: Int) {
         viewModelScope.launch {
-            val res = safeApiCall {
-                Api.get().extendTimeForPhysicalConfReservation(scheduleItem.reservationId, time)
-            }
+            val res = safeApiCall { Api.get().extendTimeForPhysicalConfReservation(scheduleItem.reservationId, time) }
             Log.d(ConstantUtil.TAG, "delayConf res = $res")
             if (res.isSuccess()) {
                 endTime = TimeUtil.formatUtcTime(res.response!!.utcEndTime)
@@ -173,13 +163,9 @@ class RemoteConfViewModel : ViewModel() {
 
     private fun updateCookie() {
         viewModelScope.launch {
-            val gscAccessInfoRes = safeApiCall {
-                Api.get().getGscAccessToken(FileUtil.getUsername(), FileUtil.getPassword())
-            }
+            val gscAccessInfoRes = safeApiCall { Api.get().getGscAccessToken(FileUtil.getUsername(), FileUtil.getPassword()) }
             if (gscAccessInfoRes.isSuccess()) {
-                val loginRes = safeApiCall {
-                    Api.get().login(gscAccessInfoRes.response!!.extenAccount, gscAccessInfoRes.response!!.token)
-                }
+                val loginRes = safeApiCall { Api.get().login(gscAccessInfoRes.response!!.extenAccount, gscAccessInfoRes.response!!.token) }
                 if (loginRes.isSuccess()) {
                     PanelApplication.cookie = loginRes.response!!.cookie
                 } else {
@@ -212,9 +198,7 @@ class RemoteConfViewModel : ViewModel() {
                     add(FacilityItem(0, "", "More", "More"))
                 }
                 when (conferenceItem.confStatus) {
-                    "disable" -> {
-                        confState = RemoteConfState.Disable(conferenceItem, facilityList)
-                    }
+                    "disable" -> confState = RemoteConfState.Disable(conferenceItem, facilityList)
                     else -> { //available,inuse
                         scheduleList = conferenceItem.schedules
                         scheduleRange = mutableListOf<Int>().apply { add(TimeUtil.getTime()) }
@@ -228,7 +212,7 @@ class RemoteConfViewModel : ViewModel() {
                         } else {
                             startTime = "1970-01-01 00:00"
                             endTime = "1970-01-01 00:00"
-                            scheduleItem = ScheduleItem()
+                            scheduleItem = ScheduleItem(confName = conferenceItem.confName)
                         }
                     }
                 }

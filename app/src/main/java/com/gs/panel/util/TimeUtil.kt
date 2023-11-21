@@ -81,11 +81,11 @@ object TimeUtil {
         return localDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"))
     }
 
-    fun getCurSecond(): Long {
+    fun getNowTimeStamp(): Long {
         return System.currentTimeMillis() / 1000
     }
 
-    fun getTargetSecond(source: String): Long {
+    fun getTimeStamp(source: String): Long {
         return SimpleDateFormat("yyyy-MM-dd HH:mm").parse(source).time / 1000
     }
 }
