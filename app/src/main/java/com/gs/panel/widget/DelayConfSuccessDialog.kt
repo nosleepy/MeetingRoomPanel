@@ -39,8 +39,7 @@ fun DelayConfSuccessDialog(
     onConfirm: (() -> Unit) = {},
     dialogState: DialogState.DelayConfSuccessDialog,
 ) {
-    val endItem = ConfTimeItem.parse(dialogState.endTime)
-    val endTime = if (endItem.date == TimeUtil.getNextDate()) "${endItem.time}(+1)" else endItem.time
+    val endTime = ConfTimeItem.formatEndTime(dialogState.endTime)
     Box(modifier = Modifier
         .fillMaxSize()
         .background(color = Color(0x80000000))) {

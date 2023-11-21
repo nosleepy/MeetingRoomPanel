@@ -27,6 +27,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.gs.panel.R
+import com.gs.panel.entity.ConfTimeItem
 import com.gs.panel.state.LocalConfState
 import com.gs.panel.viewmodel.LocalConfViewModel
 import com.gs.panel.widget.LargeClickButton
@@ -37,6 +38,8 @@ fun LocalConfRunScreen(
     viewModel: LocalConfViewModel,
 ) {
     val confState = viewModel.confState as LocalConfState.Run
+    val startTime = ConfTimeItem.formatStartTime(confState.startTime)
+    val endTime = ConfTimeItem.formatEndTime(confState.endTime)
     Box(modifier = Modifier
         .fillMaxSize()
         .background(Color(0xFFab021b))
@@ -101,7 +104,7 @@ fun LocalConfRunScreen(
 //                                    .background(CustomColor.cranesbill)
                         , color = Color.White)
                     Spacer(modifier = Modifier.width(20.dp))
-                    Text(text = "${confState.startHour}:${confState.startMinute}-${confState.stopHour}:${confState.stopMinute}", fontSize = 26.sp, modifier = Modifier
+                    Text(text = "$startTime-$endTime", fontSize = 26.sp, modifier = Modifier
 //                                    .background(CustomColor.sand)
                         , color = Color.White)
                 }

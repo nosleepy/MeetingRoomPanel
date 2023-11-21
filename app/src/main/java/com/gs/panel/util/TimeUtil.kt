@@ -9,6 +9,18 @@ import java.util.Calendar
 import java.util.TimeZone
 
 object TimeUtil {
+    fun getYear(): Int {
+        return Calendar.getInstance().get(Calendar.YEAR)
+    }
+
+    fun getMonth(): Int {
+        return Calendar.getInstance().get(Calendar.MONTH) + 1
+    }
+
+    fun getDay(): Int {
+        return Calendar.getInstance().get(Calendar.DAY_OF_MONTH)
+    }
+
     fun getHour(): Int {
         return Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
     }
@@ -17,7 +29,7 @@ object TimeUtil {
         return Calendar.getInstance().get(Calendar.MINUTE)
     }
 
-    fun getSecond(): Int {
+    private fun getSecond(): Int {
         return return Calendar.getInstance().get(Calendar.SECOND)
     }
 
@@ -45,19 +57,6 @@ object TimeUtil {
         return time / 600f
     }
 
-    fun parseTime(time: Int): Pair<String, String> {
-        val hour = time / 60
-        val minute = time % 60
-        return Pair(formatTime(hour), formatTime(minute))
-    }
-
-    private fun formatTime(time: Int): String {
-        if (time in 0..9) {
-            return "0$time"
-        }
-        return "$time"
-    }
-
     fun getCurDate(): String {
 //        return SimpleDateFormat("yyyy-MM-dd").format(Date())
         return LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
@@ -76,6 +75,10 @@ object TimeUtil {
         val utcTime = ZonedDateTime.parse(timeString, formatter.withZone(ZoneId.of("UTC")))
         val localTime = utcTime.withZoneSameInstant(TimeZone.getDefault().toZoneId())
         return localTime.format(formatter)
+    }
+
+    fun formatLocalDateTime(localDateTime: LocalDateTime): String {
+        return localDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"))
     }
 
     fun getCurSecond(): Long {

@@ -13,19 +13,19 @@ import com.gs.panel.util.TimeUtil
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import java.time.LocalDateTime
 
 class LocalConfViewModel : ViewModel() {
     var confState by mutableStateOf<LocalConfState>(LocalConfState.Idle)
     var dialogState by mutableStateOf<DialogState>(DialogState.NoDialog)
     private var timeJob: Job
-    private var startTime: Int = 0
-    private var endTime: Int = 0
+    private var startTime = LocalDateTime.now()
+    private var endTime = LocalDateTime.now()
 
     init {
         timeJob = viewModelScope.launch {
             repeat(Int.MAX_VALUE) {
-                val curTime = TimeUtil.getHour() * 60 + TimeUtil.getMinute()
-                if (curTime == endTime) {
+                if (TimeUtil.formatLocalDateTime(LocalDateTime.now()) == TimeUtil.formatLocalDateTime(endTime)) {
                     confState = LocalConfState.Idle
                 }
                 delay(3000)
@@ -34,20 +34,16 @@ class LocalConfViewModel : ViewModel() {
     }
 
     fun startConf(time: Int) {
-        startTime = TimeUtil.getHour() * 60 + TimeUtil.getMinute()
-        endTime = startTime + time
-        val startPair = TimeUtil.parseTime(startTime)
-        val endPair = TimeUtil.parseTime(endTime)
-        confState = LocalConfState.Run(startPair.first, startPair.second, endPair.first, endPair.second)
-        dialogState = DialogState.StartConfSuccessDialog("${endPair.first}:${endPair.second}")
+        startTime = LocalDateTime.now()
+        endTime = LocalDateTime.now().plusMinutes(time.toLong())
+        confState = LocalConfState.Run(TimeUtil.formatLocalDateTime(startTime), TimeUtil.formatLocalDateTime(endTime))
+        dialogState = DialogState.StartConfSuccessDialog(TimeUtil.formatLocalDateTime(endTime))
     }
 
     fun delayConf(time: Int) {
-        endTime += time
-        val startPair = TimeUtil.parseTime(startTime)
-        val endPair = TimeUtil.parseTime(endTime)
-        confState = LocalConfState.Run(startPair.first, startPair.second, endPair.first, endPair.second)
-        dialogState = DialogState.DelayConfSuccessDialog("${endPair.first}:${endPair.second}")
+        endTime = endTime.plusMinutes(time.toLong())
+        confState = LocalConfState.Run(TimeUtil.formatLocalDateTime(startTime), TimeUtil.formatLocalDateTime(endTime))
+        dialogState = DialogState.DelayConfSuccessDialog(TimeUtil.formatLocalDateTime(endTime))
     }
 
     fun stopConf() {
