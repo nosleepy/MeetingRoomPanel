@@ -20,6 +20,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.gs.panel.util.ConstantUtil
 import com.gs.panel.util.ScreenUtil
 import com.gs.panel.util.TimeUtil
 import kotlin.math.ceil
@@ -67,7 +68,7 @@ fun TimeAxis(
                     curProgress--
                 }
                 val remindProgress = rowLength - curProgress
-                Log.d("wlzhou", "l = $curProgress, r = $remindProgress")
+                Log.d(ConstantUtil.TAG, "l = $curProgress, r = $remindProgress")
                 Row(modifier = Modifier.width(rowLength.dp).fillMaxHeight().align(Alignment.Center)) {
                     Box(modifier = Modifier.width(curProgress.dp).fillMaxHeight().background(fillColor))
                     Box(modifier = Modifier.width(remindProgress.dp).fillMaxHeight().background(Color.Transparent))

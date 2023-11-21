@@ -16,6 +16,7 @@ import com.gs.panel.entity.FacilityItem
 import com.gs.panel.entity.ScheduleItem
 import com.gs.panel.state.DialogState
 import com.gs.panel.state.RemoteConfState
+import com.gs.panel.util.ConstantUtil
 import com.gs.panel.util.FileUtil
 import com.gs.panel.util.TimeUtil
 import com.gs.panel.util.ToastUtil
@@ -81,7 +82,7 @@ class RemoteConfViewModel : ViewModel() {
                 val pingRes = safeApiCall {
                     Api.get().ping()
                 }
-                Log.d("wlzhou", "pingRes = $pingRes")
+                Log.d(ConstantUtil.TAG, "pingRes = $pingRes")
                 if (pingRes.isSuccess()) {
                     loadConfInfo()
                 } else {
@@ -122,7 +123,7 @@ class RemoteConfViewModel : ViewModel() {
                     (System.currentTimeMillis() / 1000).toString(),
                 )
             }
-            Log.d("wlzhou", "startConf res = $res")
+            Log.d(ConstantUtil.TAG, "startConf res = $res")
             if (res.isSuccess()) {
                 startTime = TimeUtil.formatUtcTime(res.response!!.utcStartTime)
                 endTime = TimeUtil.formatUtcTime(res.response!!.utcEndTime)
@@ -147,7 +148,7 @@ class RemoteConfViewModel : ViewModel() {
             val res = safeApiCall {
                 Api.get().hangupPhysicalConfReservation(scheduleItem.reservationId)
             }
-            Log.d("wlzhou", "stopConf res = $res")
+            Log.d(ConstantUtil.TAG, "stopConf res = $res")
             if (res.isSuccess()) {
                 updateScheduleRange(startTime, endTime, false)
                 startTime = "1970-01-01 00:00"
@@ -167,7 +168,7 @@ class RemoteConfViewModel : ViewModel() {
             val res = safeApiCall {
                 Api.get().extendTimeForPhysicalConfReservation(scheduleItem.reservationId, time)
             }
-            Log.d("wlzhou", "delayConf res = $res")
+            Log.d(ConstantUtil.TAG, "delayConf res = $res")
             if (res.isSuccess()) {
                 endTime = TimeUtil.formatUtcTime(res.response!!.utcEndTime)
                 updateScheduleRange(startTime, endTime)
